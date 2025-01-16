@@ -1,1 +1,17 @@
-<link rel="stylesheet" href="{% static 'styles.css' %}"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Threadz {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="websiteLogo">Threadz</div>
+    </nav>
+    {% body content %}
+
+    {% endblock %}
+</body>
+</html>
