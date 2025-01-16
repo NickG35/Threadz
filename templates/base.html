@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +9,9 @@
 </head>
 <body>
     <nav>
-        <div class="websiteLogo">Threadz</div>
+        <div class="website-logo">Threadz</div>
     </nav>
-    {% body content %}
+    {% block content %}
 
     {% endblock %}
 </body>
