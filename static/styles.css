@@ -1,0 +1,13 @@
+.logo-div {
+    margin-left: auto;
+}
+
+.nav-link-div {
+    display: flex;
+    margin-left: auto;
+    padding: 10px;
+}
+
+.nav-link {
+    margin: 5px;
+}
