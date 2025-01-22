@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Threadz {% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="welcome">Welcome to the home page!</h1>
+    <div class="products-div">
+        {% for product in product_details %}
+            <img src="{{product.image}}">
+            <p>{{ product.name }}</p>
+            <p>{{  product.price }}</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
