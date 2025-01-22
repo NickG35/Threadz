@@ -3,14 +3,21 @@
 {% block title %} Threadz {% endblock %}
 {% block content %}
 <div class="container-fluid">
-    <h1 class="welcome">Welcome to the home page!</h1>
-    <div class="products-div">
         {% for product in product_details %}
             <img src="{{product.image}}">
             <p>{{ product.name }}</p>
             <p>{{  product.price }}</p>
         {% endfor %}
-    </div>
-
+        <p>SIZE</p>
+        <div class="size-picker">
+            <button class="sizes">xs</button>
+            <button class="sizes">s</button>
+            <button class="sizes">m</button>
+            <button class="sizes">l</button>
+            <button class="sizes">xl</button>
+            <button class="sizes">xxl</button>
+        </div>
+        <button>Add to Cart</button>
+        <button>Like</button>
 </div>
 {% endblock %}
