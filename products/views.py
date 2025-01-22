@@ -51,3 +51,9 @@ def index(request):
     return render(request, 'index.html', {
         'products': products
     })
+
+def product(request, product_id):
+    product_details = Product.objects.filter(id=product_id).all()
+    return render(request, "product.html", {
+        'product_details': product_details
+    })
