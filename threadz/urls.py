@@ -21,9 +21,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('users.urls')),
+    path('users/', include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
     path('', include('products.urls')),
-    path('', include('orders.urls')),
+    path('orders/', include('orders.urls')),
 ]
 
 if settings.DEBUG:
