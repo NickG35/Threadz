@@ -1,0 +1,6 @@
+input.form-input.error-input {
+    border: 1px solid red;
+}
+.error {
+    color: red;
+}
