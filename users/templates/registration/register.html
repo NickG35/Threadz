@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %} Threadz {% endblock %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'users/styles.css' %}">
+{% endblock %}
+
 {% block content %}
     <h1 class="header">Register</h1>
 
@@ -9,15 +13,15 @@
         {% if errors.username %}
             <p class="error">{{ errors.username }}</p>
         {% endif %}
-        <input class="form-control {% if errors.username %}error-input{% endif %}" placeholder="enter username" type="text" name="username">
+        <input class="form-input {% if errors.username %}error-input{% endif %}" placeholder="enter username" type="text" name="username">
         {% if errors.password %}
             <p class="error">{{ errors.password }}</p>
         {% endif %}
-        <input class="form-control {% if errors.password %}error-input{% endif %}" placeholder="enter password" type="password" name="password">
+        <input class="form-input {% if errors.password %}error-input{% endif %}" placeholder="enter password" type="password" name="password">
         {% if errors.confirmation %}
             <p class="error">{{ errors.confirmation }}</p>
         {% endif %}
-        <input class="form-control {% if errors.confirmation %}error-input{% endif %}" placeholder="confirm password" type="password" name="confirmation">
+        <input class="form-input {% if errors.confirmation %}error-input{% endif %}" placeholder="confirm password" type="password" name="confirmation">
 
         <button type="submit">Register</button>
     </form>
