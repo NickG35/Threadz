@@ -10,12 +10,25 @@ def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('index')
-        else:
-            return redirect('login')
+        errors = {}
+
+        if not username:
+            errors['username'] = 'Enter a valid username'
+        if not password:
+            errors['password'] = 'Enter a password'
+
+        if not errors:
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('index')
+                else:
+                    errors['invalid_credentials'] = 'Invalid username or password'
+        
+        return render(request, 'registration/login.html', {
+            'errors': errors
+        })
+    
     else:
         return render(request, 'registration/login.html')
 
