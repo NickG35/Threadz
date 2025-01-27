@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.db import IntegrityError
-from .models import User
+from .models import User, Profile
 
 # Create your views here.
 
@@ -64,5 +64,8 @@ def register_user(request):
     
     return render(request, "registration/register.html")
 
-def profile(request):
-    return render(request, 'profile.html')
+def profile(request, profile_id):
+    profile_info = Profile.objects.filter(id=profile_id).all()
+    return render(request, 'profile.html', {
+        'profile_info': profile_info
+    })
