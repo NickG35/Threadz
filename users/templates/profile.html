@@ -4,4 +4,7 @@
 
 {% block content %}
 <h1 class="profile-header">Welcome to your profile page!</h1>
+{% for info in profile_info %}
+    <p>{{ info.user }}</p>
+{% endfor %}
 {% endblock %}
