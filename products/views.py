@@ -1,7 +1,8 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Product
 from django.db import transaction
+from .forms import ProductForm
 
 # Create your views here.
 
@@ -56,4 +57,17 @@ def product(request, product_id):
     product_details = Product.objects.filter(id=product_id).all()
     return render(request, "product.html", {
         'product_details': product_details
+    })
+
+def create(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('create')
+    else:
+        form = ProductForm()
+    
+    return render(request, 'create.html', {
+        'form': form
     })
