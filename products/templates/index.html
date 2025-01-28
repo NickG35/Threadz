@@ -8,9 +8,14 @@
     {% endif %}
     <div class="products-div">
         {% for product in products %}
-            <img src="{{product.image}}">
+            {% if product.created_by %}
+                <img src="{{product.image.url}}">
+            {% else %}
+                <img src="{{product.image }}">
+            {% endif %}
             <p><a href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
             <p>{{  product.price }}</p>
+            <p>{{ product.category }}</p>
         {% endfor %}
     </div>
 
