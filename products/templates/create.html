@@ -2,7 +2,13 @@
 
 {% block title %} Threadz {% endblock %}
 {% block content %}
-<form>
+{% if messages %}
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+{% endif %}
+<form method="post" action="{% url 'create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
 </form>
