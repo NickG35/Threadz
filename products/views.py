@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Product
 from django.db import transaction
 from .forms import ProductForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -61,12 +62,16 @@ def product(request, product_id):
 
 def create(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.created_by = request.user.profile
+            product.save()
+            messages.success(request, 'Product created successfully!')
             return redirect('create')
     else:
         form = ProductForm()
+        print(form.errors)
     
     return render(request, 'create.html', {
         'form': form
