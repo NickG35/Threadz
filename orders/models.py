@@ -13,4 +13,4 @@ class Order(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE)
     purchase_date = models.DateTimeField(auto_now_add=True)
-    total_price = models.IntegerField(null=False)
+    total_price = models.IntegerField()
