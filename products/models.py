@@ -14,6 +14,7 @@ class Product(models.Model):
     ]
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, null=False)
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True, related_name='products')
+    creation_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.name}"
