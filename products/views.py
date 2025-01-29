@@ -1,6 +1,7 @@
 import requests
 from django.shortcuts import render, redirect
 from .models import Product
+from orders.models import CartItem
 from django.db import transaction
 from .forms import ProductForm
 from django.contrib import messages
@@ -55,10 +56,21 @@ def index(request):
     })
 
 def product(request, product_id):
-    product_details = Product.objects.filter(id=product_id).all()
-    return render(request, "product.html", {
-        'product_details': product_details
-    })
+    if request.method == 'POST':
+        product_id = request.POST.get('product')
+        request.POST.get('size')
+        product_name = Product.objects.get(id=product_id)
+        CartItem.objects.create(
+            product=product_name,
+            user = request.user.profile
+        )
+        messages.success(request, 'Item added to cart.')
+        return redirect('product')
+    else:
+        product_details = Product.objects.filter(id=product_id).all()
+        return render(request, "product.html", {
+            'product_details': product_details
+        })
 
 def create(request):
     if request.method == 'POST':
