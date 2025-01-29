@@ -4,7 +4,6 @@ from .models import Product
 from django.db import transaction
 from .forms import ProductForm
 from django.contrib import messages
-
 # Create your views here.
 
 def fetch_products():
@@ -44,11 +43,12 @@ def fetch_products():
         all_products = []
 
 def index(request):
-    products = Product.objects.all()
+    existing_products = Product.objects.all()
     #if no products in database, then run the fetch function
-    if not products.exists():
+    if not existing_products.exists():
         fetch_products()
-        products = Product.objects.all()
+        
+    products = Product.objects.order_by('-creation_time').all()
     #pass fetched products to index page
     return render(request, 'index.html', {
         'products': products
