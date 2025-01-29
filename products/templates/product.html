@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %} Threadz {% endblock %}
+{% load static %}
+
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'products/styles.css' %}">
+{% endblock %}
+
 {% block content %}
 <script>
     function sizeSelect(size){
         const sizeInput = document.querySelector('#size');
         sizeInput.value = size;
         console.log(sizeInput.value)
+
+        const button = document.querySelectorAll('.btn-secondary');
+        button.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
     }
 </script>
 <div class="container-fluid">
@@ -16,12 +27,12 @@
             <p>{{  product.price }}</p>
             <p>SIZE</p>
             <div class="size-picker">
-                <button type="button" onclick="sizeSelect('XS')" class="sizes">XS</button>
-                <button type="button" onclick="sizeSelect('S')" class="sizes">S</button>
-                <button type="button" onclick="sizeSelect('M')" class="sizes">M</button>
-                <button type="button" onclick="sizeSelect('L')" class="sizes">L</button>
-                <button type="button" onclick="sizeSelect('XL')" class="sizes">XL</button>
-                <button type="button" onclick="sizeSelect('XXL')" class="sizes">XXL</button>
+                <button type="button" onclick="sizeSelect('XS')" class="btn btn-secondary" id="sizes">XS</button>
+                <button type="button" onclick="sizeSelect('S')" class="btn btn-secondary" id="sizes">S</button>
+                <button type="button" onclick="sizeSelect('M')" class="btn btn-secondary" id="sizes">M</button>
+                <button type="button" onclick="sizeSelect('L')" class="btn btn-secondary" id="sizes">L</button>
+                <button type="button" onclick="sizeSelect('XL')" class="btn btn-secondary" id="sizes">XL</button>
+                <button type="button" onclick="sizeSelect('XXL')" class="btn btn-secondary" id="sizes">XXL</button>
             </div>
             {% if messages %}
                 {% for message in messages %}
