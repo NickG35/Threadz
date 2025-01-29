@@ -1,5 +1,6 @@
 import requests
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .models import Product
 from orders.models import CartItem
 from django.db import transaction
@@ -58,14 +59,15 @@ def index(request):
 def product(request, product_id):
     if request.method == 'POST':
         product_id = request.POST.get('product')
-        request.POST.get('size')
+        size_choice = request.POST.get('size')
         product_name = Product.objects.get(id=product_id)
         CartItem.objects.create(
             product=product_name,
-            user = request.user.profile
+            user=request.user.profile,
+            size=size_choice
         )
         messages.success(request, 'Item added to cart.')
-        return redirect('product')
+        return redirect(reverse('product', kwargs={'product_id': product_id}))
     else:
         product_details = Product.objects.filter(id=product_id).all()
         return render(request, "product.html", {
