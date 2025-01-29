@@ -2,22 +2,34 @@
 
 {% block title %} Threadz {% endblock %}
 {% block content %}
+<script>
+    function sizeSelect(size){
+        const sizeInput = document.querySelector('#size');
+        sizeInput.value = size;
+        console.log(sizeInput.value)
+    }
+</script>
 <div class="container-fluid">
         {% for product in product_details %}
             <img src="{{product.image}}">
             <p>{{ product.name }}</p>
             <p>{{  product.price }}</p>
+            <p>SIZE</p>
+            <div class="size-picker">
+                <button type="button" onclick="sizeSelect('XS')" class="sizes">XS</button>
+                <button type="button" onclick="sizeSelect('S')" class="sizes">S</button>
+                <button type="button" onclick="sizeSelect('M')" class="sizes">M</button>
+                <button type="button" onclick="sizeSelect('L')" class="sizes">L</button>
+                <button type="button" onclick="sizeSelect('XL')" class="sizes">XL</button>
+                <button type="button" onclick="sizeSelect('XXL')" class="sizes">XXL</button>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input name="product" id="productID" type="hidden" value="{{ product.id }}">
+                <input name="size" id="size" type="hidden">
+                <button type="submit">Add to Cart</button>
+            </form>
+            <button>Like</button>
         {% endfor %}
-        <p>SIZE</p>
-        <div class="size-picker">
-            <button class="sizes">xs</button>
-            <button class="sizes">s</button>
-            <button class="sizes">m</button>
-            <button class="sizes">l</button>
-            <button class="sizes">xl</button>
-            <button class="sizes">xxl</button>
-        </div>
-        <button>Add to Cart</button>
-        <button>Like</button>
 </div>
 {% endblock %}
