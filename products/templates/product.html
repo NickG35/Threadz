@@ -23,6 +23,11 @@
                 <button type="button" onclick="sizeSelect('XL')" class="sizes">XL</button>
                 <button type="button" onclick="sizeSelect('XXL')" class="sizes">XXL</button>
             </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            {% endif %}
             <form method="post">
                 {% csrf_token %}
                 <input name="product" id="productID" type="hidden" value="{{ product.id }}">
