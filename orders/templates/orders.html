@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %} Threadz {% endblock %}
 
 {% block content %}
 <h1 class="order-header">Welcome to the orders page!</h1>
+{% for items in cart_items %}
+    <img src="{{items.product.image}}">
+    <p>{{ items.product.name }}</p>
+    <p>{{  items.product.price }}</p>
+    <p>{{ items.size }}</p>
+    <p>{{ items.quantity }}</p>
+{% endfor %}
 {% endblock %}
