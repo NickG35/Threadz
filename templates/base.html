@@ -19,6 +19,7 @@
                 <a class="nav-link" href="{% url 'create' %}">Create</a>
                 <a class="nav-link" href="{% url 'orders' %}">Orders</a>
                 <a class="nav-link" href="{% url 'profile' profile_id=user.id %}">Profile</a>
+                <a class="nav-link" href="{% url 'watchlist' profile_id=user.id %}">Watchlist</a>
                     <form action="{% url 'user_logout' %}" method="post">
                         {% csrf_token %}
                         <button class="nav-link" type="submit">Logout</button>
