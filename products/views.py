@@ -1,7 +1,8 @@
 import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Product
+from .models import Product, Watchlist
+from users.models import Profile
 from orders.models import CartItem
 from django.db import transaction
 from .forms import ProductForm
@@ -49,11 +50,11 @@ def index(request):
     #if no products in database, then run the fetch function
     if not existing_products.exists():
         fetch_products()
-        
+    
     products = Product.objects.order_by('-creation_time').all()
     #pass fetched products to index page
     return render(request, 'index.html', {
-        'products': products
+        'products': products,
     })
 
 def product(request, product_id):
@@ -89,4 +90,23 @@ def create(request):
     
     return render(request, 'create.html', {
         'form': form
+    })
+
+def toggle_watchlist(request, product_id):
+    product = Product.objects.get(id=product_id)
+    watchlist_item, created = Watchlist.objects.get_or_create(user=request.user.profile, product = product)
+
+    if not created:
+        watchlist_item.delete()
+        messages.info(request, "product removed from watchlist.")
+    else:
+        messages.info(request, "product added to watchlist.")
+    
+    return redirect('index')
+
+def watchlist_page(request, profile_id):
+    profile = Profile.objects.get(user=profile_id)
+    watchlist_items = Watchlist.objects.filter(user=profile).order_by('-added_time').all()
+    return render(request, "watchlist.html", {
+        'watchlist_items': watchlist_items
     })
