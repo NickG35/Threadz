@@ -18,3 +18,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name = 'watchlist' )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_watch')
+    added_time = models.DateTimeField(auto_now_add=True)
