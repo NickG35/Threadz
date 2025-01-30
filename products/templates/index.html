@@ -7,6 +7,13 @@
         <h1 class="welcome">Welcome to the home page, {{ user }}!</h1>
     {% endif %}
     <div class="products-div">
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% for product in products %}
             {% if product.created_by %}
                 <img src="{{product.image.url}}">
@@ -16,6 +23,10 @@
             <p><a href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
             <p>{{  product.price }}</p>
             <p>{{ product.category }}</p>
+            <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                {% csrf_token %}
+                <button>Like</button>
+            </form>
         {% endfor %}
     </div>
 
