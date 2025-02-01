@@ -13,6 +13,6 @@ class CartItem(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE)
+    cart_item = models.ManyToManyField(CartItem)
     purchase_date = models.DateTimeField(auto_now_add=True)
     total_price = models.IntegerField()
