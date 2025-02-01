@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1 class="order-header">Receipt</h1>
+    <p>Order made on <p>{{ purchase.purchase_date }}</p>
+    <h2>Order Summary</h2>
+    {% for item in purchase.cart_item.all %}
+        {% if item.product.created_by %}
+            <img src="{{item.product.image.url }}">
+        {% else %}
+            <img src="{{item.product.image }}">
+        {% endif %}
+        <p><a href="{% url 'product' product_id=item.product.id %}">{{ item.product.name }}</a></p>
+        <p>{{  item.product.price }}</p>
+        <p>{{ item.size }}</p>
+        <p>{{ item.quantity }}</p>
+    {% endfor %}
+    <p>Total: ${{ purchase.total_price }}</p>
+    <h2>Shipping Information</h2>
+    <p>Shipping Address: {{ address }} {{ city }} {{ zip }}</p>
+    <h2>Payment Information</h2>
+    <p>Card ending in {{ card_number }}</p>
+{% endblock %}
