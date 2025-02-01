@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1 class="order-header">Order Summary</h1>
+{% for items in cart_items %}
+    {% if items.product.created_by %}
+        <img src="{{ items.product.image.url }}">
+    {% else %}
+        <img src="{{ items.product.image }}">
+    {% endif %}
+    <p>{{ items.product.name }}</p>
+    <p>{{  items.product.price }}</p>
+    <p>{{ items.size }}</p>
+    <p>{{ items.quantity }}</p>
+{% endfor %}
+
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <h1 class="order-header">Shipping information</h1>
+    <input name="address" type="text" placeholder="Enter shipping address" required>
+    <input name="city" type="text" placeholder="Enter city" required>
+    <input name="zip" type="text" placeholder="Enter zip code" required>
+
+    <h1 class="order-header">Payment information</h1>
+    <input name="card_number" type="text" placeholder="Enter credit card number" required>
+    <input name="expiration" type="text" placeholder="Enter expiration date" required>
+    <input name="cvv" type="text" placeholder="Enter CVV" required>
+
+    <button type="submit">Place order</button>
+</form>
+{% endblock %}
