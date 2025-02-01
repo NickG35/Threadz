@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1 class="order-header">Cart</h1>
+{% for items in cart_items %}
+    {% if items.product.created_by %}
+        <img src="{{ items.product.image.url }}">
+    {% else %}
+        <img src="{{ items.product.image }}">
+    {% endif %}
+    <p>{{ items.product.name }}</p>
+    <p>{{  items.product.price }}</p>
+    <p>{{ items.size }}</p>
+    <p>{{ items.quantity }}</p>
+    <p>{{ items.total_price }}</p>
+{% endfor %}
+<p>{{ cart_total }}</p>
+<form action="{% url 'cart'%}" method="post">
+    {% csrf_token %}
+    <button type="submit">Checkout</button>
+</form>
+{% endblock %}
