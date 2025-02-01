@@ -22,7 +22,11 @@
 </script>
 <div class="container-fluid">
         {% for product in product_details %}
-            <img src="{{product.image}}">
+            {% if product.created_by %}
+                <img src="{{ product.image.url }}">
+            {% else %}
+                <img src="{{ product.image }}">
+            {% endif %}
             <p>{{ product.name }}</p>
             <p>{{  product.price }}</p>
             <p>SIZE</p>
