@@ -11,8 +11,14 @@ class CartItem(models.Model):
     stow_date = models.DateTimeField(auto_now_add=True)
     pending_order = models.BooleanField(default=True)
 
+    def __str__(self):
+        return f"{self.product}"
+
 class Order(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     cart_item = models.ManyToManyField(CartItem)
     purchase_date = models.DateTimeField(auto_now_add=True)
     total_price = models.IntegerField()
+
+    def __str__(self):
+        return f"order: {self.id}"
