@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import CartItem, Order
 from django.db.models import F, Sum
 
+
 # Create your views here.
 def cart(request):
     if request.method == 'POST':
