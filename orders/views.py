@@ -29,18 +29,22 @@ def checkout(request):
             user=request.user.profile,
             total_price = cart_total
         )
-        order.cart_item.add(*cart_items)
-        purchase = Order.objects.filter(user=request.user.profile).latest('purchase_date')
-        cart_items.update(pending_order=False)
+        for items in cart_items:
+            items.order = order
+            items.pending_order = False
+            items.save()
+            
         last_four = card_number[-4:]
-        
-        return render(request,'receipt.html', {
+
+        request.session['checkout_data'] = {
             'address': address,
             'city': city,
             'zip': zip,
             'card_number': last_four,
-            'purchase': purchase
-        })
+            'purchase_id': order.id
+        }
+        
+        return redirect('receipt')
     
     else:
         return render(request, 'checkout.html', {
@@ -49,4 +53,26 @@ def checkout(request):
     })
 
 def receipt(request):
-    return render(request, 'receipt.html')
+    # Retrieve data from session
+    checkout_data = request.session.get('checkout_data', None)
+
+    if checkout_data:
+        address = checkout_data['address']
+        city = checkout_data['city']
+        zip = checkout_data['zip']
+        card_number = checkout_data['card_number']
+        purchase_id = checkout_data['purchase_id']
+
+        del request.session['checkout_data']
+
+        purchase = Order.objects.get(id=purchase_id)
+
+        return render(request, 'receipt.html', {
+            'address': address,
+            'city': city,
+            'zip': zip, 
+            'card_number': card_number,
+            'purchase': purchase
+        })
+    else:
+        return redirect('checkout')
