@@ -14,6 +14,7 @@
     <p>{{ items.size }}</p>
     <p>{{ items.quantity }}</p>
 {% endfor %}
+<p>{{ cart_total }}</p>
 
 <form action="{% url 'checkout' %}" method="post">
     {% csrf_token %}
