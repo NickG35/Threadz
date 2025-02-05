@@ -5,7 +5,7 @@
     <h1 class="order-header">Receipt</h1>
     <p>Order made on <p>{{ purchase.purchase_date }}</p>
     <h2>Order Summary</h2>
-    {% for item in purchase.cart_item.all %}
+    {% for item in purchase.cart_items.all %}
         {% if item.product.created_by %}
             <img src="{{item.product.image.url }}">
         {% else %}
