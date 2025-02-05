@@ -45,7 +45,6 @@
             {% endif %}
             <form method="post">
                 {% csrf_token %}
-                <input name="product" id="productID" type="hidden" value="{{ product.id }}">
                 <input name="size" id="size" type="hidden">
                 <button type="submit">Add to Cart</button>
             </form>
