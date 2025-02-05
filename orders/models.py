@@ -2,14 +2,6 @@ from django.db import models
 from products.models import Product
 from users.models import Profile
 
-class Order(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    purchase_date = models.DateTimeField(auto_now_add=True)
-    total_price = models.IntegerField()
-
-    def __str__(self):
-        return f"order: {self.id}"
-
 # Create your models here.
 
 class Order(models.Model):
