@@ -59,7 +59,6 @@ def index(request):
 
 def product(request, product_id):
     if request.method == 'POST':
-        product_id = request.POST.get('product')
         size_choice = request.POST.get('size')
         product_name = Product.objects.get(id=product_id)
         CartItem.objects.create(
