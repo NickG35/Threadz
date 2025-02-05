@@ -36,6 +36,11 @@ def checkout(request):
             items.save()
             
         last_four = card_number[-4:]
+        for item in cart_items:
+           item.pending_order=False
+           item.order = order
+           item.save()
+
 
         request.session['checkout_data'] = {
             'address': address,
