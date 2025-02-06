@@ -24,6 +24,8 @@ def checkout(request):
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             address = form.cleaned_data['address']
             city = form.cleaned_data['city']
             state = form.cleaned_data['state']
@@ -44,6 +46,8 @@ def checkout(request):
 
 
             request.session['checkout_data'] = {
+                'first_name': first_name,
+                'last_name': last_name,
                 'address': address,
                 'city': city,
                 'state': state,
@@ -68,6 +72,8 @@ def receipt(request):
     checkout_data = request.session.get('checkout_data', None)
 
     if checkout_data:
+        first_name = checkout_data['first_name']
+        last_name = checkout_data['last_name']
         address = checkout_data['address']
         city = checkout_data['city']
         state = checkout_data['state']
@@ -80,6 +86,8 @@ def receipt(request):
         purchase = Order.objects.get(id=purchase_id)
 
         return render(request, 'receipt.html', {
+            'first_name': first_name,
+            'last_name': last_name,
             'address': address,
             'city': city,
             'state': state,

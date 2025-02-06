@@ -23,6 +23,22 @@ US_STATE_CHOICES = [("", "Select a state")] + [
 ]
 
 class CheckoutForm(forms.Form):
+    first_name = forms.CharField(
+        max_length=50,
+        required=True,
+        validators=[
+            RegexValidator(r'^[a-zA-Z\s]+$', 'First name can only contain letters.')
+        ]
+    )
+
+    last_name = forms.CharField(
+        max_length=50,
+        required=True,
+        validators=[
+            RegexValidator(r'^[a-zA-Z\s]+$', 'Last name can only contain letters.')
+        ]
+    )
+
     address = forms.CharField(
         max_length=100, 
         required=True,
