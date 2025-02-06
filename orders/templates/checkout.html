@@ -14,20 +14,12 @@
     <p>{{ items.size }}</p>
     <p>{{ items.quantity }}</p>
 {% endfor %}
+
 <p>{{ cart_total }}</p>
 
 <form action="{% url 'checkout' %}" method="post">
     {% csrf_token %}
-    <h1 class="order-header">Shipping information</h1>
-    <input name="address" type="text" placeholder="Enter shipping address" required>
-    <input name="city" type="text" placeholder="Enter city" required>
-    <input name="zip" type="text" placeholder="Enter zip code" required>
-
-    <h1 class="order-header">Payment information</h1>
-    <input name="card_number" type="text" placeholder="Enter credit card number" required>
-    <input name="expiration" type="text" placeholder="Enter expiration date" required>
-    <input name="cvv" type="text" placeholder="Enter CVV" required>
-
+    {{ form.as_p }}
     <button type="submit">Place order</button>
 </form>
 {% endblock %}
