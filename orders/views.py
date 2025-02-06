@@ -26,6 +26,7 @@ def checkout(request):
         if form.is_valid():
             address = form.cleaned_data['address']
             city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
             zip_code = form.cleaned_data['zip']
             card_number = form.cleaned_data['card_number']
 
@@ -45,6 +46,7 @@ def checkout(request):
             request.session['checkout_data'] = {
                 'address': address,
                 'city': city,
+                'state': state,
                 'zip': zip_code,
                 'card_number': last_four,
                 'purchase_id': order.id
@@ -68,6 +70,7 @@ def receipt(request):
     if checkout_data:
         address = checkout_data['address']
         city = checkout_data['city']
+        state = checkout_data['state']
         zip_code = checkout_data['zip']
         card_number = checkout_data['card_number']
         purchase_id = checkout_data['purchase_id']
@@ -79,6 +82,7 @@ def receipt(request):
         return render(request, 'receipt.html', {
             'address': address,
             'city': city,
+            'state': state,
             'zip_code': zip_code, 
             'card_number': card_number,
             'purchase': purchase
