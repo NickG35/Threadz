@@ -1,50 +1,67 @@
 from django import forms
 from django.utils.timezone import now
+from django.core.validators import RegexValidator
+
+US_STATE_CHOICES = [("", "Select a state")] + [
+    ("AL", "Alabama"), ("AK", "Alaska"), ("AZ", "Arizona"),
+    ("AR", "Arkansas"), ("CA", "California"), ("CO", "Colorado"),
+    ("CT", "Connecticut"), ("DE", "Delaware"), ("FL", "Florida"),
+    ("GA", "Georgia"), ("HI", "Hawaii"), ("ID", "Idaho"),
+    ("IL", "Illinois"), ("IN", "Indiana"), ("IA", "Iowa"),
+    ("KS", "Kansas"), ("KY", "Kentucky"), ("LA", "Louisiana"),
+    ("ME", "Maine"), ("MD", "Maryland"), ("MA", "Massachusetts"),
+    ("MI", "Michigan"), ("MN", "Minnesota"), ("MS", "Mississippi"),
+    ("MO", "Missouri"), ("MT", "Montana"), ("NE", "Nebraska"),
+    ("NV", "Nevada"), ("NH", "New Hampshire"), ("NJ", "New Jersey"),
+    ("NM", "New Mexico"), ("NY", "New York"), ("NC", "North Carolina"),
+    ("ND", "North Dakota"), ("OH", "Ohio"), ("OK", "Oklahoma"),
+    ("OR", "Oregon"), ("PA", "Pennsylvania"), ("RI", "Rhode Island"),
+    ("SC", "South Carolina"), ("SD", "South Dakota"), ("TN", "Tennessee"),
+    ("TX", "Texas"), ("UT", "Utah"), ("VT", "Vermont"),
+    ("VA", "Virginia"), ("WA", "Washington"), ("WV", "West Virginia"),
+    ("WI", "Wisconsin"), ("WY", "Wyoming")
+]
 
 class CheckoutForm(forms.Form):
     address = forms.CharField(
         max_length=100, 
         required=True,
-        error_messages={'required': "Please enter your address."}
     )
     
     city = forms.CharField(
         max_length=50, 
         required=True,
-        error_messages={'required': "Please enter your city."}
+        validators=[
+            RegexValidator(r'^[a-zA-Z\s]+$', 'City name can only contain letters.')
+        ],
+    )
+
+    state = forms.ChoiceField(
+        choices=US_STATE_CHOICES,
+        required=True,
     )
     
     zip = forms.CharField(
         min_length=5,
         max_length=10,
         required=True,
-        error_messages={
-            'required': "Please enter your ZIP code.",
-        }
     )
     
     card_number = forms.CharField(
         min_length=16,
         max_length=16,
         required=True,
-        error_messages={
-            'required': "Please enter your card number.",
-        }
     )
     
     expiration_date = forms.DateField(
         required=True, 
         widget=forms.DateInput(attrs={'type': 'date'}),
-        error_messages={'required': "Please enter the card expiration date."}
     )
     
     cvv = forms.CharField(
         min_length=3,
         max_length=4,
         required=True,
-        error_messages={
-            'required': "Please enter your CVV.",
-        }
     )
     
     def clean_card_number(self):
