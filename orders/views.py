@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import CartItem, Order
 from django.db.models import F, Sum
-
+from .forms import CheckoutForm
 
 # Create your views here.
 def cart(request):
@@ -22,40 +22,43 @@ def checkout(request):
     cart_total = cart_items.aggregate(total=Sum(F('product__price') * F('quantity')))['total'] or 0
 
     if request.method == 'POST':
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        zip = request.POST.get('zip')
-        card_number = request.POST.get('card_number')
-        order = Order.objects.create(
-            user=request.user.profile,
-            total_price = cart_total
-        )
-        for items in cart_items:
-            items.order = order
-            items.pending_order = False
-            items.save()
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            address = form.cleaned_data['address']
+            city = form.cleaned_data['city']
+            zip_code = form.cleaned_data['zip']
+            card_number = form.cleaned_data['card_number']
+
+            order = Order.objects.create(
+                user=request.user.profile,
+                total_price = cart_total
+            )
             
-        last_four = card_number[-4:]
-        for item in cart_items:
-           item.pending_order=False
-           item.order = order
-           item.save()
+            last_four = card_number[-4:]
+
+            for item in cart_items:
+                item.pending_order=False
+                item.order = order
+                item.save()
 
 
-        request.session['checkout_data'] = {
-            'address': address,
-            'city': city,
-            'zip': zip,
-            'card_number': last_four,
-            'purchase_id': order.id
-        }
+            request.session['checkout_data'] = {
+                'address': address,
+                'city': city,
+                'zip': zip_code,
+                'card_number': last_four,
+                'purchase_id': order.id
+            }
         
-        return redirect('receipt')
+            return redirect('receipt')
     
     else:
-        return render(request, 'checkout.html', {
+        form = CheckoutForm()
+
+    return render(request, 'checkout.html', {
         'cart_items': cart_items,
-        'cart_total': cart_total
+        'cart_total': cart_total,
+        'form': form
     })
 
 def receipt(request):
@@ -65,7 +68,7 @@ def receipt(request):
     if checkout_data:
         address = checkout_data['address']
         city = checkout_data['city']
-        zip = checkout_data['zip']
+        zip_code = checkout_data['zip']
         card_number = checkout_data['card_number']
         purchase_id = checkout_data['purchase_id']
 
@@ -76,7 +79,7 @@ def receipt(request):
         return render(request, 'receipt.html', {
             'address': address,
             'city': city,
-            'zip': zip, 
+            'zip_code': zip_code, 
             'card_number': card_number,
             'purchase': purchase
         })
