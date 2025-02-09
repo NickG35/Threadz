@@ -3,8 +3,30 @@
 {% block title %} Threadz {% endblock %}
 
 {% block content %}
-<h1 class="profile-header">Welcome to your profile page!</h1>
-{% for info in profile_info %}
-    <p>{{ info.user }}</p>
-{% endfor %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let firstName = document.querySelector('.first_name')
+            let email = document.querySelector('.email')
+
+            firstName.value = firstName.dataset.first;
+            email.value = email.dataset.mail;
+        });
+    </script>
+    <h1 class="profile-header">Welcome to your profile page!</h1>
+
+    <h3>Update Profile Information</h3>
+    {% for info in profile_info %}
+    <form>
+        <input class="first_name" name="first_name" type="text" data-first="{{ info.user.username }}">
+        <input class="email" name="email" type="email" data-mail="{{ info.user.email }}">
+        <button>Submit</button>
+    </form>
+    {% endfor %}
+    <h3>Change Password</h3>
+    <form>
+        <input class="current_password" name="current_password" type="password" placeholder="enter current password">
+        <input class="new_password" name="new_password" type="password" placeholder="enter new password">
+        <button>Submit</button>
+    </form>
+    <h3>Orders Created</h3>
 {% endblock %}
