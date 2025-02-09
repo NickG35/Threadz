@@ -14,6 +14,10 @@
             <p class="error">{{ errors.username }}</p>
         {% endif %}
         <input class="form-input {% if errors.username %}error-input{% endif %}" placeholder="enter username" type="text" name="username">
+        {% if errors.email %}
+            <p class="error">{{ errors.email }}</p>
+        {% endif %}
+        <input class="form-input {% if errors.email %}error-input{% endif %}" placeholder="enter email" type="email" name="email">
         {% if errors.password %}
             <p class="error">{{ errors.password }}</p>
         {% endif %}
