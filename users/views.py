@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.db import IntegrityError
-from .models import User, Profile
+from .models import CustomUser, Profile
 
 # Create your views here.
+User = get_user_model()
 
 def login_user(request):
     if request.method == "POST":
@@ -37,32 +37,38 @@ def logout_user(request):
     return redirect('index')
 
 def register_user(request):
+    errors = {}
     if request.method == "POST":
         username = request.POST.get("username")
+        email = request.POST.get("email")
         password = request.POST.get("password")
         confirmation = request.POST.get("confirmation")
-        errors = {}
 
         if not username:
             errors['username'] = "Please enter a username."
+        if not email:
+            errors['email'] = "Please enter an email"
         if not password:
             errors['password'] = "Please enter a password."
         if password != confirmation:
             errors['confirmation'] = "Passwords do not match."
+
+        # Check for duplicates
+        if User.objects.filter(username=username).exists():
+            errors['username'] = "Username already taken."
+        if User.objects.filter(email=email).exists():
+            errors['email'] = "Email already in use."
+        
+        #Create user if no errors
         if not errors:
-            try:
-                user = User.objects.create_user(username=username, password=password)
-                user.save()
-                login(request, user)
-                return redirect('index')
-            except IntegrityError:
-                errors['username'] = "Username already taken."
+            user = User.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return redirect('index')
     
-        return render(request, 'registration/register.html', {
-            'errors': errors
-        })
+    return render(request, 'registration/register.html', {
+        'errors': errors
+    })
     
-    return render(request, "registration/register.html")
 
 def profile(request, profile_id):
     profile_info = Profile.objects.filter(id=profile_id).all()
