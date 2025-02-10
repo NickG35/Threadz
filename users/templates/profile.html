@@ -16,17 +16,32 @@
 
     <h3>Update Profile Information</h3>
     {% for info in profile_info %}
-    <form>
-        <input class="first_name" name="first_name" type="text" data-first="{{ info.user.username }}">
-        <input class="email" name="email" type="email" data-mail="{{ info.user.email }}">
-        <button>Submit</button>
-    </form>
+        <form>
+            <input class="first_name" name="first_name" type="text" data-first="{{ info.user.username }}">
+            <input class="email" name="email" type="email" data-mail="{{ info.user.email }}">
+            <button>Submit</button>
+        </form>
+
+        <h3>Change Password</h3>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="{% url 'profile' profile_id=info.user.id %}" method="post">
+            {% csrf_token %}
+            {% if errors.currentPassword %}
+                <p class="error">{{ errors.currentPassword }}</p>
+            {% endif %}
+            <input class="current_password" name="current_password" type="password" placeholder="enter current password">
+            {% if errors.newPassword %}
+                <p class="error">{{ errors.newPassword }}</p>
+            {% endif %}
+            <input class="new_password" name="new_password" type="password" placeholder="enter new password">
+            <button>Submit</button>
+        </form>
     {% endfor %}
-    <h3>Change Password</h3>
-    <form>
-        <input class="current_password" name="current_password" type="password" placeholder="enter current password">
-        <input class="new_password" name="new_password" type="password" placeholder="enter new password">
-        <button>Submit</button>
-    </form>
     <h3>Orders Created</h3>
 {% endblock %}
