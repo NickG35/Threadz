@@ -61,11 +61,17 @@ def product(request, product_id):
     if request.method == 'POST':
         size_choice = request.POST.get('size')
         product_name = Product.objects.get(id=product_id)
+
+        if product_name.created_by == request.user.profile:
+            messages.error(request, "You can't buy your own product.")
+            return redirect(reverse('product', kwargs={'product_id': product_id})) 
+        
         CartItem.objects.create(
             product=product_name,
             user=request.user.profile,
             size=size_choice
         )
+
         messages.success(request, 'Item added to cart.')
         return redirect(reverse('product', kwargs={'product_id': product_id}))
     else:
