@@ -46,9 +46,19 @@
             <form method="post">
                 {% csrf_token %}
                 <input name="size" id="size" type="hidden">
-                <button type="submit">Add to Cart</button>
+                {% if product.created_by == request.user.profile %}
+                    <button>Add to Cart</button>
+                    <small>Users can't purchase their own products</small>
+                {% else %}
+                    <button type="submit">Add to Cart</button>
+                {% endif %}
             </form>
-            <button>Like</button>
+            {% if product.created_by != user.profile %}
+                <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                    {% csrf_token %}
+                    <button>Like</button>
+                </form>
+            {% endif %}
         {% endfor %}
 </div>
 {% endblock %}
