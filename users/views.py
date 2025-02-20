@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import Profile
+from products.models import Product
 
 # Create your views here.
 User = get_user_model()
@@ -73,34 +73,89 @@ def register_user(request):
     
 
 def profile(request, profile_id):
-    errors = {}
+    profile_info = Profile.objects.filter(id=profile_id).all()
+    profile_products = Product.objects.filter(created_by=profile_id).all()
+    return render(request, 'profile.html', {
+        'profile_info': profile_info,
+        'profile_products': profile_products
+    })
+
+def update_password(request, profile_id):
+    profile_info = Profile.objects.filter(id=profile_id).all()  # Keep profile info
     if request.method == 'POST':
+        errors = {}
+
         currentPassword = request.POST.get("current_password")
         newPassword = request.POST.get("new_password")
+
         profile_user = Profile.objects.get(id=profile_id)
         user = profile_user.user
+
         if not currentPassword:
             errors['currentPassword'] = "Current password is required"
-        else:
-            if not check_password(currentPassword, user.password):
-                errors['currentPassword'] = "Current password incorrect."
+        elif not check_password(currentPassword, user.password):
+            errors['currentPassword'] = "Current password is incorrect."
 
         if not newPassword:
             errors['newPassword'] = "New password is required"
-        if check_password(newPassword, user.password):
-            errors['newPassword'] = "New password must be different than old password."
-        
-        if not errors:
-            user.set_password(newPassword)
-            user.save()
-            authenticated_user = authenticate(username=user.username, password=newPassword)
-            if authenticated_user:
-                login(request, authenticated_user)
-            messages.success(request, "Your password has been successfully updated.")
-            return redirect(reverse('profile', kwargs={'profile_id': profile_id}))
-        
+        elif check_password(newPassword, user.password):
+            errors['newPassword'] = "New password must be different from the old password."
+
+        if errors:
+            return render(request, "profile.html", {
+                "profile_info": profile_info,
+                "errors": errors  # Pass errors to the template
+            })
+
+        user.set_password(newPassword)
+        user.save()
+        authenticated_user = authenticate(username=user.username, password=newPassword)
+        if authenticated_user:
+            login(request, authenticated_user)
+            
+        messages.success(request, "Your password has been successfully updated!", extra_tags="password")
+        return redirect('profile', profile_id=profile_id)
+
+    return render(request, "profile.html", {
+        "profile_info": profile_info,
+    })
+
+def update_user(request, profile_id):
     profile_info = Profile.objects.filter(id=profile_id).all()
-    return render(request, 'profile.html', {
-        'profile_info': profile_info,
-        'errors': errors
+    if request.method == 'POST':
+        errors = {}
+        userName = request.POST.get("username")
+        email = request.POST.get("email")
+
+        profile_user = Profile.objects.get(id=profile_id)
+        user = profile_user.user
+
+        current_username = user.username
+        current_email = user.email
+
+        if not userName:
+            errors['userName'] = "Username is required."
+        if userName != current_username and User.objects.filter(username=userName).exclude(id=profile_id).exists():
+            errors['userName'] = "Username taken by another user."
+        
+        if not email:
+            errors['email'] = "email is required"
+        if email != current_email and User.objects.filter(email=email).exclude(id=profile_id).exists():
+            errors['userName'] = "Email already in use."
+
+        if errors:
+            return render(request, "profile.html", {
+                "profile_info": profile_info,
+                "errors": errors  # Pass errors to the template
+            })
+        
+        user.username = userName
+        user.email = email
+        user.save()
+        
+        messages.success(request, "Your user information has been updated!", extra_tags="user")
+        return redirect('profile', profile_id=profile_id)
+    
+    return render(request, "profile.html", {
+        "profile_info": profile_info,
     })
