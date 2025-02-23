@@ -7,10 +7,7 @@
     <link rel="stylesheet" href="{% static 'products/styles.css' %}">
 {% endblock %}
 <div class="container-fluid">
-    {% if user.is_authenticated %}
-        <h1 class="welcome">Welcome to the home page, {{ user }}!</h1>
-    {% endif %}
-    <div class="products-div">
+    <div class="row">
         {% if messages %}
             <ul>
                 {% for message in messages %}
@@ -19,22 +16,26 @@
             </ul>
         {% endif %}
         {% for product in products %}
-            {% if product.created_by %}
-                <img src="{{product.image.url}}">
-            {% else %}
-                <img src="{{product.image }}">
-            {% endif %}
-            <p><a href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
-            <p>{{  product.price }}</p>
-            <p>{{ product.category }}</p>
-            {% if product.created_by != user.profile %}
-                <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
-                    {% csrf_token %}
-                    <button>Like</button>
-                </form>
-            {% endif %}
+            <div class="col-6 col-sm-4 col-md-3">
+                <div class="image-container">
+                    {% if product.created_by %}
+                        <img class="product_image" src="{{product.image.url}}">
+                    {% else %}
+                        <img class="product_image" src="{{product.image }}">
+                    {% endif %}
+                    {% if product.created_by != user.profile %}
+                        <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="watchlist-btn"><i class="fa-solid fa-eye"></i></button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="name_box">
+                    <p><a class="product_name" href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
+                </div>
+                <p class="product_price">$ {{  product.price }}</p>
+            </div>
         {% endfor %}
     </div>
-
 </div>
 {% endblock %}
