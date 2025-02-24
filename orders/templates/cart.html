@@ -2,22 +2,43 @@
 
 
 {% block content %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
+{% endblock %}
 <h1 class="order-header">Cart</h1>
-{% for items in cart_items %}
-    {% if items.product.created_by %}
-        <img src="{{ items.product.image.url }}">
-    {% else %}
-        <img src="{{ items.product.image }}">
-    {% endif %}
-    <p>{{ items.product.name }}</p>
-    <p>{{  items.product.price }}</p>
-    <p>{{ items.size }}</p>
-    <p>{{ items.quantity }}</p>
-    <p>{{ items.total_price }}</p>
-{% endfor %}
-<p>{{ cart_total }}</p>
-<form action="{% url 'cart'%}" method="post">
-    {% csrf_token %}
-    <button type="submit">Checkout</button>
-</form>
+<div class="container-fluid">
+    <div class="row"></div>
+        {% if cart_items %}
+            {% for items in cart_items %}
+                <div id="cart-row" class="row align-items-center mb-3">
+                    <div class="col-5">
+                            {% if items.product.created_by %}
+                                <img class="cart-image" src="{{ items.product.image.url }}">
+                            {% else %}
+                                <img class="cart-image" src="{{ items.product.image }}">
+                            {% endif %}
+                    </div>
+                    <div class="col-7">
+                            <p class="bold">${{  items.product.price }}</p>
+                            <p>{{ items.product.name }}</p>
+                            <div class="cart-info">
+                                <p class="size">{{ items.size }}</p>
+                                <p>QTY: {{ items.quantity }}</p>
+                            </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="cart-total">
+                <p class="bold">Total: ${{ cart_total }}</p>
+                <form action="{% url 'cart'%}" method="post">
+                    {% csrf_token %}
+                    <button class="submit_button" type="submit">Checkout</button>
+                </form>
+            </div>
+        {% else %}  
+            <p>There are no items in your cart.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
