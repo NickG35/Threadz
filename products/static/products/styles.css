@@ -1,8 +1,3 @@
-body {
-    font-size: 14px;
-    padding: 10px;
-}
-
 .product_image {
     width: 100%;
     height: 100%;
@@ -42,6 +37,24 @@ body {
 
 .product_price {
     font-weight: bold;
+}
+
+.creation-form{
+    width: 100%;
+    justify-self: center;
+    padding: 15px;
+    font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.submit_div {
+    text-align: right;
+}
+
+.submit_button {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    width: 100%;
 }
 
 
