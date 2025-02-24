@@ -1,0 +1,35 @@
+.bold {
+    font-weight: bold;
+}
+
+
+.cart-image {
+    width: 90%;
+    height: 130px;
+}
+
+#cart-row {
+    font-size: 12px;
+}
+
+.cart-info {
+    display: flex;
+}
+
+.size {
+    margin-right: 5px;
+}
+
+.cart-total {
+    width: 100%;
+    text-align: right;
+}
+
+.submit_button {
+    background-color: #018849;
+    color: white;
+    font-weight: bold;
+    border: none;
+    width: 40%;
+    height: 40px;
+}
