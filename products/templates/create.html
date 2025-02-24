@@ -2,14 +2,22 @@
 
 {% block title %} Threadz {% endblock %}
 {% block content %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'products/styles.css' %}">
+{% endblock %}
 {% if messages %}
     {% for message in messages %}
         <li>{{ message }}</li>
     {% endfor %}
 {% endif %}
-<form method="post" action="{% url 'create' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+<div class="creation-form">
+    <form class="create-form" method="post" action="{% url 'create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="submit_div">
+            <button class="submit_button" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
