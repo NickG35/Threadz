@@ -1,3 +1,16 @@
+body {
+    font-size: 14px;
+    padding: 10px;
+}
+
+.navbar {
+    background-color: #2D2D2D;
+}
+
+.navbar .nav-link {
+    color: whitesmoke;
+}
+
 .logo-div {
     margin-left: auto;
 }
