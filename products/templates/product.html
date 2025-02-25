@@ -13,7 +13,7 @@
         sizeInput.value = size;
         console.log(sizeInput.value)
 
-        const button = document.querySelectorAll('.btn-secondary');
+        const button = document.querySelectorAll('.size-button');
         button.forEach(btn => {
             btn.classList.remove('active');
         });
@@ -23,42 +23,47 @@
 <div class="container-fluid">
         {% for product in product_details %}
             {% if product.created_by %}
-                <img src="{{ product.image.url }}">
+                <img class="product_display" src="{{ product.image.url }}">
             {% else %}
-                <img src="{{ product.image }}">
+                <img class="product_display"  src="{{ product.image }}">
             {% endif %}
             <p>{{ product.name }}</p>
-            <p>{{  product.price }}</p>
-            <p>SIZE</p>
+            <p id="product_price" class="bold">${{  product.price }}</p>
             <div class="size-picker">
-                <button type="button" onclick="sizeSelect('XS')" class="btn btn-secondary" id="sizes">XS</button>
-                <button type="button" onclick="sizeSelect('S')" class="btn btn-secondary" id="sizes">S</button>
-                <button type="button" onclick="sizeSelect('M')" class="btn btn-secondary" id="sizes">M</button>
-                <button type="button" onclick="sizeSelect('L')" class="btn btn-secondary" id="sizes">L</button>
-                <button type="button" onclick="sizeSelect('XL')" class="btn btn-secondary" id="sizes">XL</button>
-                <button type="button" onclick="sizeSelect('XXL')" class="btn btn-secondary" id="sizes">XXL</button>
+                <button type="button" onclick="sizeSelect('XS', event)" class="size-button" id="sizes">XS</button>
+                <button type="button" onclick="sizeSelect('S', event)" class="size-button" id="sizes">S</button>
+                <button type="button" onclick="sizeSelect('M', event)" class="size-button" id="sizes">M</button>
+                <button type="button" onclick="sizeSelect('L', event)" class="size-button" id="sizes">L</button>
+                <button type="button" onclick="sizeSelect('XL', event)" class="size-button" id="sizes">XL</button>
+                <button type="button" onclick="sizeSelect('XXL', event)" class="size-button" id="sizes">XXL</button>
             </div>
             {% if messages %}
                 {% for message in messages %}
                     <li>{{ message }}</li>
                 {% endfor %}
             {% endif %}
-            <form method="post">
-                {% csrf_token %}
-                <input name="size" id="size" type="hidden">
-                {% if product.created_by == request.user.profile %}
-                    <button>Add to Cart</button>
-                    <small>Users can't purchase their own products</small>
-                {% else %}
-                    <button type="submit">Add to Cart</button>
-                {% endif %}
-            </form>
-            {% if product.created_by != user.profile %}
-                <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
-                    {% csrf_token %}
-                    <button>Like</button>
-                </form>
-            {% endif %}
+            <div class="product_buttons">
+                <div class="col-9">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input name="size" id="size" type="hidden">
+                        {% if product.created_by == request.user.profile %}
+                            <button>Add to Cart</button>
+                            <small>Users can't purchase their own products</small>
+                        {% else %}
+                            <button id="cart_button" class="product-btn" type="submit">Add to Cart</button>
+                        {% endif %}
+                    </form>
+                </div>
+                <div id="watch-btn" class="col-3">
+                    {% if product.created_by != user.profile %}
+                        <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                            {% csrf_token %}
+                            <button id="watchlist_button" class="product-btn"><i class="fa-solid fa-eye"></i></button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
         {% endfor %}
 </div>
 {% endblock %}
