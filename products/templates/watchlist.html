@@ -1,20 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'products/styles.css' %}">
+{% endblock %}
 <div class="container-fluid">
     <h1 class="welcome">{{ user }}'s Watchlist</h1>
-    <div class="products-div">
+    <div class="row">
         {% for item in watchlist_items %}
-            {% if item.product.created_by %}
-                <img src="{{item.product.image.url}}">
-            {% else %}
-                <img src="{{item.product.image }}">
-            {% endif %}
-            <p><a href="{% url 'product' product_id=item.product.id %}">{{ item.product.name }}</a></p>
-            <p>{{  item.product.price }}</p>
-            <p>{{ item.product.category }}</p>
+            <div class="col-6 col-sm-4 col-md-3">
+                <div class="image-container">
+                    {% if item.product.created_by %}
+                        <img class="product_image" src="{{item.product.image.url}}">
+                    {% else %}
+                        <img class="product_image" src="{{item.product.image }}">
+                    {% endif %}
+                </div>
+                <div class="name_box">
+                    <p><a class="product_name" href="{% url 'product' product_id=item.product.id %}">{{ item.product.name }}</a></p>
+                </div>
+                <p class="product_price">$ {{  item.product.price }}</p>
+            </div>
         {% endfor %}
     </div>
-
 </div>
 {% endblock %}
