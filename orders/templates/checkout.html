@@ -1,25 +1,43 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-<h1 class="order-header">Order Summary</h1>
-{% for items in cart_items %}
-    {% if items.product.created_by %}
-        <img src="{{ items.product.image.url }}">
-    {% else %}
-        <img src="{{ items.product.image }}">
-    {% endif %}
-    <p>{{ items.product.name }}</p>
-    <p>{{  items.product.price }}</p>
-    <p>{{ items.size }}</p>
-    <p>{{ items.quantity }}</p>
-{% endfor %}
-
-<p>{{ cart_total }}</p>
-
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Place order</button>
-</form>
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
+{% endblock %}
+<div class="container-fluid">
+    <h2 class="order-header">Shipping and Billing Info</h2>
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <h2 class="order-header">Order Summary</h2>
+        <div class="row">
+            {% for items in cart_items %}
+                <div id="cart-row" class="row align-items-center mb-3">
+                    <div class="col-5">
+                            {% if items.product.created_by %}
+                                <img class="cart-image" src="{{ items.product.image.url }}">
+                            {% else %}
+                                <img class="cart-image" src="{{ items.product.image }}">
+                            {% endif %}
+                    </div>
+                    <div class="col-7">
+                            <p class="bold">${{  items.product.price }}</p>
+                            <p>{{ items.product.name }}</p>
+                            <div class="cart-info">
+                                <p class="size">{{ items.size }}</p>
+                                <p>QTY: {{ items.quantity }}</p>
+                            </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="cart-total">
+                <p class="bold">Total: ${{ cart_total }}</p>
+            </div>
+        </div>
+        <div class="checkout-button">
+            <button class="submit_button" type="submit">Place order</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
