@@ -1,3 +1,7 @@
+.product_view {
+    display: flex;
+    flex-direction: column;
+}
 .product_image {
     width: 100%;
     height: 100%;
@@ -67,15 +71,15 @@
 }
 .size-picker {
     margin-bottom: 15px;
-    max-width: 300px;
+    width: 100%;
 }
 .size-button {
     background-color: white;
     color: gray;
     border: 1px solid lightgray;
-    font-size: 12px;
-    min-width:78px;
-    max-width: 78px;
+    text-align: center;
+    font-size: 10px;
+    width: 100%;
 
 }
 
@@ -87,9 +91,8 @@
 
 
 .product_buttons {
-    max-width: 300px;
+    width: 100%;
     display: flex;
-    justify-content: center;
 }
 
 .product-btn {
@@ -101,29 +104,29 @@
     background-color: #018849;
     color: white;
     border: none;
-    max-width: 200px;
-    min-width: 200px;
 }
 
+#watch-btn {
+    display: flex;
+    justify-content: flex-end;
+}
 
 #watchlist_button {
-    background-color:lightgray;
+    background-color:whitesmoke;
     border-radius: 100%;
     border: 1px solid gray;
-    max-width: 40px;
-    max-height: 40px;
-    justify-self: right;
+    min-width: 40px;
 }
 
 /* Larger mobile screens (601px to 767px) */
-@media (min-width: 601px) and (max-width: 767px) {
+@media (min-width: 601px) and (max-width: 720px) {
     body {
         font-size: 16px;
     }
 }
 
 /* Tablets in portrait mode (768px to 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 721px) and (max-width: 1023px) {
     body {
         font-size: 18px;
     }
