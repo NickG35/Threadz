@@ -2,24 +2,54 @@
 
 
 {% block content %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
+{% endblock %}
+<div class="container-fluid">
     <h1 class="order-header">Receipt</h1>
+    <i class="fa-solid fa-circle-check" style="color: #000000;"></i>
+    <p>Your Order has been placed</p>
     <p>Order made on <p>{{ purchase.purchase_date }}</p>
     <h2>Order Summary</h2>
-    {% for item in purchase.cart_item.all %}
-        {% if item.product.created_by %}
-            <img src="{{item.product.image.url }}">
-        {% else %}
-            <img src="{{item.product.image }}">
-        {% endif %}
-        <p><a href="{% url 'product' product_id=item.product.id %}">{{ item.product.name }}</a></p>
-        <p>{{  item.product.price }}</p>
-        <p>{{ item.size }}</p>
-        <p>{{ item.quantity }}</p>
-    {% endfor %}
-    <p>Total: ${{ purchase.total_price }}</p>
-    <h2>Shipping Information</h2>
-    {{ first_name }} {{ last_name }}
-    <p>Shipping Address: {{ address }} {{ city }}, {{ state }} {{ zip_code }}</p>
-    <h2>Payment Information</h2>
-    <p>Card ending in {{ card_number }}</p>
+    <div class="row">
+        {% for items in purchase.cart_item.all %}
+            <div id="cart-row" class="row align-items-center mb-3">
+                <div class="col-5">
+                        {% if items.product.created_by %}
+                            <img class="cart-image" src="{{ items.product.image.url }}">
+                        {% else %}
+                            <img class="cart-image" src="{{ items.product.image }}">
+                        {% endif %}
+                </div>
+                <div class="col-7">
+                        <p class="bold">${{  items.product.price }}</p>
+                        <p>{{ items.product.name }}</p>
+                        <div class="cart-info">
+                            <p class="size">{{ items.size }}</p>
+                            <p>QTY: {{ items.quantity }}</p>
+                        </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Shipping</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
+          <p class="card-text">{{ first_name }} {{ last_name }}</p>
+          <p class="card-text">{{ address }} {{ city }}, {{ state }} {{ zip_code }}</p>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Payment</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Payment Method</h6>
+          <p class="card-text">Card ending in {{ card_number }}</p>
+        </div>
+    </div>
+    <div class="cart-total">
+        <p class="bold">Total: ${{ cart_total }}</p>
+    </div>
+</p>
 {% endblock %}
