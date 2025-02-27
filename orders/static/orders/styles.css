@@ -20,7 +20,7 @@
     margin-right: 5px;
 }
 
-.cart-total {
+.cart-total, .checkout-button {
     width: 100%;
     text-align: right;
 }
@@ -33,7 +33,44 @@
     height: 40px;
 }
 
-.checkout-button {
+.receipt_message {
+    text-align: center;
+    padding: 10px;
+}
+
+.fa-circle-check {
+    font-size: 60px;
+}
+
+.placed-message {
+    font-size: 18px;
+}
+
+.order-date {
+    color: gray;
+}
+
+.card, .receipt-total {
     width: 100%;
+    margin: 15px 0;
+}
+
+.receipt-total {
     text-align: right;
+}
+
+.continue_button {
+    width: 70%;
+    justify-self: center;
+}
+
+.continue {
+    text-align: center;
+    align-items: center;
+    border: none;
+    width: 100%;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    justify-content: space-between;
 }
