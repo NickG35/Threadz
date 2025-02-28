@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_styles %} 
+    <link rel="stylesheet" href="{% static 'users/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <aside class="sidebar">
+        <nav class="profile-nav">
+            <ul>
+                <li><a href="{% url 'account_details' %}">Account Details</a></li>
+                <li><a href="{% url 'change_password' %}">Change Password</a></li>
+                <li><a href="{% url 'my_clothes' %}">My Clothes</a></li>
+                <li><a href="{% url 'my_orders' %}">My Orders</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <section class="settings-content">
+        {% block settings_content %}{% endblock %}
+    </section>
+</div>
+{% endblock %}
