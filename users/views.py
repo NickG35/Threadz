@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import Profile
+from orders.models import Order
 from products.models import Product
 
 # Create your views here.
@@ -75,9 +76,11 @@ def register_user(request):
 def profile(request, profile_id):
     profile_info = Profile.objects.filter(id=profile_id).all()
     profile_products = Product.objects.filter(created_by=profile_id).all()
+    profile_orders = Order.objects.filter(user=profile_id).order_by('-purchase_date').all()
     return render(request, 'profile.html', {
         'profile_info': profile_info,
-        'profile_products': profile_products
+        'profile_products': profile_products,
+        'orders': profile_orders
     })
 
 def update_password(request, profile_id):
