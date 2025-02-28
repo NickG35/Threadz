@@ -1,0 +1,23 @@
+.tab-header {
+    text-align: center;
+}
+
+.cart-image {
+    width: 33.33%;
+    height: 130px;
+}
+
+#individual-order {
+    border-bottom: 1px solid black;
+}
+
+.graytext {
+    color: gray;
+    font-size: 12px;
+}
+
+.order-row {
+    display: flex;
+    max-width: 100%;
+    justify-content: center;
+}
