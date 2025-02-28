@@ -1,0 +1,28 @@
+{% extends 'profile_base.html' %}
+
+{% block settings_content %}
+<h3 class="tab-header">My Details</h3>
+    {% for info in profile_info %}
+        {% if messages %}
+            {% for message in messages %}
+                {% if "user" in message.tags %}
+                    <li class="message">{{ message }}</li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <form class="infoForm" action="{% url 'update_user' profile_id=info.user.id %}" method="post">
+            {% csrf_token %}
+            {% if errors.userName %}
+                <p class="errorCurrent">{{ errors.userName }}</p>
+            {% endif %}
+            <span class="graytext">Username</span>
+            <input class="form-control" name="username" type="text" value="{{ request.POST.username|default:info.user.username }}" data-id="{{ info.user.id }}">
+            {% if errors.email %}
+                <p class="errorNew">{{ errors.email }}</p>
+            {% endif %}
+            <span class="graytext">Email</span>
+            <input class="form-control" name="email" type="email" value="{{ request.POST.email|default:info.user.email }}">
+            <button type="submit">Submit</button>
+        </form>
+    {% endfor %}
+{% endblock %}

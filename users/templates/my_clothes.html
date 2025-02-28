@@ -1,0 +1,13 @@
+{% extends 'profile_base.html' %}
+
+{% block settings_content %}
+    <h3 class="tab-header">My Clothes</h3>
+    <div class="products-div">
+        {% for product in profile_products %}
+            <img src="{{product.image.url}}">
+            <p><a href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
+            <p>{{  product.price }}</p>
+            <p>{{ product.category }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

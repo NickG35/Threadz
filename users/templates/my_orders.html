@@ -1,0 +1,24 @@
+{% extends 'profile_base.html' %}
+
+{% block settings_content %}
+    <h1 class="profile-header">Welcome to your profile page!</h1>
+    <h3 class="tab-header">My Orders</h3>
+    <div class="products-div">
+        {% for order in orders %}
+        <div id="individual-order" class="row align-order-center mb-3">
+            <div class="order-row">
+                {% for cart_item in order.cart_item.all %}
+                        {% if cart_item.product.created_by %}
+                            <img class="cart-image" src="{{ cart_item.product.image.url }}">
+                        {% else %}
+                            <img class="cart-image" src="{{ cart_item.product.image }}">
+                        {% endif %}
+                {% endfor %}
+            </div>
+            <small class="graytext">ORDER NO: {{ order.id }}</small>
+            <small class="graytext">ORDER DATE:{{ order.purchase_date }}</small>
+            <button>VIEW ORDER</button>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
