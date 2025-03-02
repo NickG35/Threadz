@@ -24,3 +24,51 @@ body {
 .nav-link {
     margin: 5px;
 }
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+}
+
+.list-group-item i {
+    min-width: 24px;
+    text-align: center;
+}
+
+.list-group-item span {
+    margin-left: 5px;
+}
+.list-group-item a {
+    color: black;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.pfp {
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: black;
+    min-width: 80px;
+    max-width: 80px;
+    height: 80px;
+    border-radius: 100%;
+}
+
+.profile-initial {
+    margin: 0; /* Remove default margins */
+    font-size: 32px; /* Adjust size as needed */
+    font-weight: bold; /* Optional: makes it stand out */
+    text-align: center; /* Ensures text alignment */
+}
+
+.profile-greeting {
+    justify-self: center;
+    text-align: center;
+}
+
+.profile-display {
+    padding: 10px;
+}
