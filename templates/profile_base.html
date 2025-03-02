@@ -10,11 +10,19 @@
 <div class="settings-container">
     <aside class="sidebar">
         <nav class="profile-nav">
-            <ul>
-                <li><a href="{% url 'update_user' profile_id=request.user.profile.id %}">Account Details</a></li>
-                <li><a href="{% url 'update_password' profile_id=request.user.profile.id %}">Change Password</a></li>
-                <li><a href="{% url 'my_clothes' profile_id=request.user.profile.id %}">My Clothes</a></li>
-                <li><a href="{% url 'my_orders' profile_id=request.user.profile.id %}">My Orders</a></li>
+            <div class="profile-display">
+                <div class="pfp">
+                    <p class="profile-initial">{{ request.user.username|first }}</p>
+                </div>
+                <div class="profile-greeting">
+                    <p>Hi, {{ request.user.profile }}.</p>
+                </div>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card" style="color: #000000;"></i><span>Account Details</span></a></li>
+                <li class="list-group-item"><a class="profile-group" href="{% url 'update_password' profile_id=request.user.profile.id %}"><i class="fa-solid fa-lock" style="color: #000000;"></i><span>Change Password</span></a></li>
+                <li class="list-group-item"><a class="profile-group" href="{% url 'my_clothes' profile_id=request.user.profile.id %}"><i class="fa-solid fa-shirt" style="color: #000000;"></i><span>My Clothes</span></a></li>
+                <li class="list-group-item"><a class="profile-group" href="{% url 'my_orders' profile_id=request.user.profile.id %}"><i class="fa-solid fa-box" style="color: #000000;"></i><span>My Orders</span></a></li>
             </ul>
         </nav>
     </aside>
