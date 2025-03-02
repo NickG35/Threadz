@@ -75,12 +75,8 @@ def register_user(request):
 
 def profile(request, profile_id):
     profile_info = Profile.objects.filter(id=profile_id).all()
-    profile_products = Product.objects.filter(created_by=profile_id).all()
-    profile_orders = Order.objects.filter(user=profile_id).order_by('-purchase_date').all()
     return render(request, 'profile.html', {
-        'profile_info': profile_info,
-        'profile_products': profile_products,
-        'orders': profile_orders
+        'profile_info': profile_info
     })
 
 def update_password(request, profile_id):
@@ -105,7 +101,7 @@ def update_password(request, profile_id):
             errors['newPassword'] = "New password must be different from the old password."
 
         if errors:
-            return render(request, "profile.html", {
+            return render(request, "change_password.html", {
                 "profile_info": profile_info,
                 "errors": errors  # Pass errors to the template
             })
@@ -117,9 +113,9 @@ def update_password(request, profile_id):
             login(request, authenticated_user)
             
         messages.success(request, "Your password has been successfully updated!", extra_tags="password")
-        return redirect('profile', profile_id=profile_id)
+        return redirect('update_password', profile_id=profile_id)
 
-    return render(request, "profile.html", {
+    return render(request, "change_password.html", {
         "profile_info": profile_info,
     })
 
@@ -147,7 +143,7 @@ def update_user(request, profile_id):
             errors['userName'] = "Email already in use."
 
         if errors:
-            return render(request, "profile.html", {
+            return render(request, "account_details.html", {
                 "profile_info": profile_info,
                 "errors": errors  # Pass errors to the template
             })
@@ -157,8 +153,20 @@ def update_user(request, profile_id):
         user.save()
         
         messages.success(request, "Your user information has been updated!", extra_tags="user")
-        return redirect('profile', profile_id=profile_id)
+        return redirect('update_user', profile_id=profile_id)
     
-    return render(request, "profile.html", {
+    return render(request, "account_details.html", {
         "profile_info": profile_info,
+    })
+
+def my_clothes(request, profile_id):
+    profile_products = Product.objects.filter(created_by=profile_id).all()
+    return render(request, 'my_orders.html', {
+        'profile_products': profile_products
+    })
+
+def my_orders(request, profile_id):
+    profile_orders = Order.objects.filter(user=profile_id).order_by('-purchase_date').all()
+    return render(request, 'my_orders.html', {
+        'orders': profile_orders
     })
