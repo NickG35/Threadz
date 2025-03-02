@@ -74,3 +74,8 @@
     border-radius: 5px;
     justify-content: space-between;
 }
+
+.no-cart {
+    align-self: center;
+    justify-self: center;
+}
