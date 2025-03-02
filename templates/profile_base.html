@@ -11,10 +11,10 @@
     <aside class="sidebar">
         <nav class="profile-nav">
             <ul>
-                <li><a href="{% url 'account_details' %}">Account Details</a></li>
-                <li><a href="{% url 'change_password' %}">Change Password</a></li>
-                <li><a href="{% url 'my_clothes' %}">My Clothes</a></li>
-                <li><a href="{% url 'my_orders' %}">My Orders</a></li>
+                <li><a href="{% url 'update_user' profile_id=request.user.profile.id %}">Account Details</a></li>
+                <li><a href="{% url 'update_password' profile_id=request.user.profile.id %}">Change Password</a></li>
+                <li><a href="{% url 'my_clothes' profile_id=request.user.profile.id %}">My Clothes</a></li>
+                <li><a href="{% url 'my_orders' profile_id=request.user.profile.id %}">My Orders</a></li>
             </ul>
         </nav>
     </aside>
