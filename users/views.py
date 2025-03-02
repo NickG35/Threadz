@@ -161,7 +161,7 @@ def update_user(request, profile_id):
 
 def my_clothes(request, profile_id):
     profile_products = Product.objects.filter(created_by=profile_id).all()
-    return render(request, 'my_orders.html', {
+    return render(request, 'my_clothes.html', {
         'profile_products': profile_products
     })
 
