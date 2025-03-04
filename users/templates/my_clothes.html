@@ -1,13 +1,33 @@
 {% extends 'profile_base.html' %}
-
 {% block settings_content %}
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'products/styles.css' %}">
+{% endblock %}
     <h3 class="tab-header">My Clothes</h3>
-    <div class="products-div">
-        {% for product in profile_products %}
-            <img src="{{product.image.url}}">
-            <p><a href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
-            <p>{{  product.price }}</p>
-            <p>{{ product.category }}</p>
-        {% endfor %}
+    <div class="container-fluid">
+        <div class="row">
+            {% for product in profile_products %}
+                <div class="col-6 col-sm-4 col-md-3">
+                    <div class="image-container">
+                        {% if product.created_by %}
+                            <img class="product_image" src="{{product.image.url}}">
+                        {% else %}
+                            <img class="product_image" src="{{product.image }}">
+                        {% endif %}
+                        {% if product.created_by != user.profile %}
+                            <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="watchlist-btn"><i class="fa-solid fa-eye"></i></button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <div class="name_box">
+                        <p><a class="product_name" href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
+                    </div>
+                    <p class="product_price">$ {{  product.price }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
