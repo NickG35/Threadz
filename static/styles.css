@@ -58,10 +58,10 @@ body {
 }
 
 .profile-initial {
-    margin: 0; /* Remove default margins */
-    font-size: 32px; /* Adjust size as needed */
-    font-weight: bold; /* Optional: makes it stand out */
-    text-align: center; /* Ensures text alignment */
+    margin: 0;
+    font-size: 32px; 
+    font-weight: bold; 
+    text-align: center; 
 }
 
 .profile-greeting {
@@ -71,4 +71,8 @@ body {
 
 .profile-display {
     padding: 10px;
+}
+
+.hidden {
+    display: none;
 }
