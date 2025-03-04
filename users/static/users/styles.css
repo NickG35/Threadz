@@ -21,3 +21,19 @@
     max-width: 100%;
     justify-content: center;
 }
+
+.button-div {
+    padding: 5px 0px;
+}
+
+#profileForm {
+    padding: 10px;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+#profileButton {
+    width: 100%;
+}
