@@ -6,6 +6,40 @@
     <link rel="stylesheet" href="{% static 'users/styles.css' %}">
 {% endblock %}
 
+{% block scripts %}
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+            const mediaQuery = window.matchMedia("(max-width: 600px)");
+            const sidebar = document.querySelector('.sidebar');
+            const navLinks = document.querySelectorAll('.list-group-item a');
+
+            const isProfile = window.location.pathname.includes('/dashboard/');
+
+            function toggleSidebar() {
+                if (mediaQuery.matches && !isProfile) {
+                    sidebar.classList.add("hidden");
+                } else {
+                    sidebar.classList.remove("hidden");
+                }
+            }
+
+            function hideSidebar() {
+                if (mediaQuery.matches && !isProfile) {
+                    sidebar.classList.add("hidden");
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', hideSidebar);
+            });
+
+            toggleSidebar();
+
+            mediaQuery.addEventListener("change", toggleSidebar);
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 <div class="settings-container">
     <aside class="sidebar">
@@ -19,7 +53,7 @@
                 </div>
             </div>
             <ul class="list-group">
-                <li class="list-group-item"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card" style="color: #000000;"></i><span>Account Details</span></a></li>
+                <li class="list-group-item"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card" style="color: #000000;"></i><span>My Details</span></a></li>
                 <li class="list-group-item"><a class="profile-group" href="{% url 'update_password' profile_id=request.user.profile.id %}"><i class="fa-solid fa-lock" style="color: #000000;"></i><span>Change Password</span></a></li>
                 <li class="list-group-item"><a class="profile-group" href="{% url 'my_clothes' profile_id=request.user.profile.id %}"><i class="fa-solid fa-shirt" style="color: #000000;"></i><span>My Clothes</span></a></li>
                 <li class="list-group-item"><a class="profile-group" href="{% url 'my_orders' profile_id=request.user.profile.id %}"><i class="fa-solid fa-box" style="color: #000000;"></i><span>My Orders</span></a></li>
