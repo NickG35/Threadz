@@ -16,7 +16,12 @@
             </div>
             <small class="graytext">ORDER NO: {{ order.id }}</small>
             <small class="graytext">ORDER DATE:{{ order.purchase_date }}</small>
-            <button>VIEW ORDER</button>
+            <form action="{% url 'order_details' order_id=order.id %}" method="post">
+                {% csrf_token %}
+                <div class="right-align">
+                    <button class="btn btn-dark" type="submit">View</button>
+                </div>
+            </form>
         </div>
         {% endfor %}
     </div>
