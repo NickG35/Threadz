@@ -2,12 +2,38 @@
 
 
 {% block content %}
-<h1 class="order-header">Welcome to the orders page!</h1>
-{% for items in cart_items %}
-    <img src="{{items.product.image}}">
-    <p>{{ items.product.name }}</p>
-    <p>{{  items.product.price }}</p>
-    <p>{{ items.size }}</p>
-    <p>{{ items.quantity }}</p>
-{% endfor %}
+
+{% load static %}
+
+{% block extra_styles %} 
+    <link rel="stylesheet" href="{% static 'users/styles.css' %}">
+{% endblock %}
+
+<div class="container-fluid">
+    <h1 class="tab-header">Order Details</h1>
+    <small class="graytext"><p>ORDER NO: {{ order_details.id }}</p></small>
+    <small class="graytext"><p>ORDER DATE:{{ order_details.purchase_date }}</p></small>
+    {% for cart_item in order_details.cart_item.all %}
+        <div class="row align-order-center mb-3">
+            <div class="col-5">
+                {% if cart_item.product.created_by %}
+                    <img class="cartImage" src="{{ cart_item.product.image.url }}">
+                {% else %}
+                    <img class="cartImage" src="{{ cart_item.product.image }}">
+                {% endif %}
+            </div>
+            <div class="col-7">
+                <p class="bold">${{  cart_item.product.price }}</p>
+                <p>{{ cart_item.product.name }}</p>
+                <div class="cart-info">
+                    <p class="size">{{ cart_item.size }}</p>
+                    <p>QTY: {{ cart_item.quantity }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="right-align">
+        <p><b>Total: ${{ order_details.total_price }}</b></p>
+    </div>
+</div>
 {% endblock %}
