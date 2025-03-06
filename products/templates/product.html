@@ -8,16 +8,47 @@
 
 {% block content %}
 <script>
-    function sizeSelect(size){
-        const sizeInput = document.querySelector('#size');
-        sizeInput.value = size;
-        console.log(sizeInput.value)
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('size-form').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the default form submission
 
-        const button = document.querySelectorAll('.size-button');
-        button.forEach(btn => {
-            btn.classList.remove('active');
+            var sizeChoice = document.getElementById('size').value;  // Get the selected size
+            var formData = new FormData();
+            formData.append('size', sizeChoice);
+
+            const productID = document.querySelector('#product_name').getAttribute('data-id');
+
+            // Create the AJAX request
+            fetch(`/product/${productID}`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())  // Parse the JSON response
+            .then(data => {
+                // Update the <p> tag with the response message
+                let message = document.getElementById('cart-message')
+                message.textContent = data.message;
+                message.style.display = 'block';
+                message.style.color = data.status === "success" ? "green" : "red";
+                console.log(productID);
+            })
+            .catch(error => console.error('Error:', error));
         });
-        event.target.classList.add('active');
+    });
+    
+    function sizeSelect(size){
+            const sizeInput = document.querySelector('#size');
+            sizeInput.value = size;
+            console.log(sizeInput.value)
+
+            const button = document.querySelectorAll('.size-button');
+            button.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
     }
 </script>
 <div class="container-fluid">
@@ -31,7 +62,7 @@
                 {% endif %}
         </div>
         <div class="product-info">
-            <p>{{ product.name }}</p>
+            <p id="product_name" data-id="{{product.id}}">{{ product.name }}</p>
             <p id="product_price" class="bold">${{  product.price }}</p>
             <p id="product_size" class="bold">SIZE:</p>
             <div class="size-picker">
@@ -56,18 +87,13 @@
                     </div>
                 </div>
             </div>
-            {% if messages %}
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            {% endif %}
+            <p id="cart-message" style="display: none;"></p>
             <div class="product_buttons">
                 <div class="col-10">
-                    <form method="post">
+                    <form id="size-form" method="post">
                         {% csrf_token %}
                         <input name="size" id="size" type="hidden">
                         {% if product.created_by == request.user.profile %}
-                            <button>Add to Cart</button>
                             <small>Users can't purchase their own products</small>
                         {% else %}
                             <button id="cart_button" class="product-btn" type="submit">Add to Cart</button>

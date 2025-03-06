@@ -7,6 +7,8 @@ from orders.models import CartItem
 from django.db import transaction
 from .forms import ProductForm
 from django.contrib import messages
+import json
+from django.http import JsonResponse
 # Create your views here.
 
 def fetch_products():
@@ -62,9 +64,8 @@ def product(request, product_id):
         size_choice = request.POST.get('size')
         product_name = Product.objects.get(id=product_id)
 
-        if product_name.created_by == request.user.profile:
-            messages.error(request, "You can't buy your own product.")
-            return redirect(reverse('product', kwargs={'product_id': product_id})) 
+        if not size_choice:
+            return JsonResponse({"message": "Pick a size.", "status": "failure"})
         
         CartItem.objects.create(
             product=product_name,
@@ -72,13 +73,12 @@ def product(request, product_id):
             size=size_choice
         )
 
-        messages.success(request, 'Item added to cart.')
-        return redirect(reverse('product', kwargs={'product_id': product_id}))
-    else:
-        product_details = Product.objects.filter(id=product_id).all()
-        return render(request, "product.html", {
-            'product_details': product_details
-        })
+        return JsonResponse({"message": "Item added to cart.", "status": "success"})
+    
+    product_details = Product.objects.filter(id=product_id).all()
+    return render(request, "product.html", {
+        'product_details': product_details
+    })
 
 def create(request):
     if request.method == 'POST':
