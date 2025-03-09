@@ -6,12 +6,75 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
 {% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let deleteForms = document.querySelectorAll('.delete-form');
+        if (deleteForms){
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event){
+                    event.preventDefault();
+                    
+                    const productName = form.closest('.col-7').querySelector('.product-name');
+                    const productID = productName.getAttribute('data-id');
+                    const productPriceElement = document.getElementById(`product-price${productID}`);
+                    const cartPriceElement = document.getElementById(`cart-price`);
+
+                    const productPrice = parseFloat(productPriceElement.textContent.replace(/[^0-9.]/g, ''));
+                    const cartPrice = parseFloat(cartPriceElement.textContent.replace(/[^0-9.]/g, ''));
+
+
+                    let result = cartPrice - productPrice;
+                    cartPriceElement.textContent = `Total: $${result}`;
+
+                    const cartItem = document.getElementById(`cart-row${productID}`);
+                    if (cartItem) {
+                        cartItem.remove();
+                        
+                        if (document.querySelectorAll('.row.align-items-center').length === 0) {
+                            let noCart = document.querySelector('.no-cart');
+                            let cartTotal = document.querySelector('.cart-total');
+
+                            if (!noCart) {
+                                noCart = document.createElement('div');
+                                noCart.className = 'no-cart';
+                                noCart.innerHTML = '<p class="no-items">There are no items in your cart.</p>';
+                                document.querySelector('.container-fluid').appendChild(noCart);
+                            } else {
+                                noCart.style.display = 'block';
+                            }
+
+                            if (cartTotal) cartTotal.style.display = 'none';
+
+                        }
+                    }
+
+                    fetch(`delete_item/${productID}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                            'Content-Type': 'application/json' 
+                        }
+                    })
+                    .then (response => response.json())
+                    .then(data => {
+                        if (data.status === "success"){
+                            console.log(data.message);
+                        } else {
+                            console.error('Failed to delete item')
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            })
+        }
+    });
+</script>
 <h1 class="order-header">Cart</h1>
 <div class="container-fluid">
-    <div class="row"></div>
+    <div class="row">
         {% if cart_items %}
             {% for items in cart_items %}
-                <div id="cart-row" class="row align-items-center mb-3">
+                <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
                     <div class="col-5">
                             {% if items.product.created_by %}
                                 <img class="cart-image" src="{{ items.product.image.url }}">
@@ -20,17 +83,21 @@
                             {% endif %}
                     </div>
                     <div class="col-7">
-                            <p class="bold">${{  items.product.price }}</p>
-                            <p>{{ items.product.name }}</p>
+                            <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
+                            <p class="product-name" data-id="{{items.product.id}}">{{ items.product.name }}</p>
                             <div class="cart-info">
                                 <p class="size">{{ items.size }}</p>
                                 <p>QTY: {{ items.quantity }}</p>
+                                <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+                                </form>
                             </div>
                     </div>
                 </div>
             {% endfor %}
             <div class="cart-total">
-                <p class="bold">Total: ${{ cart_total }}</p>
+                <p id="cart-price" class="bold">Total: ${{ cart_total }}</p>
                 <form action="{% url 'cart'%}" method="post">
                     {% csrf_token %}
                     <button class="submit_button" type="submit">Checkout</button>
@@ -38,7 +105,7 @@
             </div>
         {% else %}  
             <div class="no-cart">
-                <p>There are no items in your cart.</p>
+                <p class="no-items">There are no items in your cart.</p>
             </div>
         {% endif %}
     </div>

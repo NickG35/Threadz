@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import CartItem, Order
 from django.db.models import F, Sum
 from .forms import CheckoutForm
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def cart(request):
@@ -16,6 +18,12 @@ def cart(request):
             'cart_items': cart_items,
             'cart_total': cart_total
         })
+
+def delete_item(request, product_id):
+    if request.method == 'POST':
+        cart_item = CartItem.objects.get(product=product_id, user=request.user.profile)
+        cart_item.delete()
+        return JsonResponse({"message": "Cart item deleted.", "status": "success"})
 
 def checkout(request):
     cart_items = CartItem.objects.filter(user=request.user.profile, pending_order=True).order_by('-stow_date').all()
