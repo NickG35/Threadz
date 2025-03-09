@@ -79,3 +79,7 @@
     align-self: center;
     justify-self: center;
 }
+
+.deleteButton {
+    background: none;
+}
