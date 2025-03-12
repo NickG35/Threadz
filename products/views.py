@@ -113,6 +113,13 @@ def toggle_watchlist(request, product_id):
         else:
             Watchlist.objects.filter(user=request.user.profile, product=product).delete()
             return JsonResponse({"message": "removed from wishlist.", "status": "watch"})
+
+def remove_item(request, product_id):
+    if request.method == "POST":
+        product = get_object_or_404(Product, id=product_id)
+        Watchlist.objects.filter(user=request.user.profile, product=product).delete()
+        return JsonResponse({"message": "removed from wishlist."})
+           
     
 
 def watchlist_page(request, profile_id):
