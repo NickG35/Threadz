@@ -5,17 +5,48 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'products/styles.css' %}">
 {% endblock %}
+<script>
+     document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll(".col-6").forEach((product) => {
+            const productID = product.getAttribute("data-id");
+            const removeForm = product.querySelector('.remove-form');
+            if (removeForm) {
+                removeForm.addEventListener('submit', function(event){
+                    event.preventDefault();
+
+                    fetch(`/remove_item/${productID}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                        },
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data.message);
+                        product.remove()
+                    })
+                    .catch((error) => console.error("Error:", error));
+                });
+            };
+        });    
+    });
+</script>
 <div class="container-fluid">
     <h1 class="welcome">{{ user }}'s Watchlist</h1>
     <div class="row">
         {% for item in watchlist_items %}
-            <div class="col-6 col-sm-4 col-md-3">
+            <div data-id="{{item.product.id}}" class="col-6 col-sm-4 col-md-3">
                 <div class="image-container">
                     {% if item.product.created_by %}
                         <img class="product_image" src="{{item.product.image.url}}">
                     {% else %}
                         <img class="product_image" src="{{item.product.image }}">
                     {% endif %}
+                    <form class="remove-form" action="{% url 'remove_item' product_id=item.product.id %}" method="post">
+                        {% csrf_token %}
+                            <button id="remove-button"><i class="fa-solid fa-circle-minus" style="color: #000000;"></i></button>
+                    </form>
                 </div>
                 <div class="name_box">
                     <p><a class="product_name" href="{% url 'product' product_id=item.product.id %}">{{ item.product.name }}</a></p>
