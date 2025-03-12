@@ -1,5 +1,5 @@
 import requests
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .models import Product, Watchlist
 from users.models import Profile
@@ -54,9 +54,13 @@ def index(request):
         fetch_products()
     
     products = Product.objects.order_by('-creation_time').all()
+    if request.user.is_authenticated:
+        user_watchlist = request.user.profile.watchlist.values_list('product_id', flat=True)
+
     #pass fetched products to index page
     return render(request, 'index.html', {
         'products': products,
+        'user_watchlist': user_watchlist
     })
 
 def product(request, product_id):
@@ -98,16 +102,18 @@ def create(request):
     })
 
 def toggle_watchlist(request, product_id):
-    product = Product.objects.get(id=product_id)
-    watchlist_item, created = Watchlist.objects.get_or_create(user=request.user.profile, product = product)
+    if request.method == "POST":
+        product = get_object_or_404(Product, id=product_id)
+        data = json.loads(request.body)
+        status = data.get("status")
 
-    if not created:
-        watchlist_item.delete()
-        messages.info(request, "product removed from watchlist.")
-    else:
-        messages.info(request, "product added to watchlist.")
+        if status == "watched":
+            Watchlist.objects.get_or_create(user=request.user.profile, product=product)
+            return JsonResponse({"message": "product added to wishlist.", "status": "watched"})
+        else:
+            Watchlist.objects.filter(user=request.user.profile, product=product).delete()
+            return JsonResponse({"message": "removed from wishlist.", "status": "watch"})
     
-    return redirect('index')
 
 def watchlist_page(request, profile_id):
     profile = Profile.objects.get(user=profile_id)
