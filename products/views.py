@@ -64,25 +64,34 @@ def index(request):
     })
 
 def product(request, product_id):
+    user_watchlist = []
+    if request.user.is_authenticated:
+        user_watchlist = list(request.user.profile.watchlist.values_list('product_id', flat=True))
+    product_details = Product.objects.filter(id=product_id).all()
     if request.method == 'POST':
         size_choice = request.POST.get('size')
-        product_name = Product.objects.get(id=product_id)
+
+        
 
         if not size_choice:
             return JsonResponse({"message": "Pick a size.", "status": "failure"})
         
+        product = get_object_or_404(Product, id=product_id)
+        
         CartItem.objects.create(
-            product=product_name,
+            product=product,
             user=request.user.profile,
             size=size_choice
         )
 
         return JsonResponse({"message": "Item added to cart.", "status": "success"})
-    
-    product_details = Product.objects.filter(id=product_id).all()
-    return render(request, "product.html", {
-        'product_details': product_details
+
+    return render(request, 'product.html', {
+        'product_details': product_details,
+        'user_watchlist': user_watchlist
     })
+    
+
 
 def create(request):
     if request.method == 'POST':
