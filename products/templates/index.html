@@ -6,6 +6,52 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'products/styles.css' %}">
 {% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll(".col-6").forEach((product) => {
+            const productID = product.getAttribute("data-id");
+            const watchForm = product.querySelector('.watchlist-form');
+            if (watchForm) {
+                watchForm.addEventListener('submit', function(event){
+                    event.preventDefault();
+
+                    const watch_button = watchForm.querySelector('#watch_button');
+                    const watched_button = watchForm.querySelector('#watched_button');
+                    
+                    let currentStatus = watchForm.getAttribute("data-watch");
+
+                    let newStatus = currentStatus === "watch" ? "watched": "watch";
+
+                    fetch(`/${productID}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                        },
+                        body: JSON.stringify({ status: newStatus }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data.message);
+
+                        //update ui based on response status
+                        if(data.status === "watched"){
+                            watch_button.style.display = "none";
+                            watched_button.style.display = "block";
+                    
+                        } else {
+                            watch_button.style.display = "block";
+                            watched_button.style.display = "none";
+                        }
+
+                        watchForm.setAttribute("data-watch", data.status);
+                    })
+                    .catch((error) => console.error("Error:", error));
+                });
+            };
+        });    
+    });
+</script>
 <div class="container-fluid">
     <div class="row">
         {% if messages %}
@@ -16,7 +62,7 @@
             </ul>
         {% endif %}
         {% for product in products %}
-            <div class="col-6 col-sm-4 col-md-3">
+            <div data-id="{{product.id}}" class="col-6 col-sm-4 col-md-3">
                 <div class="image-container">
                     {% if product.created_by %}
                         <img class="product_image" src="{{product.image.url}}">
@@ -24,9 +70,23 @@
                         <img class="product_image" src="{{product.image }}">
                     {% endif %}
                     {% if product.created_by != user.profile %}
-                        <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                        <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
                             {% csrf_token %}
-                            <button class="watchlist-btn"><i class="fa-solid fa-eye"></i></button>
+                            {% if product.id in user_watchlist %}
+                                <button id="watch_button" style="display: none;" class="watchlist-btn">
+                                    <i class="fa-regular fa-star" style="color: #000000;"></i>
+                                </button>
+                                <button id="watched_button" class="watchlist-btn">
+                                    <i class="fa-solid fa-star" style="color: #000000;"></i>
+                                </button>
+                            {% else %}
+                                <button id="watch_button" class="watchlist-btn">
+                                    <i class="fa-regular fa-star" style="color: #000000;"></i>
+                                </button>
+                                <button id="watched_button" style="display: none;" class="watchlist-btn">
+                                    <i class="fa-solid fa-star" style="color: #000000;"></i>
+                                </button>
+                            {% endif %}
                         </form>
                     {% endif %}
                 </div>
