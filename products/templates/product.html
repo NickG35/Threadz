@@ -9,14 +9,13 @@
 {% block content %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const productID = document.querySelector('#product_name').getAttribute('data-id');
         document.getElementById('size-form').addEventListener('submit', function(event) {
             event.preventDefault();  // Prevent the default form submission
 
             var sizeChoice = document.getElementById('size').value;  // Get the selected size
             var formData = new FormData();
             formData.append('size', sizeChoice);
-
-            const productID = document.querySelector('#product_name').getAttribute('data-id');
 
             // Create the AJAX request
             fetch(`/product/${productID}`, {
@@ -37,7 +36,48 @@
             })
             .catch(error => console.error('Error:', error));
         });
-    });
+
+        
+        const watchForm = document.querySelector('.watchlist-form');
+        if (watchForm) {
+            watchForm.addEventListener('submit', function(event){
+                event.preventDefault();
+
+                const watch_button = watchForm.querySelector('#watch_button');
+                const watched_button = watchForm.querySelector('#watched_button');
+                
+                let currentStatus = watchForm.getAttribute("data-watch");
+
+                let newStatus = currentStatus === "watch" ? "watched": "watch";
+
+                fetch(`/${productID}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({ status: newStatus }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+
+                    //update ui based on response status
+                    if(data.status === "watched"){
+                        watch_button.style.display = "none";
+                        watched_button.style.display = "block";
+                
+                    } else {
+                        watch_button.style.display = "block";
+                        watched_button.style.display = "none";
+                    }
+
+                    watchForm.setAttribute("data-watch", data.status);
+                })
+                .catch((error) => console.error("Error:", error));
+            });
+        };
+    });    
     
     function sizeSelect(size){
             const sizeInput = document.querySelector('#size');
@@ -102,9 +142,23 @@
                 </div>
                 <div id="watch-btn" class="col-2">
                     {% if product.created_by != user.profile %}
-                        <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
+                        <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
                             {% csrf_token %}
-                            <button id="watchlist_button" class="product-btn"><i class="fa-solid fa-eye"></i></button>
+                            {% if product.id in user_watchlist %}
+                                <button id="watch_button" style="display: none;">
+                                    <i class="fa-regular fa-star" style="color: #000000;"></i>
+                                </button>
+                                <button id="watched_button" >
+                                    <i class="fa-solid fa-star" style="color: #000000;"></i>
+                                </button>
+                            {% else %}
+                                <button id="watch_button" >
+                                    <i class="fa-regular fa-star" style="color: #000000;"></i>
+                                </button>
+                                <button id="watched_button" style="display: none;">
+                                    <i class="fa-solid fa-star" style="color: #000000;"></i>
+                                </button>
+                            {% endif %}
                         </form>
                     {% endif %}
                 </div>
