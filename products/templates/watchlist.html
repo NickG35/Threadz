@@ -45,7 +45,7 @@
                     {% endif %}
                     <form class="remove-form" action="{% url 'remove_item' product_id=item.product.id %}" method="post">
                         {% csrf_token %}
-                            <button id="remove-button"><i class="fa-solid fa-circle-minus" style="color: #000000;"></i></button>
+                            <button class="remove-btn" id="remove-button"><i class="fa-solid fa-circle-minus" style="color: red;"></i></button>
                     </form>
                 </div>
                 <div class="name_box">
