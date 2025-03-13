@@ -4,24 +4,36 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'users/styles.css' %}">
 {% endblock %}
-
+{% block navbar %}{% endblock %}
 {% block content %}
-    <h1 class="header">Login</h1>
-
-    <form action="{% url 'user_login' %}" method="post">
-        {% csrf_token %}
-        {% if errors.invalid_credentials %}
-            <p class="error">{{ errors.invalid_credentials }}</p>
-        {% endif %}
-        {% if errors.username %}
-            <p class="error">{{ errors.username }}</p>
-        {% endif %}
-        <input class="form-input {% if errors.username or errors.invalid_credentials %}error-input{% endif %}" type="text" name="username" value="{{request.POST.username|default:''}}">
-        {% if errors.password %}
-            <p class="error">{{ errors.password }}</p>
-        {% endif %}
-        <input class="form-input {% if errors.password or errors.invalid_credentials %}error-input{% endif %}" type="password" name="password" value="{{request.POST.password|default:''}}">
-        <button type="submit">Login</button>
-    </form>
-    <p>New here? <a href="{% url 'register' %}">Register</a></p>
+<button class="home-button"><a href="{% url 'index' %}"><i class="fa-solid fa-house" style="color: #000000;"></i></a></button>
+    <div class="form-container">
+        <h1 class="header">Login</h1>
+        <form action="{% url 'user_login' %}" method="post">
+            {% csrf_token %}
+            {% if errors.invalid_credentials %}
+                <p class="error">{{ errors.invalid_credentials }}</p>
+            {% endif %}
+            {% if errors.username %}
+                <p class="error">{{ errors.username }}</p>
+            {% endif %}
+            <div class="input-container {% if errors.username or errors.invalid_credentials %}error-input{% endif %}">
+                <i class="fa-solid fa-user" id="form-icon" style="color: #e6e6e6;"></i>
+                <input class="form-control" type="text" name="username" placeholder="enter username" value="{{request.POST.username|default:''}}">
+            </div>
+            {% if errors.password %}
+                <p class="error">{{ errors.password }}</p>
+            {% endif %}
+            <div class="input-container {% if errors.username or errors.invalid_credentials %}error-input{% endif %}">
+                <i class="fa-solid fa-lock" id="form-icon" style="color: #e6e6e6;"></i>
+                <input class="form-control {% if errors.password or errors.invalid_credentials %}error-input{% endif %}" type="password" name="password" placeholder="enter password" value="{{request.POST.password|default:''}}">
+            </div>
+            <div class="right-align">
+                <button class="form-button" type="submit">Login</button>
+            </div>
+        </form>
+        <div class="center-align">
+            <p>New here? <a class="redirect-link" href="{% url 'register' %}">Register</a></p>
+        </div>
+    </div>
 {% endblock %}
