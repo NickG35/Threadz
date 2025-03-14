@@ -69,25 +69,27 @@
                     {% else %}
                         <img class="product_image" src="{{product.image }}">
                     {% endif %}
-                    {% if product.created_by != user.profile %}
-                        <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
-                            {% csrf_token %}
-                            {% if product.id in user_watchlist %}
-                                <button id="watch_button" style="display: none;" class="watchlist-btn">
-                                    <i class="fa-regular fa-star" style="color: #000000;"></i>
-                                </button>
-                                <button id="watched_button" class="watchlist-btn">
-                                    <i class="fa-solid fa-star" style="color: #000000;"></i>
-                                </button>
-                            {% else %}
-                                <button id="watch_button" class="watchlist-btn">
-                                    <i class="fa-regular fa-star" style="color: #000000;"></i>
-                                </button>
-                                <button id="watched_button" style="display: none;" class="watchlist-btn">
-                                    <i class="fa-solid fa-star" style="color: #000000;"></i>
-                                </button>
-                            {% endif %}
-                        </form>
+                    {% if request.user.is_authenticated %}
+                        {% if product.created_by != user.profile %}
+                            <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
+                                {% csrf_token %}
+                                {% if product.id in user_watchlist %}
+                                    <button id="watch_button" style="display: none;" class="watchlist-btn">
+                                        <i class="fa-regular fa-star" style="color: #000000;"></i>
+                                    </button>
+                                    <button id="watched_button" class="watchlist-btn">
+                                        <i class="fa-solid fa-star" style="color: #000000;"></i>
+                                    </button>
+                                {% else %}
+                                    <button id="watch_button" class="watchlist-btn">
+                                        <i class="fa-regular fa-star" style="color: #000000;"></i>
+                                    </button>
+                                    <button id="watched_button" style="display: none;" class="watchlist-btn">
+                                        <i class="fa-solid fa-star" style="color: #000000;"></i>
+                                    </button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="name_box">
