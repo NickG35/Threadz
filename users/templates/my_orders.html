@@ -14,14 +14,18 @@
                         {% endif %}
                 {% endfor %}
             </div>
-            <small class="graytext">ORDER NO: {{ order.id }}</small>
-            <small class="graytext">ORDER DATE:{{ order.purchase_date }}</small>
-            <form action="{% url 'order_details' order_id=order.id %}" method="post">
-                {% csrf_token %}
-                <div class="right-align">
-                    <button class="btn btn-dark" type="submit">View</button>
+            <div class="my-order">
+                <div class="order-details">
+                    <small class="graytext">ORDER NO: {{ order.id }}</small>
+                    <small class="graytext">ORDER DATE:{{ order.purchase_date }}</small>
                 </div>
-            </form>
+                <form action="{% url 'order_details' order_id=order.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="right-align">
+                        <button class="form-button" type="submit">View Order</button>
+                    </div>
+                </form>
+            </div>
         </div>
         {% endfor %}
     </div>
