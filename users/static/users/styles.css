@@ -36,7 +36,7 @@
 
 
 #individual-order {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid lightgray;
 }
 
 .graytext {
@@ -110,4 +110,14 @@
 .redirect-link {
     color: blue;
     text-decoration: none;
+}
+
+.order-details {
+    display: flex;
+    flex-direction: column;
+}
+.my-order {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
