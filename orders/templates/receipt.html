@@ -36,15 +36,15 @@
         <div class="card-body">
           <h5 class="card-title">Shipping</h5>
           <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
-          <p class="card-text">{{ first_name }} {{ last_name }}</p>
-          <p class="card-text">{{ address }} {{ city }}, {{ state }} {{ zip_code }}</p>
+          <p class="card-text">{{ purchase.first_name }} {{ purchase.last_name }}</p>
+          <p class="card-text">{{ purchase.address }} {{ purchase.city }}, {{ purchase.state }} {{ purchase.zip_code }}</p>
         </div>
     </div>
     <div class="card">
         <div class="card-body">
           <h5 class="card-title">Payment</h5>
           <h6 class="card-subtitle mb-2 text-muted">Payment Method</h6>
-          <p class="card-text">Card ending in {{ card_number }}</p>
+          <p class="card-text">Card ending in {{ purchase.card_number }}</p>
         </div>
     </div>
     <div class="receipt-total">
