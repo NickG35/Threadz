@@ -54,6 +54,7 @@ def index(request):
         fetch_products()
     
     products = Product.objects.order_by('-creation_time').all()
+    user_watchlist  = []
     if request.user.is_authenticated:
         user_watchlist = request.user.profile.watchlist.values_list('product_id', flat=True)
 
