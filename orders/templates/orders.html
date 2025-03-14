@@ -13,6 +13,21 @@
     <h1 class="tab-header">Order Details</h1>
     <small class="graytext"><p>ORDER NO: {{ order_details.id }}</p></small>
     <small class="graytext"><p>ORDER DATE:{{ order_details.purchase_date }}</p></small>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Shipping</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
+          <p class="card-text">{{ order_details.first_name }} {{ order_details.last_name }}</p>
+          <p class="card-text">{{ order_details.address }} {{ order_details.city }}, {{ order_details.state }} {{ order_details.zip_code }}</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Payment</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Payment Method</h6>
+          <p class="card-text">Card ending in {{ order_details.card_number }}</p>
+        </div>
+    </div>
     {% for cart_item in order_details.cart_item.all %}
         <div class="row align-order-center mb-3">
             <div class="col-5">
