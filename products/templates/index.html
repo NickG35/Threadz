@@ -64,11 +64,13 @@
         {% for product in products %}
             <div data-id="{{product.id}}" class="col-6 col-sm-4 col-md-3">
                 <div class="image-container">
-                    {% if product.created_by %}
-                        <img class="product_image" src="{{product.image.url}}">
-                    {% else %}
-                        <img class="product_image" src="{{product.image }}">
-                    {% endif %}
+                    <div class="image-box">
+                        {% if product.created_by %}
+                            <img class="product_image" src="{{product.image.url}}">
+                        {% else %}
+                            <img class="product_image" src="{{product.image }}">
+                        {% endif %}
+                    </div>
                     {% if request.user.is_authenticated %}
                         {% if product.created_by != user.profile %}
                             <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
@@ -94,8 +96,8 @@
                 </div>
                 <div class="name_box">
                     <p><a class="product_name" href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
+                    <p id="product_price" class="bold">$ {{  product.price }}</p>
                 </div>
-                <p class="product_price">$ {{  product.price }}</p>
             </div>
         {% endfor %}
     </div>
