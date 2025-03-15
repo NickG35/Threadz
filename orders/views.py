@@ -40,31 +40,26 @@ def checkout(request):
             zip_code = form.cleaned_data['zip']
             card_number = form.cleaned_data['card_number']
 
+            last_four = card_number[-4:]
+
             order = Order.objects.create(
                 user=request.user.profile,
-                total_price = cart_total
+                total_price = cart_total,
+                first_name = first_name,
+                last_name = last_name,
+                address = address,
+                city = city,
+                state = state,
+                zip_code = zip_code,
+                card_number = last_four,
             )
-            
-            last_four = card_number[-4:]
 
             for item in cart_items:
                 item.pending_order=False
                 item.order = order
                 item.save()
-
-
-            request.session['checkout_data'] = {
-                'first_name': first_name,
-                'last_name': last_name,
-                'address': address,
-                'city': city,
-                'state': state,
-                'zip': zip_code,
-                'card_number': last_four,
-                'purchase_id': order.id
-            }
         
-            return redirect('receipt')
+            return redirect('receipt', purchase_id=order.id)
     
     else:
         form = CheckoutForm()
@@ -75,36 +70,11 @@ def checkout(request):
         'form': form
     })
 
-def receipt(request):
-    # Retrieve data from session
-    checkout_data = request.session.get('checkout_data', None)
-
-    if checkout_data:
-        first_name = checkout_data['first_name']
-        last_name = checkout_data['last_name']
-        address = checkout_data['address']
-        city = checkout_data['city']
-        state = checkout_data['state']
-        zip_code = checkout_data['zip']
-        card_number = checkout_data['card_number']
-        purchase_id = checkout_data['purchase_id']
-
-        del request.session['checkout_data']
-
-        purchase = Order.objects.get(id=purchase_id)
-
-        return render(request, 'receipt.html', {
-            'first_name': first_name,
-            'last_name': last_name,
-            'address': address,
-            'city': city,
-            'state': state,
-            'zip_code': zip_code, 
-            'card_number': card_number,
-            'purchase': purchase
-        })
-    else:
-        return render(request, 'receipt.html')
+def receipt(request, purchase_id):
+    purchase = Order.objects.get(id=purchase_id)
+    return render(request, 'receipt.html', {
+        'purchase': purchase
+    })
 
 def order_details(request, order_id):
     order_details = Order.objects.get(id=order_id)
