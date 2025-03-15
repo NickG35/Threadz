@@ -14,6 +14,14 @@
 
 .cart-info {
     display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.left-side, .right-side {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .size {
@@ -77,9 +85,11 @@
 
 .no-cart {
     align-self: center;
+    text-align: center;
     justify-self: center;
 }
 
 .deleteButton {
     background: none;
+    border: none;
 }
