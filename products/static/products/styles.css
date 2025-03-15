@@ -1,3 +1,7 @@
+body{
+    background: #f8f8f8;
+    font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 .product_view {
     display: flex;
     flex-direction: column;
@@ -5,26 +9,37 @@
 .product_image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .image-container {
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 200px;
+    height: 250px;
+}
+
+.image-box {
+    width: 100%;
+    height: 250px; 
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; 
+    padding: 10px;
 }
 
 .watchlist-btn, .remove-btn {
     position: absolute;
     border: none;
-    border-radius: 100%;
 }
 
 .watchlist-btn {
     bottom: 10px;
-    right: 10px;
-    background-color: white;
+    right: 5px;
+    border-radius:100%;
+    background: white;
 }
 
 .remove-btn {
@@ -35,22 +50,21 @@
 
 
 #watched_button, #watch_button {
-    background-color: white;
-    border: none;
-    border-radius: 100%;
     font-size: 20px;
 }
 
 .name_box {
     max-width: 100%;
-    height: 30px;
 }
-.product_name {
+.product_name, #product_price {
     text-decoration: none;
     color: black;
     font-size: 12px;
-    max-height: 3em;
     display: block;
+}
+
+
+.product_name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
