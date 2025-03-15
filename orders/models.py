@@ -6,8 +6,15 @@ from users.models import Profile
 
 class Order(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
     purchase_date = models.DateTimeField(auto_now_add=True)
     total_price = models.IntegerField()
+    address = models.CharField(max_length=100, null=True)
+    city = models.CharField(max_length=50, null=True)
+    state = models.CharField(max_length=100, null=True)
+    zip_code = models.CharField(max_length=10, null=True)
+    card_number = models.IntegerField(max_length=16, null=True)
 
     def __str__(self):
         return f"order number: {self.id}"
