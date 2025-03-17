@@ -22,11 +22,11 @@
                 <div class="order-details">
                     <div class="order-info">
                         <i id="previewIcon" class="fa-solid fa-box" style="color: #e6e6e6;"></i>
-                        <small class="graytext">ORDER NO: {{ order.id }}</small>
+                        <small class="graytext">Order number: {{ order.id }}</small>
                     </div>
                     <div class="order-info">
                         <i id="previewIcon" class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
-                        <small class="graytext">ORDER DATE: {{ order.purchase_date }}</small>
+                        <small class="graytext">Order date: {{ order.purchase_date }}</small>
                     </div>
                 </div>
                 <form action="{% url 'order_details' order_id=order.id %}" method="post">
