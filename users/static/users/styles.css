@@ -1,3 +1,9 @@
+
+body{
+    background: #f8f8f8;
+    font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+} 
+
 .tab-header {
     text-align: center;
 }
@@ -16,12 +22,14 @@
 }
 
 .cart-image {
-    width: 33.33%;
+    width: 130px;
     height: 130px;
-    object-fit: cover;
     object-position: center;
-    aspect-ratio: 4 / 5;
-    border-radius: 6px;
+}
+
+.graytext {
+    font-size: 16px;
+    color: gray;
 }
 
 .cartImage {
@@ -39,21 +47,65 @@
     border-bottom: 1px solid lightgray;
 }
 
-.graytext {
-    color: gray;
-    font-size: 12px;
-}
-
 .order-row {
     display: flex;
     max-width: 100%;
     justify-content: center;
 }
 
-
 #profileForm {
     padding: 10px;
 }
+
+.product_image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 250px;
+}
+
+.image-box {
+    width: 100%;
+    height: 250px; 
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; 
+    padding: 10px;
+}
+
+#preview-container, #preview-box {
+    height: 130px;
+}
+
+#image-holder {
+    padding: 40px 5px;
+}
+
+.name_box {
+    max-width: 100%;
+}
+
+.product_name, #product_price {
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+    display: block;
+}
+
+.product_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 
 .home-button {
     background-color: white;
@@ -112,7 +164,11 @@
     text-decoration: none;
 }
 
-.order-details {
+#order-section {
+    padding: 20px 0px;
+}
+
+.order-details, .delivery-details {
     display: flex;
     flex-direction: column;
 }
@@ -120,4 +176,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.order-info {
+    display: flex;
+    align-content: center;
+}
+
+.order-content {
+    padding: 5px;
+    height: 100%;
+    align-content: center;
+}
+
+#orderIcon {
+    font-size: 26px;
+}
+
+#previewIcon {
+    font-size: 22px;
+    margin-right: 10px;
 }
