@@ -35,17 +35,25 @@ body{
     border: none;
 }
 
+.watchlist-btn, .watch-btn {
+    border-radius:100%;
+    background: white;
+}
+
 .watchlist-btn {
     bottom: 10px;
     right: 5px;
-    border-radius:100%;
-    background: white;
+}
+
+.watch-btn {
+    border: 1px solid lightgray;
 }
 
 .remove-btn {
     top: 10px;
     right: 5px;
     background: none;
+    font-size: 20px;
 }
 
 
@@ -55,6 +63,7 @@ body{
 
 .name_box {
     max-width: 100%;
+    padding: 10px 0px;
 }
 .product_name, #product_price {
     text-decoration: none;
