@@ -91,7 +91,6 @@
             event.target.classList.add('active');
     }
 </script>
-<div class="container-fluid">
     <div class="product_view">
         <div class="image-display">
             {% for product in product_details %}
@@ -146,17 +145,17 @@
                         <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
                             {% csrf_token %}
                             {% if product.id in user_watchlist %}
-                                <button id="watch_button" style="display: none;">
+                                <button class="watch-btn" id="watch_button" style="display: none;">
                                     <i class="fa-regular fa-star" style="color: #000000;"></i>
                                 </button>
-                                <button id="watched_button" >
+                                <button class="watch-btn" id="watched_button" >
                                     <i class="fa-solid fa-star" style="color: #000000;"></i>
                                 </button>
                             {% else %}
-                                <button id="watch_button" >
+                                <button class="watch-btn" id="watch_button" >
                                     <i class="fa-regular fa-star" style="color: #000000;"></i>
                                 </button>
-                                <button id="watched_button" style="display: none;">
+                                <button class="watch-btn" id="watched_button" style="display: none;">
                                     <i class="fa-solid fa-star" style="color: #000000;"></i>
                                 </button>
                             {% endif %}
@@ -168,5 +167,4 @@
         </div>
         {% endfor %}
     </div>
-</div>
 {% endblock %}
