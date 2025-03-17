@@ -11,43 +11,54 @@
 
 <div class="container-fluid">
     <h1 class="tab-header">Order Details</h1>
-    <p>ORDER NO: {{ order_details.id }}</p>
-    <p>ORDER DATE:{{ order_details.purchase_date }}</p>
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Shipping</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
-          <p class="card-text">{{ order_details.first_name }} {{ order_details.last_name }}</p>
-          <p class="card-text">{{ order_details.address }} {{ order_details.city }}, {{ order_details.state }} {{ order_details.zip_code }}</p>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Payment</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Payment Method</h6>
-          <p class="card-text">Card ending in {{ order_details.card_number }}</p>
-        </div>
-    </div>
-    {% for cart_item in order_details.cart_item.all %}
-        <div class="row align-order-center mb-3">
-            <div class="col-5">
-                {% if cart_item.product.created_by %}
-                    <img class="cartImage" src="{{ cart_item.product.image.url }}">
-                {% else %}
-                    <img class="cartImage" src="{{ cart_item.product.image }}">
-                {% endif %}
+    <div id="order-section">
+        <div class="order-info">
+            <div class="order-content">
+                <i id="orderIcon" class="fa-solid fa-box" style="color: #e6e6e6;"></i>
             </div>
-            <div class="col-7">
-                <p class="bold">${{  cart_item.product.price }}</p>
-                <p>{{ cart_item.product.name }}</p>
-                <div class="cart-info">
-                    <p class="size">{{ cart_item.size }}</p>
-                    <p>QTY: {{ cart_item.quantity }}</p>
+            <div class="order-content">
+                <p class="graytext">Order number: {{ order_details.id }}</p>
+            </div>
+        </div>
+        <div class="order-info">
+            <div class="order-content">
+                <i id="orderIcon" class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
+            </div>
+            <div class="order-content">
+                <p class="graytext">Order date: {{ order_details.purchase_date }}</p>
+            </div>
+        </div>
+    </div>
+    <div id="order-section" class="delivery-details">
+        <h6>Delivery Address</h6>
+        <span>{{ order_details.first_name }} {{ order_details.last_name }}</span>
+        <span>{{ order_details.address }}</span> 
+        <span>{{ order_details.city }}, {{ order_details.state }} {{ order_details.zip_code }}</span>
+    </div>
+    <div id="order-section" class="row justify-content-center">
+        {% for cart_item in order_details.cart_item.all %}
+            <div class="col-6 col-sm-4 col-md-3">
+                <div class="image-container">
+                    <div class="image-box">
+                        {% if cart_item.product.created_by %}
+                            <img class="product_image" src="{{cart_item.product.image.url}}">
+                        {% else %}
+                            <img class="product_image" src="{{cart_item.product.image }}">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="name_box">
+                    <p><a class="product_name" href="{% url 'product' product_id=cart_item.product.id %}">{{ cart_item.product.name }}</a></p>
+                    <p id="product_price" class="bold">$ {{  cart_item.product.price }}</p>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-    <div class="right-align">
+        {% endfor %}
+    </div>
+    <div id="order-section">
+        <h6>Payment Details</h6>
+        <p>Card ending in {{ order_details.card_number }}</p>
+    </div>
+    <div id="order-section" class="right-align">
         <p><b>Total: ${{ order_details.total_price }}</b></p>
     </div>
 </div>
