@@ -91,6 +91,7 @@ body{
 
 .name_box {
     max-width: 100%;
+    padding: 10px 0px;
 }
 
 .product_name, #product_price {
@@ -145,10 +146,12 @@ body{
     font-size: 18px;
 }
 .form-control {
+    background: #f8f8f8;
     border: none;
 }
 
 .form-control:focus {
+    background: #f8f8f8;
     box-shadow: none;
 }
 
