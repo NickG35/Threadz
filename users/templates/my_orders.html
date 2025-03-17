@@ -4,20 +4,30 @@
     <h3 class="tab-header">My Orders</h3>
     <div class="products-div">
         {% for order in orders %}
-        <div id="individual-order" class="row align-order-center mb-3">
-            <div class="order-row">
+        <div id="individual-order" class="row justify-content-center">
                 {% for cart_item in order.cart_item.all %}
-                        {% if cart_item.product.created_by %}
-                            <img class="cart-image" src="{{ cart_item.product.image.url }}">
-                        {% else %}
-                            <img class="cart-image" src="{{ cart_item.product.image }}">
-                        {% endif %}
+                    <div id="image-holder" class="col-6 col-sm-4 col-md-3">
+                        <div id="preview-container" class="image-container">
+                            <div id="preview-box" class="image-box">
+                                {% if cart_item.product.created_by %}
+                                    <img class="product_image" src="{{ cart_item.product.image.url }}">
+                                {% else %}
+                                    <img class="product_image" src="{{ cart_item.product.image }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
-            </div>
             <div class="my-order">
                 <div class="order-details">
-                    <small class="graytext">ORDER NO: {{ order.id }}</small>
-                    <small class="graytext">ORDER DATE:{{ order.purchase_date }}</small>
+                    <div class="order-info">
+                        <i id="previewIcon" class="fa-solid fa-box" style="color: #e6e6e6;"></i>
+                        <small class="graytext">ORDER NO: {{ order.id }}</small>
+                    </div>
+                    <div class="order-info">
+                        <i id="previewIcon" class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
+                        <small class="graytext">ORDER DATE: {{ order.purchase_date }}</small>
+                    </div>
                 </div>
                 <form action="{% url 'order_details' order_id=order.id %}" method="post">
                     {% csrf_token %}
