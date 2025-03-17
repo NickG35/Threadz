@@ -11,6 +11,11 @@ body {
 .navbar .nav-link {
     color: whitesmoke;
 }
+#dropdownMenuButton, .dropdown-button {
+    background: none;
+    border: none;
+    padding: 0px;
+}
 
 .logo-div {
     margin-left: auto;
