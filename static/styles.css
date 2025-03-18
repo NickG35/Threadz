@@ -14,7 +14,24 @@ body {
 #dropdownMenuButton, .dropdown-button {
     background: none;
     border: none;
+}
+
+#dropdownMenuButton {
+    height: 100%;
+}
+
+.dropdown-menu {
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.dropdown-button {
     padding: 0px;
+}
+
+.dropdown-item:active {
+    background: black;
+    color: white;
 }
 
 .logo-div {
@@ -24,11 +41,12 @@ body {
 .nav-link-div {
     display: flex;
     margin-left: auto;
-    padding: 10px;
+    padding: 5px;
 }
 
 .nav-link {
-    margin: 5px;
+    margin: 0px 10px;
+    height: 100%;
 }
 
 .list-group-item {
