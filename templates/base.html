@@ -7,8 +7,8 @@
     <title>{% block title %} Threadz {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/8b6abeeef6.js" crossorigin="anonymous"></script>
     {% block extra_styles %} {% endblock %}
 </head>
@@ -20,22 +20,24 @@
         <div class="nav-link-div">
             {% if user.is_authenticated %}
                 <div class="dropdown">
-                    <button type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="nav-link" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-user" style="color: #ffffff;"></i>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{% url 'profile' profile_id=user.id %}">View profile</a>
-                        <a class="dropdown-item" href="{% url 'create' %}">Create product</a>
-                        <div class="dropdown-item" href="">
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item"  href="{% url 'profile' profile_id=user.id %}">My Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'create' %}">Create Product</a></li>
+                    <li>
+                        <div class="dropdown-item">
                             <form action="{% url 'user_logout' %}" method="post">
                                 {% csrf_token %}
                                 <button class="dropdown-button" type="submit">Log out</button>
                             </form>
                         </div>
-                    </div>
+                    </li>
+                    </ul>
                 </div>
-                <a class="nav-link" href="{% url 'cart' %}">Cart</a>
-                <a class="nav-link" href="{% url 'watchlist' profile_id=user.id %}">Watchlist</a>
+                <a class="nav-link" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i></a>
+                <a class="nav-link" href="{% url 'watchlist' profile_id=user.id %}"><i class="fa-solid fa-bag-shopping" style="color: #ffffff;"></i></a>
             {% else %}
                 <a class="nav-link" href="{% url 'user_login' %}"><i class="fa-solid fa-right-to-bracket" style="color: #ffffff;"></i></a>
             {% endif %}
