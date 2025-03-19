@@ -14,7 +14,7 @@ class Order(models.Model):
     city = models.CharField(max_length=50, null=True)
     state = models.CharField(max_length=100, null=True)
     zip_code = models.CharField(max_length=10, null=True)
-    card_number = models.IntegerField(max_length=16, null=True)
+    card_number = models.IntegerField(null=True)
 
     def __str__(self):
         return f"order number: {self.id}"
