@@ -18,7 +18,7 @@
             formData.append('size', sizeChoice);
 
             // Create the AJAX request
-            fetch(`/product/${productID}`, {
+            fetch(`/product/add/${productID}`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -33,6 +33,55 @@
                 message.style.display = 'block';
                 message.style.color = data.status === "success" ? "green" : "red";
                 console.log(productID);
+
+                let cartRow = document.createElement('div');
+                cartRow.classList.add('row', 'align-items-center');
+                cartRow.id = `cart-row${data.cart_item.product.id}`
+
+                let productImage = data.cart_item.product.created_by
+                ? data.cart_item.product.image.url
+                : data.cart_item.product.image;
+
+                const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
+
+                cartRow.innerHTML = `<div class="col-6">
+                                            <div class="cart-container">
+                                                <div class="cart-box">
+                                                    <img class="cart-image" src=${productImage}>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="cart-right" class="col-6">
+                                                <p id="product-price${data.cart_item.product.id}" class="bold">${data.cart_item.product.price}</p>
+                                                <p class="product_name" data-id="${data.cart_item.product.id}">${data.cart_item.product.name}</p>
+                                                <div class="cart-info">
+                                                    <div id="cartInfo">
+                                                        <p class="size">${data.cart_item.size}</p>
+                                                        <p>QTY: ${data.cart_item.quantity}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="deleteDiv">
+                                                    <form class="delete-form" action=${deleteUrl} method="post">
+                                                        {% csrf_token %}
+                                                        <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+                                                    </form>
+                                                </div>
+                                        </div>`
+
+                let cartContent = document.querySelector('.cart-content');
+                if(!cartContent) {
+                    cartContent = document.createElement('div');
+                    cartContent.className = 'cart-content';
+                }
+
+                if(cartRow){
+                    cartContent.prepend(cartRow);
+                } else {
+                    cartContent.appendChild(cartRow);
+                }
+
+
+
             })
             .catch(error => console.error('Error:', error));
         });

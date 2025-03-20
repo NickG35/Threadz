@@ -64,33 +64,51 @@ def index(request):
         'user_watchlist': user_watchlist
     })
 
-def product(request, product_id):
+def product_view(request, product_id):
     user_watchlist = []
     if request.user.is_authenticated:
         user_watchlist = list(request.user.profile.watchlist.values_list('product_id', flat=True))
     product_details = Product.objects.filter(id=product_id).all()
+
+    return render(request, 'product.html', {
+        'product_details': product_details,
+        'user_watchlist': user_watchlist
+    })
+
+def add_to_cart(request, product_id):
     if request.method == 'POST':
         size_choice = request.POST.get('size')
-
-        
 
         if not size_choice:
             return JsonResponse({"message": "Pick a size.", "status": "failure"})
         
         product = get_object_or_404(Product, id=product_id)
         
-        CartItem.objects.create(
+        cart_item = CartItem.objects.create(
             product=product,
             user=request.user.profile,
             size=size_choice
         )
 
-        return JsonResponse({"message": "Item added to cart.", "status": "success"})
+        cart_item_data = {
+            "id": cart_item.id,
+            "quantity": cart_item.quantity,
+            "size": cart_item.size,
+            "product": {
+                "id": cart_item.product.id,
+                "name": cart_item.product.name,
+                "price": float(cart_item.product.price),  # Ensure it's serializable
+                "image": cart_item.product.image.url if cart_item.product.image else None,
+                "created_by": cart_item.product.created_by.id if cart_item.product.created_by else None,
+            }
+        }
 
-    return render(request, 'product.html', {
-        'product_details': product_details,
-        'user_watchlist': user_watchlist
-    })
+        return JsonResponse({
+            "message": "Item added to cart.", 
+            "status": "success",
+            "cart_item": cart_item_data
+        })
+
     
 
 
