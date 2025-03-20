@@ -37,7 +37,7 @@
                     </ul>
                 </div>
                 <div class="dropdown">
-                    <button class="nav-link" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="nav-link" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false">
                         <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
                         {% if cart_count == 0%}
                             <span class="cart-count"></span>
@@ -73,10 +73,12 @@
                                                         <p>QTY: {{ items.quantity }}</p>
                                                     </div>
                                                 </div>
-                                                <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
-                                                </form>
+                                                <div class="deleteDiv">
+                                                    <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+                                                    </form>
+                                                </div>
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -109,7 +111,89 @@
         </div>
     </nav>
 {% endblock %}
-{% block scripts %}{% endblock %}
+{% block scripts%}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let deleteForms = document.querySelectorAll('.delete-form');
+
+        if (deleteForms){
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event){
+                    event.preventDefault();
+                    
+                    const productName = form.closest('#cart-right').querySelector('.product_name');
+                    const productID = productName.getAttribute('data-id');
+                    const productPriceElement = document.getElementById(`product-price${productID}`);
+                    const cartPriceElement = document.getElementById(`cart-price`);
+                    const cartCount = document.querySelector('.cart-count');
+                    const cartTitle = document.querySelector('.cart-title');
+                    const cartItem = document.getElementById(`cart-row${productID}`);
+
+                    const productPrice = parseFloat(productPriceElement.textContent.replace(/[^0-9.]/g, ''));
+                    const cartPrice = parseFloat(cartPriceElement.textContent.replace(/[^0-9.]/g, ''));
+
+                    let result = cartPrice - productPrice;
+                    cartPriceElement.textContent = `Total: $${result}`;
+
+                    if (cartItem) {
+                        cartItem.remove();
+
+                        let cartRow = document.querySelectorAll('.row.align-items-center');
+
+                        if(cartCount) {
+                            let reduce = parseInt(cartCount.textContent) - 1;
+                            cartCount.textContent = `${reduce}`;
+
+                            cartTitle.innerHTML = `<p class="cart-title"><span class="bold">My Cart,</span> ${reduce} item${reduce !== 1 ? 's': ''}</p>`
+                        }
+
+                        if (cartRow.length === 0) {
+                            let noCart = document.querySelector('.no-cart');
+                            let cartTotal = document.querySelector('.cart-total');
+                            cartCount.style.display = 'none';
+                            document.querySelector('.cart-content').style.display = 'none';
+
+                            cartTitle.innerHTML = '<p class="cart-title"><span class="bold">My Cart</span></p>'
+
+
+                            if (!noCart) {
+                                noCart = document.createElement('div');
+                                noCart.className = 'no-cart';
+                                noCart.innerHTML = '<p class="no-items">There are no items in your cart.</p>';
+                                document.querySelector('#cart-dropdown').appendChild(noCart);
+                            } else {
+                                noCart.style.display = 'block';
+                            }
+
+                            if (cartTotal) cartTotal.style.display = 'none';
+
+                        }
+                    }
+
+                    const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
+
+                    fetch(deleteUrl, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                            'Content-Type': 'application/json' 
+                        }
+                    })
+                    .then (response => response.json())
+                    .then(data => {
+                        if (data.status === "success"){
+                            console.log(data.message);
+                        } else {
+                            console.error('Failed to delete item')
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}
 <body>
     {% block content %}
 
