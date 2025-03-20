@@ -21,7 +21,7 @@ def cart(request):
 
 def delete_item(request, product_id):
     if request.method == 'POST':
-        cart_item = CartItem.objects.get(product=product_id, user=request.user.profile)
+        cart_item = CartItem.objects.get(product=product_id, user=request.user.profile, pending_order=True)
         cart_item.delete()
         return JsonResponse({"message": "Cart item deleted.", "status": "success"})
 
