@@ -213,7 +213,10 @@ body {
     text-align: center;
     justify-self: center;
 }
-
+.deleteDiv {
+    width: 100%;
+    text-align: right;
+}
 .deleteButton {
     background: none;
     border: none;
