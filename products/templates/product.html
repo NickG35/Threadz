@@ -38,16 +38,12 @@
                 cartRow.classList.add('row', 'align-items-center');
                 cartRow.id = `cart-row${data.cart_item.product.id}`
 
-                let productImage = data.cart_item.product.created_by
-                ? data.cart_item.product.image.url
-                : data.cart_item.product.image;
-
                 const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
 
                 cartRow.innerHTML = `<div class="col-6">
                                             <div class="cart-container">
                                                 <div class="cart-box">
-                                                    <img class="cart-image" src=${productImage}>
+                                                    <img class="cart-image" src=${data.cart_item.product.image}>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,7 +58,6 @@
                                                 </div>
                                                 <div class="deleteDiv">
                                                     <form class="delete-form" action=${deleteUrl} method="post">
-                                                        {% csrf_token %}
                                                         <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
                                                     </form>
                                                 </div>
@@ -72,16 +67,18 @@
                 if(!cartContent) {
                     cartContent = document.createElement('div');
                     cartContent.className = 'cart-content';
+                    document.getElementById('cart-dropdown').appendChild(cartContent);
                 }
 
-                if(cartRow){
-                    cartContent.prepend(cartRow);
-                } else {
-                    cartContent.appendChild(cartRow);
+                cartContent.prepend(cartRow);
+            
+
+                let cartTitle = document.querySelector('.cart-title');
+                if (cartTitle) {
+                    let count = parseInt(cartTitle.textContent.match(/\d+/)) || 0;
+                    count += 1;
+                    cartTitle.innerHTML = `<span class="bold">My Cart,</span> ${count} item${count > 1 ? 's': ''}`;
                 }
-
-
-
             })
             .catch(error => console.error('Error:', error));
         });
