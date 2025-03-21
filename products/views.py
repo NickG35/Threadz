@@ -98,7 +98,7 @@ def add_to_cart(request, product_id):
                 "id": cart_item.product.id,
                 "name": cart_item.product.name,
                 "price": float(cart_item.product.price),  # Ensure it's serializable
-                "image": cart_item.product.image.url if cart_item.product.image else None,
+                "image": cart_item.product.image.url if hasattr(cart_item.product.image, 'url') else cart_item.product.image,
                 "created_by": cart_item.product.created_by.id if cart_item.product.created_by else None,
             }
         }
