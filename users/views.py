@@ -76,6 +76,7 @@ def register_user(request):
 def profile(request, profile_id):
     profile_info = Profile.objects.filter(id=profile_id).all()
     return render(request, 'profile.html', {
+        'hidden': True,
         'profile_info': profile_info
     })
 
@@ -117,6 +118,7 @@ def update_password(request, profile_id):
 
     return render(request, "change_password.html", {
         "profile_info": profile_info,
+        "hidden": True
     })
 
 def update_user(request, profile_id):
@@ -145,7 +147,7 @@ def update_user(request, profile_id):
         if errors:
             return render(request, "account_details.html", {
                 "profile_info": profile_info,
-                "errors": errors  # Pass errors to the template
+                "errors": errors,  # Pass errors to the template
             })
         
         user.username = userName
@@ -157,16 +159,19 @@ def update_user(request, profile_id):
     
     return render(request, "account_details.html", {
         "profile_info": profile_info,
+        "hidden": True
     })
 
 def my_clothes(request, profile_id):
     profile_products = Product.objects.filter(created_by=profile_id).all()
     return render(request, 'my_clothes.html', {
-        'profile_products': profile_products
+        'profile_products': profile_products,
+        "hidden": True
     })
 
 def my_orders(request, profile_id):
     profile_orders = Order.objects.filter(user=profile_id).order_by('-purchase_date').all()
     return render(request, 'my_orders.html', {
-        'orders': profile_orders
+        'orders': profile_orders,
+        "hidden": True
     })
