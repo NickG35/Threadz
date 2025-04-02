@@ -13,103 +13,107 @@
     {% block extra_styles %} {% endblock %}
 </head>
 {% block navbar %}
-    <nav class="navbar">
-        <div class="logo-div">
-            <div class="navbar-brand"><a class="nav-link" href="{% url 'index' %}">Threadz</a></div>
-        </div>
-        <div class="nav-link-div">
-            {% if user.is_authenticated %}
-                <div class="dropdown">
-                    <button class="nav-link" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-user" style="color: #ffffff;"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                    <li><a class="dropdown-item"  href="{% url 'profile' profile_id=user.id %}">My Profile</a></li>
-                    <li><a class="dropdown-item" href="{% url 'create' %}">Create Product</a></li>
-                    <li>
-                        <div class="dropdown-item">
-                            <form action="{% url 'user_logout' %}" method="post">
-                                {% csrf_token %}
-                                <button class="dropdown-button" type="submit">Log out</button>
-                            </form>
-                        </div>
-                    </li>
-                    </ul>
-                </div>
-                <div class="dropdown">
-                    <button class="nav-link" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false">
-                        <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
-                        {% if cart_count == 0%}
-                            <span class="cart-count"></span>
-                        {% else %}
-                            <span class="cart-count">{{cart_count }}</span>
-                        {% endif %}
-                    </button>
-                    <div id="cart-dropdown" class="dropdown-menu">
-                        <div class="cartBanner">
-                            <p class="cart-title"><span class="bold">My Cart{% if cart_count > 0 %},</span> {{ cart_count }} {% if cart_count > 1%}items{% else %} item {% endif %} {% endif %}</p>
-                        </div>
-                            {% if cart_items %}
-                            <div class="cart-content">
-                                {% for items in cart_items %}
-                                    <div id="cart-row{{items.product.id}}-{{items.size}}" class="row align-items-center mb-3">
-                                        <div class="col-6">
-                                            <div class="cart-container">
-                                                <div class="cart-box">
-                                                    {% if items.product.created_by %}
-                                                        <img class="cart-image" src="{{ items.product.image.url }}">
-                                                    {% else %}
-                                                        <img class="cart-image" src="{{ items.product.image }}">
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="cart-right" class="col-6">
-                                                <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
-                                                <p class="product_name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
-                                                <div class="cart-info">
-                                                    <div id="cartInfo">
-                                                        <p class="size">{{ items.size }}</p>
-                                                        <p class="quantity{{items.product.id}}-{{items.size}}">QTY: {{ items.quantity }}</p>
+    {% if not hidden %}
+        <nav class="navbar">
+            <div class="logo-div">
+                <div class="navbar-brand"><a class="nav-link" href="{% url 'index' %}">Threadz</a></div>
+            </div>
+            <div class="nav-link-div">
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="nav-link" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user" style="color: #ffffff;"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                        <li><a class="dropdown-item"  href="{% url 'profile' profile_id=user.id %}">My Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'create' %}">Create Product</a></li>
+                        <li>
+                            <div class="dropdown-item">
+                                <form action="{% url 'user_logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="dropdown-button" type="submit">Log out</button>
+                                </form>
+                            </div>
+                        </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                            <button class="nav-link{% if disabled %}dropdown-toggle disabled{% endif %}" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
+                            {% if cart_count == 0%}
+                                <span class="cart-count"></span>
+                            {% else %}
+                                <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                    <span class="cart-count">{{cart_count }}</span>
+                                </span>
+                            {% endif %}
+                        </button>
+                        <div id="cart-dropdown" class="dropdown-menu">
+                            <div class="cartBanner">
+                                <p class="cart-title"><span class="bold">My Cart{% if cart_count > 0 %},</span> {{ cart_count }} {% if cart_count > 1%}items{% else %} item {% endif %} {% endif %}</p>
+                            </div>
+                                {% if cart_items %}
+                                <div class="cart-content">
+                                    {% for items in cart_items %}
+                                        <div id="cart-row{{items.product.id}}-{{items.size}}" class="row align-items-center mb-3">
+                                            <div class="col-6">
+                                                <div class="cart-container">
+                                                    <div class="cart-box">
+                                                        {% if items.product.created_by %}
+                                                            <img class="cart-image" src="{{ items.product.image.url }}">
+                                                        {% else %}
+                                                            <img class="cart-image" src="{{ items.product.image }}">
+                                                        {% endif %}
                                                     </div>
                                                 </div>
-                                                <div class="deleteDiv">
-                                                    <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
-                                                        {% csrf_token %}
-                                                        <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
-                                                    </form>
-                                                </div>
+                                            </div>
+                                            <div id="cart-right" class="col-6">
+                                                    <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
+                                                    <p class="product_name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
+                                                    <div class="cart-info">
+                                                        <div id="cartInfo">
+                                                            <p class="size">{{ items.size }}</p>
+                                                            <p class="quantity{{items.product.id}}-{{items.size}}">QTY: {{ items.quantity }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="deleteDiv">
+                                                        <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+                                                        </form>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div id="cart-bottom" class="row">
+                                    <div class="cart-total">
+                                        <div class="cartBanner">
+                                            <p id="cart-price" class="bold">Total: ${{ cart_total }}</p>
+                                        </div>
+                                        <div class="cart-buttons">
+                                            <a id="cart-button" class="cartButton" href="{% url 'cart' %}">VIEW CART</a>
+                                            <form action="{% url 'cart'%}" method="post">
+                                                {% csrf_token %}
+                                                <button id="cart-button" class="submit_button" type="submit">CHECKOUT</button>
+                                            </form>
                                         </div>
                                     </div>
-                                {% endfor %}
-                            </div>
-                            <div id="cart-bottom" class="row">
-                                <div class="cart-total">
-                                    <div class="cartBanner">
-                                        <p id="cart-price" class="bold">Total: ${{ cart_total }}</p>
-                                    </div>
-                                    <div class="cart-buttons">
-                                        <a id="cart-button" class="cartButton" href="{% url 'cart' %}">VIEW CART</a>
-                                        <form action="{% url 'cart'%}" method="post">
-                                            {% csrf_token %}
-                                            <button id="cart-button" class="submit_button" type="submit">CHECKOUT</button>
-                                        </form>
-                                    </div>
                                 </div>
-                            </div>
-                        {% else %}  
-                            <div class="no-cart">
-                                <p class="no-items">There are no items in your cart.</p>
-                            </div>
-                        {% endif %}
+                            {% else %}  
+                                <div class="no-cart">
+                                    <p class="no-items">There are no items in your cart.</p>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <a class="nav-link" href="{% url 'watchlist' profile_id=user.id %}"><i class="fa-solid fa-bag-shopping" style="color: #ffffff;"></i></a>
-            {% else %}
-                <a class="nav-link" href="{% url 'user_login' %}"><i class="fa-solid fa-right-to-bracket" style="color: #ffffff;"></i></a>
-            {% endif %}
-        </div>
-    </nav>
+                    <a class="nav-link" href="{% url 'watchlist' profile_id=user.id %}"><i class="fa-solid fa-bag-shopping" style="color: #ffffff;"></i></a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'user_login' %}"><i class="fa-solid fa-right-to-bracket" style="color: #ffffff;"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    {% endif %}
 {% endblock %}
 {% block scripts%}
 <script>
@@ -121,6 +125,7 @@
             const productName = form.closest('#cart-right').querySelector('.product_name');
             const productID = productName.getAttribute('data-id');
             const productSize = productName.getAttribute('data-size');
+            const cartBadge = document.querySelector('#cartBadge');
             const cartPriceElement = document.getElementById(`cart-price`);
             const cartCount = document.querySelector('.cart-count');
             const cartTitle = document.querySelector('.cart-title');
@@ -159,6 +164,7 @@
                     let cartRow = document.querySelectorAll('.row.align-items-center');
                     if (cartRow.length === 0) {
                         cartCount.style.display = 'none';
+                        cartBadge.style.display = 'none';
                         document.querySelector('.cart-content').style.display = 'none';
                         document.querySelector('#cart-bottom').style.display = 'none';
 
