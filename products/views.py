@@ -9,6 +9,8 @@ from .forms import ProductForm
 from django.contrib import messages
 import json
 from django.http import JsonResponse
+from django.db.models import F, Sum
+from django.utils.timezone import now
 # Create your views here.
 
 def fetch_products():
@@ -84,16 +86,31 @@ def add_to_cart(request, product_id):
         
         product = get_object_or_404(Product, id=product_id)
         
-        cart_item = CartItem.objects.create(
+        cart_item, created = CartItem.objects.get_or_create(
             product=product,
             user=request.user.profile,
-            size=size_choice
+            size=size_choice,
+            pending_order=True,
         )
+
+        if not created:
+            cart_item.quantity += 1 
+            cart_item.save()
+
+        cart_items = CartItem.objects.filter(user=request.user.profile, pending_order=True).order_by('-updated_time')
+        cart_total = cart_items.aggregate(total=Sum(F('product__price') * F('quantity')))['total'] or 0
+        cart_count = cart_items.aggregate(total_count=Sum('quantity'))['total_count'] or 0
+
+        for item in cart_items:
+            print(item.product.name, item.size, item.quantity, item.updated_time)
 
         cart_item_data = {
             "id": cart_item.id,
             "quantity": cart_item.quantity,
             "size": cart_item.size,
+            "cart_total": cart_total,
+            "cart_count": cart_count,
+            "updated_time": cart_item.updated_time,
             "product": {
                 "id": cart_item.product.id,
                 "name": cart_item.product.name,
@@ -106,7 +123,7 @@ def add_to_cart(request, product_id):
         return JsonResponse({
             "message": "Item added to cart.", 
             "status": "success",
-            "cart_item": cart_item_data
+            "cart_item": cart_item_data,
         })
 
     
