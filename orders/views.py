@@ -16,8 +16,9 @@ def cart(request):
         cart_total = cart_items.aggregate(total=Sum(F('product__price') * F('quantity')))['total'] or 0
 
         return render(request, 'cart.html', {
+            'disabled':True,
             'cart_items': cart_items,
-            'cart_total': cart_total
+            'cart_total': cart_total,
         })
 
 def delete_item(request, product_id):
@@ -77,6 +78,7 @@ def checkout(request):
         form = CheckoutForm()
 
     return render(request, 'checkout.html', {
+        'disabled':True,
         'cart_items': cart_items,
         'cart_total': cart_total,
         'form': form
@@ -85,6 +87,7 @@ def checkout(request):
 def receipt(request, purchase_id):
     purchase = Order.objects.get(id=purchase_id)
     return render(request, 'receipt.html', {
+        'disabled':True,
         'purchase': purchase
     })
 
