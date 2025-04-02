@@ -52,7 +52,7 @@
                             {% if cart_items %}
                             <div class="cart-content">
                                 {% for items in cart_items %}
-                                    <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
+                                    <div id="cart-row{{items.product.id}}-{{items.size}}" class="row align-items-center mb-3">
                                         <div class="col-6">
                                             <div class="cart-container">
                                                 <div class="cart-box">
@@ -66,11 +66,11 @@
                                         </div>
                                         <div id="cart-right" class="col-6">
                                                 <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
-                                                <p class="product_name" data-id="{{items.product.id}}">{{ items.product.name }}</p>
+                                                <p class="product_name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
                                                 <div class="cart-info">
                                                     <div id="cartInfo">
                                                         <p class="size">{{ items.size }}</p>
-                                                        <p>QTY: {{ items.quantity }}</p>
+                                                        <p class="quantity{{items.product.id}}-{{items.size}}">QTY: {{ items.quantity }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="deleteDiv">
@@ -83,7 +83,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="row">
+                            <div id="cart-bottom" class="row">
                                 <div class="cart-total">
                                     <div class="cartBanner">
                                         <p id="cart-price" class="bold">Total: ${{ cart_total }}</p>
@@ -113,83 +113,77 @@
 {% endblock %}
 {% block scripts%}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let deleteForms = document.querySelectorAll('.delete-form');
+    document.addEventListener('submit', function (event) {
+        if (event.target.classList.contains('delete-form')) {
+            event.preventDefault();
 
-        if (deleteForms){
-            deleteForms.forEach(form => {
-                form.addEventListener('submit', function(event){
-                    event.preventDefault();
-                    
-                    const productName = form.closest('#cart-right').querySelector('.product_name');
-                    const productID = productName.getAttribute('data-id');
-                    const productPriceElement = document.getElementById(`product-price${productID}`);
-                    const cartPriceElement = document.getElementById(`cart-price`);
-                    const cartCount = document.querySelector('.cart-count');
-                    const cartTitle = document.querySelector('.cart-title');
-                    const cartItem = document.getElementById(`cart-row${productID}`);
+            const form = event.target;
+            const productName = form.closest('#cart-right').querySelector('.product_name');
+            const productID = productName.getAttribute('data-id');
+            const productSize = productName.getAttribute('data-size');
+            const cartPriceElement = document.getElementById(`cart-price`);
+            const cartCount = document.querySelector('.cart-count');
+            const cartTitle = document.querySelector('.cart-title');
+            const cartItem = document.getElementById(`cart-row${productID}-${productSize}`);
 
-                    const productPrice = parseFloat(productPriceElement.textContent.replace(/[^0-9.]/g, ''));
-                    const cartPrice = parseFloat(cartPriceElement.textContent.replace(/[^0-9.]/g, ''));
+            const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
+            let cartTotal = document.querySelector('.cart-total');
 
-                    let result = cartPrice - productPrice;
-                    cartPriceElement.textContent = `Total: $${result}`;
+            fetch(deleteUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({
+                    size: productSize
+                })
+            })
+            .then (response => response.json())
+            .then(data => {
+                cartPriceElement.textContent = `Total: $${data.cart_total}`;
+
+                if (data.status === "success"){
+                    console.log(data.message);
+                    console.log(productID, productSize)
 
                     if (cartItem) {
                         cartItem.remove();
-
-                        let cartRow = document.querySelectorAll('.row.align-items-center');
-
-                        if(cartCount) {
-                            let reduce = parseInt(cartCount.textContent) - 1;
-                            cartCount.textContent = `${reduce}`;
-
-                            cartTitle.innerHTML = `<p class="cart-title"><span class="bold">My Cart,</span> ${reduce} item${reduce !== 1 ? 's': ''}</p>`
-                        }
-
-                        if (cartRow.length === 0) {
-                            let noCart = document.querySelector('.no-cart');
-                            let cartTotal = document.querySelector('.cart-total');
-                            cartCount.style.display = 'none';
-                            document.querySelector('.cart-content').style.display = 'none';
-
-                            cartTitle.innerHTML = '<p class="cart-title"><span class="bold">My Cart</span></p>'
-
-
-                            if (!noCart) {
-                                noCart = document.createElement('div');
-                                noCart.className = 'no-cart';
-                                noCart.innerHTML = '<p class="no-items">There are no items in your cart.</p>';
-                                document.querySelector('#cart-dropdown').appendChild(noCart);
-                            } else {
-                                noCart.style.display = 'block';
-                            }
-
-                            if (cartTotal) cartTotal.style.display = 'none';
-
-                        }
                     }
 
-                    const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
+                    if(cartCount) {
+                        cartCount.textContent = `${data.cart_count}`;
+                        cartTitle.innerHTML = `<p class="cart-title"><span class="bold">My Cart,</span> ${data.cart_count} item${data.cart_count !== 1 ? 's': ''}</p>`
+                    }
+                    
+                    let cartRow = document.querySelectorAll('.row.align-items-center');
+                    if (cartRow.length === 0) {
+                        cartCount.style.display = 'none';
+                        document.querySelector('.cart-content').style.display = 'none';
+                        document.querySelector('#cart-bottom').style.display = 'none';
 
-                    fetch(deleteUrl, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                            'Content-Type': 'application/json' 
-                        }
-                    })
-                    .then (response => response.json())
-                    .then(data => {
-                        if (data.status === "success"){
-                            console.log(data.message);
+                        cartTitle.innerHTML = '<p class="cart-title"><span class="bold">My Cart</span></p>'
+
+                        let noCart = document.querySelector('.no-cart');
+                        if (!noCart) {
+                            noCart = document.createElement('div');
+                            noCart.className = 'no-cart';
+                            noCart.innerHTML = '<p class="no-items">There are no items in your cart.</p>';
+                            document.querySelector('#cart-dropdown').appendChild(noCart);
                         } else {
-                            console.error('Failed to delete item')
+                            noCart.style.display = 'block';
                         }
-                    })
-                    .catch(error => console.error('Error:', error));
-                });
-            });
+
+                        if (cartTotal){
+                            cartTotal.style.display = 'none';
+                        }
+                    }
+            
+                } else {
+                    console.log(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
     });
 </script>

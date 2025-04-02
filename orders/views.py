@@ -4,6 +4,7 @@ from django.db.models import F, Sum
 from .forms import CheckoutForm
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+import json
 
 # Create your views here.
 def cart(request):
@@ -11,7 +12,7 @@ def cart(request):
         return redirect('checkout')
     
     else:
-        cart_items = CartItem.objects.filter(user=request.user.profile, pending_order=True).order_by('-stow_date').all()
+        cart_items = CartItem.objects.filter(user=request.user.profile, pending_order=True).order_by('-updated_time').all()
         cart_total = cart_items.aggregate(total=Sum(F('product__price') * F('quantity')))['total'] or 0
 
         return render(request, 'cart.html', {
@@ -21,9 +22,20 @@ def cart(request):
 
 def delete_item(request, product_id):
     if request.method == 'POST':
-        cart_item = CartItem.objects.get(product=product_id, user=request.user.profile, pending_order=True)
-        cart_item.delete()
-        return JsonResponse({"message": "Cart item deleted.", "status": "success"})
+        data = json.loads(request.body)
+        size = data.get('size')
+
+        if not size:
+            return JsonResponse({"message": "Failed to delete cart item.", "status": "failure"})
+
+        cart_items = CartItem.objects.filter(product=product_id, size=size, user=request.user.profile, pending_order=True)
+        cart_items.delete()
+
+        cart_item = CartItem.objects.filter(user=request.user.profile, pending_order=True)
+        cart_total = cart_item.aggregate(total=Sum(F('product__price') * F('quantity')))['total'] or 0
+        cart_count = cart_item.aggregate(total_count=Sum('quantity'))['total_count'] or 0
+        
+        return JsonResponse({"message": "Cart item deleted.", "status": "success", "cart_total": cart_total, "cart_count": cart_count})
 
 def checkout(request):
     cart_items = CartItem.objects.filter(user=request.user.profile, pending_order=True).order_by('-stow_date').all()
