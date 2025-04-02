@@ -26,8 +26,8 @@ body {
 }
 
 #cart-dropdown {
-    width: 300px;
-    transform: translateX(-80%);
+    width: 250px;
+    transform: translateX(-70%);
     background: #f8f8f8;
 }
 
@@ -200,7 +200,7 @@ body {
 }
 
 #cart-button {
-    width: 140px;
+    width: 115px;
     height: 40px;
     font-size: 14px;
     font-weight: bold;
