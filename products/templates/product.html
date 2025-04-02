@@ -57,6 +57,120 @@
                         }, 500);
                     }, 1000);
 
+                    let cartCounter = document.querySelector('.cart-count');
+
+                    if (cartCounter) {
+                        cartCounter.textContent = `${data.cart_item.cart_count}`
+                        cartCounter.style.display = 'inline-block';
+                    }
+
+                    let cartPriceElement = document.getElementById('cart-price');
+                    if (cartPriceElement) {
+                        cartPriceElement.textContent = `Total: $${data.cart_item.cart_total}`;
+                    }
+
+                    let cartTitle = document.querySelector('.cart-title');
+                    cartTitle.innerHTML = `<p class="cart-title"><span class="bold">My Cart,</span> ${data.cart_item.cart_count} item${data.cart_item.cart_count !== 1 ? 's': ''}</p>`
+
+                    let noCart = document.querySelector('.no-cart');
+                    if (noCart){
+                        noCart.style.display = 'none';
+                    }
+
+                    let cartDropdown = document.getElementById('cart-dropdown');
+
+                    let cartContent = document.querySelector('.cart-content');
+                    if(!cartContent) {
+                        cartContent = document.createElement('div');
+                        cartContent.className = 'cart-content';
+                        document.getElementById('cart-dropdown').appendChild(cartContent);
+                    } else {
+                        cartContent.style.display = 'block';
+                    }
+                    
+                    let cartRow = document.getElementById(`cart-row${productID}-${sizeChoice}`);
+                    if (cartRow){
+                        let quantity = cartRow.querySelector(`.quantity${productID}-${sizeChoice}`);
+                        if (quantity) { 
+                            let newQuantity = `QTY: ${data.cart_item.quantity}`;
+                            if (quantity.textContent !== newQuantity) {
+                                quantity.textContent = newQuantity;
+                            }
+                        } else {
+                            console.error("quantity element not found");
+                        }
+                    } else {
+                        cartRow = document.createElement('div');
+                        cartRow.classList.add('row', 'align-items-center');
+                        cartRow.id = `cart-row${productID}-${sizeChoice}`;
+                    
+
+                        const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+                        let imageUrl = data.cart_item.product.image;
+
+                        if (imageUrl.includes("fakestoreapi")) {
+                            imageUrl = imageUrl.replace("/media/https%3A", "https://");
+                        }
+
+                        imageUrl = decodeURI(imageUrl);
+                        console.log(imageUrl);
+
+                        cartRow.innerHTML = `<div class="col-6">
+                                                    <div class="cart-container">
+                                                        <div class="cart-box">
+                                                            <img class="cart-image" src=${imageUrl}>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="cart-right" class="col-6">
+                                                        <p id="product-price${data.cart_item.product.id}" class="bold">$${data.cart_item.product.price}</p>
+                                                        <p class="product_name" data-id="${data.cart_item.product.id}" data-size="${data.cart_item.size}">${data.cart_item.product.name}</p>
+                                                        <div class="cart-info">
+                                                            <div id="cartInfo">
+                                                                <p class="size">${data.cart_item.size}</p>
+                                                                <p class="quantity${productID}-${sizeChoice}">QTY: ${data.cart_item.quantity}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="deleteDiv">
+                                                            <form class="delete-form" action=${deleteUrl} method="post">
+                                                                <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                                                                <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+                                                            </form>
+                                                        </div>
+                                                </div>`
+                    }
+                    cartContent.prepend(cartRow);                   
+                    
+                    
+                    // look at chat gpt for updating items on the backend 
+                    let cartBottom = document.getElementById('cart-bottom');
+                    if (!cartBottom) {
+                        cartBottom = document.createElement('div');
+                        cartBottom.id = 'cart-bottom';
+                        cartBottom.className = 'row';
+                        cartBottom.innerHTML = `<div class="cart-total">
+                                        <div class="cartBanner">
+                                            <p id="cart-price" class="bold">Total: $${data.cart_item.cart_total}</p>
+                                        </div>
+                                        <div class="cart-buttons">
+                                            <a id="cart-button" class="cartButton" href="{% url 'cart' %}">VIEW CART</a>
+                                            <form action="{% url 'cart'%}" method="post">
+                                                {% csrf_token %}
+                                                <button id="cart-button" class="submit_button" type="submit">CHECKOUT</button>
+                                            </form>
+                                        </div>
+                                    </div>`
+                        cartDropdown.appendChild(cartBottom);
+                    } else {
+                        cartBottom.style.display = 'block';
+                    }
+
+                    if(cartTotal) {
+                        cartTotal.style.display = 'block';
+                    }
+
                 } else {
                     if (message) {
                         message.style.visibility = "none";
@@ -64,120 +178,6 @@
                     error.textContent = data.message;
                     error.style.display = "block";
                     error.style.color = "red";
-                }
-
-                let cartCounter = document.querySelector('.cart-count');
-
-                if (cartCounter) {
-                    cartCounter.textContent = `${data.cart_item.cart_count}`
-                    cartCounter.style.display = 'inline-block';
-                }
-
-                let cartPriceElement = document.getElementById('cart-price');
-                if (cartPriceElement) {
-                    cartPriceElement.textContent = `Total: $${data.cart_item.cart_total}`;
-                }
-
-                let cartTitle = document.querySelector('.cart-title');
-                cartTitle.innerHTML = `<p class="cart-title"><span class="bold">My Cart,</span> ${data.cart_item.cart_count} item${data.cart_item.cart_count !== 1 ? 's': ''}</p>`
-
-                let noCart = document.querySelector('.no-cart');
-                if (noCart){
-                    noCart.style.display = 'none';
-                }
-
-                let cartDropdown = document.getElementById('cart-dropdown');
-
-                let cartContent = document.querySelector('.cart-content');
-                if(!cartContent) {
-                    cartContent = document.createElement('div');
-                    cartContent.className = 'cart-content';
-                    document.getElementById('cart-dropdown').appendChild(cartContent);
-                } else {
-                    cartContent.style.display = 'block';
-                }
-                
-                let cartRow = document.getElementById(`cart-row${productID}-${sizeChoice}`);
-                if (cartRow){
-                    let quantity = cartRow.querySelector(`.quantity${productID}-${sizeChoice}`);
-                    if (quantity) { 
-                        let newQuantity = `QTY: ${data.cart_item.quantity}`;
-                        if (quantity.textContent !== newQuantity) {
-                            quantity.textContent = newQuantity;
-                        }
-                    } else {
-                        console.error("quantity element not found");
-                    }
-                } else {
-                    cartRow = document.createElement('div');
-                    cartRow.classList.add('row', 'align-items-center');
-                    cartRow.id = `cart-row${productID}-${sizeChoice}`;
-                
-
-                    const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
-                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-
-                    let imageUrl = data.cart_item.product.image;
-
-                    if (imageUrl.includes("fakestoreapi")) {
-                        imageUrl = imageUrl.replace("/media/https%3A", "https://");
-                    }
-
-                    imageUrl = decodeURI(imageUrl);
-                    console.log(imageUrl);
-
-                    cartRow.innerHTML = `<div class="col-6">
-                                                <div class="cart-container">
-                                                    <div class="cart-box">
-                                                        <img class="cart-image" src=${imageUrl}>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="cart-right" class="col-6">
-                                                    <p id="product-price${data.cart_item.product.id}" class="bold">$${data.cart_item.product.price}</p>
-                                                    <p class="product_name" data-id="${data.cart_item.product.id}" data-size="${data.cart_item.size}">${data.cart_item.product.name}</p>
-                                                    <div class="cart-info">
-                                                        <div id="cartInfo">
-                                                            <p class="size">${data.cart_item.size}</p>
-                                                            <p class="quantity${productID}-${sizeChoice}">QTY: ${data.cart_item.quantity}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="deleteDiv">
-                                                        <form class="delete-form" action=${deleteUrl} method="post">
-                                                            <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
-                                                            <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
-                                                        </form>
-                                                    </div>
-                                            </div>`
-                }
-                cartContent.prepend(cartRow);                   
-                
-                   
-                // look at chat gpt for updating items on the backend 
-                let cartBottom = document.getElementById('cart-bottom');
-                if (!cartBottom) {
-                    cartBottom = document.createElement('div');
-                    cartBottom.id = 'cart-bottom';
-                    cartBottom.className = 'row';
-                    cartBottom.innerHTML = `<div class="cart-total">
-                                    <div class="cartBanner">
-                                        <p id="cart-price" class="bold">Total: $${data.cart_item.cart_total}</p>
-                                    </div>
-                                    <div class="cart-buttons">
-                                        <a id="cart-button" class="cartButton" href="{% url 'cart' %}">VIEW CART</a>
-                                        <form action="{% url 'cart'%}" method="post">
-                                            {% csrf_token %}
-                                            <button id="cart-button" class="submit_button" type="submit">CHECKOUT</button>
-                                        </form>
-                                    </div>
-                                </div>`
-                    cartDropdown.appendChild(cartBottom);
-                } else {
-                    cartBottom.style.display = 'block';
-                }
-
-                if(cartTotal) {
-                    cartTotal.style.display = 'block';
                 }
             })
             .catch(error => console.error('Error:', error));
