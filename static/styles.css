@@ -16,6 +16,15 @@ body {
     border: none;
 }
 
+.profileNav {
+    font-size: 18px;
+}
+.profile-links {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px 0px;
+}
+
 #dropdownMenuButton {
     height: 100%;
 }
