@@ -58,10 +58,20 @@
                     }, 1000);
 
                     let cartCounter = document.querySelector('.cart-count');
+                    let cartBadge = document.getElementById('cartBadge');
+                    let cart_dropdown = document.getElementById('cartDropdown');
 
                     if (cartCounter) {
+                        if (!cartBadge) {
+                            cartBadge = document.createElement('span');
+                            cartBadge.id = 'cartBadge';
+                            cartBadge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success';
+                        }
                         cartCounter.textContent = `${data.cart_item.cart_count}`
+                        cartBadge.style.display = 'inline-block';
                         cartCounter.style.display = 'inline-block';
+                        cartBadge.appendChild(cartCounter);
+                        cart_dropdown.appendChild(cartBadge);
                     }
 
                     let cartPriceElement = document.getElementById('cart-price');
