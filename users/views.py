@@ -76,6 +76,7 @@ def register_user(request):
 def profile(request, profile_id):
     profile_info = Profile.objects.filter(id=profile_id).all()
     return render(request, 'profile.html', {
+        'dashboard': True,
         'hidden': True,
         'profile_info': profile_info
     })
