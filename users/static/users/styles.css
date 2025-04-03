@@ -67,18 +67,19 @@ body{
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 250px;
+    height: 200px;
 }
 
 .image-box {
     width: 100%;
-    height: 250px; 
+    height: 200px; 
     background: white;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px; 
     padding: 10px;
+    border: 1px solid lightgray;
 }
 
 #preview-container, #preview-box {
@@ -97,7 +98,7 @@ body{
 .product_name, #product_price {
     text-decoration: none;
     color: black;
-    font-size: 12px;
+    font-size: 14px;
     display: block;
 }
 
@@ -106,6 +107,11 @@ body{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+#product_price {
+    font-weight: bold;
+}
+
 
 
 .home-button {
