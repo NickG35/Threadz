@@ -39,30 +39,42 @@
         });
     </script>
 {% endblock %}
-
 {% block content %}
-<div class="settings-container">
-    <aside class="sidebar">
-        <nav class="profile-nav">
-            <div class="profile-display">
-                <div class="pfp">
-                    <p class="profile-initial">{{ request.user.username|first }}</p>
-                </div>
-                <div class="profile-greeting">
-                    <p>Hi, {{ request.user.profile }}.</p>
-                </div>
+    <div class="container-fluid">
+        <div class="profile-links">
+            <div class="profileNav">
+                <a class="nav-link" href="{% url 'index' %}">Threadz</a>
             </div>
-            <ul class="list-group">
-                <li class="list-group-item"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card" style="color: #000000;"></i><span>My Details</span></a></li>
-                <li class="list-group-item"><a class="profile-group" href="{% url 'update_password' profile_id=request.user.profile.id %}"><i class="fa-solid fa-lock" style="color: #000000;"></i><span>Change Password</span></a></li>
-                <li class="list-group-item"><a class="profile-group" href="{% url 'my_clothes' profile_id=request.user.profile.id %}"><i class="fa-solid fa-shirt" style="color: #000000;"></i><span>My Clothes</span></a></li>
-                <li class="list-group-item"><a class="profile-group" href="{% url 'my_orders' profile_id=request.user.profile.id %}"><i class="fa-solid fa-box" style="color: #000000;"></i><span>My Orders</span></a></li>
-            </ul>
-        </nav>
-    </aside>
+            <div class="profileNav">
+                <a class="nav-link {% if dashboard %} disabled {% endif %}" href="{% url 'profile' profile_id=request.user.profile.id %}">My Profile</a>
+            </div>
+            <div  class="profileNav">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+        <div class="settings-container">
+            <aside class="sidebar">
+                <nav class="profile-nav">
+                    <div class="profile-display">
+                        <div class="pfp">
+                            <p class="profile-initial">{{ request.user.username|first }}</p>
+                        </div>
+                        <div class="profile-greeting">
+                            <p>Hi, {{ request.user.profile }}.</p>
+                        </div>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card" style="color: #000000;"></i><span>My Details</span></a></li>
+                        <li class="list-group-item"><a class="profile-group" href="{% url 'update_password' profile_id=request.user.profile.id %}"><i class="fa-solid fa-lock" style="color: #000000;"></i><span>Change Password</span></a></li>
+                        <li class="list-group-item"><a class="profile-group" href="{% url 'my_clothes' profile_id=request.user.profile.id %}"><i class="fa-solid fa-shirt" style="color: #000000;"></i><span>My Clothes</span></a></li>
+                        <li class="list-group-item"><a class="profile-group" href="{% url 'my_orders' profile_id=request.user.profile.id %}"><i class="fa-solid fa-box" style="color: #000000;"></i><span>My Orders</span></a></li>
+                    </ul>
+                </nav>
+            </aside>
 
-    <section class="settings-content">
-        {% block settings_content %}{% endblock %}
-    </section>
-</div>
+            <section class="settings-content">
+                {% block settings_content %}{% endblock %}
+            </section>
+        </div>
+    </div>
 {% endblock %}
