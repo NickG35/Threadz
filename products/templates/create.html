@@ -14,7 +14,17 @@
 <div class="creation-form">
     <form class="create-form" method="post" action="{% url 'create' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <div class="form-group">
+                <span class="graytext">{{ field.label }}</span>
+                <div class="createField">
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
         <div class="submit_div">
             <button class="submitButton" type="submit">Submit</button>
         </div>
