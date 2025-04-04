@@ -198,14 +198,14 @@ body{
 }
 
 /* Larger mobile screens (601px to 767px) */
-@media (min-width: 601px) and (max-width: 720px) {
+@media (min-width: 481px) and (max-width: 767px) {
     body {
         font-size: 16px;
     }
 }
 
 /* Tablets in portrait mode (768px to 1023px) */
-@media (min-width: 721px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1023px) {
     body {
         font-size: 18px;
     }
