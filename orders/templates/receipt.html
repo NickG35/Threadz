@@ -24,10 +24,8 @@
                 <div class="col-7">
                         <p class="bold">${{  items.product.price }}</p>
                         <p>{{ items.product.name }}</p>
-                        <div class="cart-info">
-                            <p class="size">{{ items.size }}</p>
-                            <p>QTY: {{ items.quantity }}</p>
-                        </div>
+                        <span class="size">{{ items.size }}</span>
+                        <span>QTY: {{ items.quantity }}</span>
                 </div>
             </div>
         {% endfor %}
@@ -36,8 +34,10 @@
         <div class="card-body">
           <h5 class="card-title">Shipping</h5>
           <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
-          <p class="card-text">{{ purchase.first_name }} {{ purchase.last_name }}</p>
-          <p class="card-text">{{ purchase.address }} {{ purchase.city }}, {{ purchase.state }} {{ purchase.zip_code }}</p>
+          <div class="shipping-information">
+            <span>{{ purchase.first_name }} {{ purchase.last_name }}</span>
+            <span>{{ purchase.address }} {{ purchase.city }}, {{ purchase.state }} {{ purchase.zip_code }}</span>
+          </div>
         </div>
     </div>
     <div class="card">
