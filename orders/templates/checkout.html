@@ -9,7 +9,17 @@
     <h2 class="order-header">Shipping and Billing Info</h2>
     <form action="{% url 'checkout' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <div class="form-group">
+                <span class="graytext">{{ field.label }}</span>
+                <div class="orderField">
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    <span class="error">{{ field.errors }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
         <h2 class="order-header">Order Summary</h2>
         <div class="row">
             {% for items in cart_items %}
@@ -24,11 +34,9 @@
                     <div class="col-7">
                             <p class="bold">${{  items.product.price }}</p>
                             <p>{{ items.product.name }}</p>
-                            <div class="cart-info">
-                                <p class="size">{{ items.size }}</p>
-                                <p>QTY: {{ items.quantity }}</p>
-                            </div>
-                    </div>
+                            <span class="size">{{ items.size }}</span>
+                            <span>QTY: {{ items.quantity }}</span>
+                </div>
                 </div>
             {% endfor %}
             <div class="cart-total">
