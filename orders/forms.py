@@ -29,7 +29,6 @@ class CheckoutForm(forms.Form):
         validators=[
             RegexValidator(r'^[a-zA-Z\s]+$', 'First name can only contain letters.')
         ],
-        widget=forms.TextInput(attrs={'placeholder': 'First Name'})
     )
 
     last_name = forms.CharField(
@@ -38,13 +37,11 @@ class CheckoutForm(forms.Form):
         validators=[
             RegexValidator(r'^[a-zA-Z\s]+$', 'Last name can only contain letters.')
         ],
-        widget=forms.TextInput(attrs={'placeholder': 'Last Name'})
     )
 
     address = forms.CharField(
         max_length=100, 
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Address'})
     )
     
     city = forms.CharField(
@@ -53,7 +50,6 @@ class CheckoutForm(forms.Form):
         validators=[
             RegexValidator(r'^[a-zA-Z\s]+$', 'City name can only contain letters.')
         ],
-        widget=forms.TextInput(attrs={'placeholder': 'City'})
     )
 
     state = forms.ChoiceField(
@@ -65,14 +61,12 @@ class CheckoutForm(forms.Form):
         min_length=5,
         max_length=10,
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Zip Code'})
     )
     
     card_number = forms.CharField(
         min_length=16,
         max_length=16,
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Credit Card Number'})
     )
     
     expiration_date = forms.DateField(
@@ -84,7 +78,6 @@ class CheckoutForm(forms.Form):
         min_length=3,
         max_length=4,
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'CVV'})
     )
     
     def clean_card_number(self):
@@ -131,5 +124,4 @@ class CheckoutForm(forms.Form):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control'})
-            field.label = ''
 
