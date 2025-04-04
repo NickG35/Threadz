@@ -14,8 +14,12 @@
 
 .cart-info {
     display: flex;
-    justify-content: space-between;
     align-content: center;
+}
+
+.shipping-information {
+    display: flex;
+    flex-direction: column;
 }
 
 .left-side, .right-side {
@@ -39,6 +43,21 @@
     border: none;
     width: 40%;
     height: 40px;
+}
+
+.graytext {
+    font-size: 16px;
+    padding: 0px 10px;
+}
+
+
+.orderField {
+    padding: 10px 0px;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
 }
 
 .receipt_message {
