@@ -2,10 +2,7 @@ body{
     background: #f8f8f8;
     font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.product_view {
-    display: flex;
-    flex-direction: column;
-}
+
 .product_image {
     width: 100%;
     height: 100%;
@@ -83,7 +80,7 @@ body{
 .product_name, #product_price {
     text-decoration: none;
     color: black;
-    font-size: 14px;
+    font-size: 18px;
     display: block;
 }
 
@@ -122,8 +119,15 @@ body{
     border-radius: 15px;
 }
 
+.product_view, .image-display {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+}
+
 .product_display {
-    max-width: 100%;
+    width: 100%;
 }
 
 
@@ -198,36 +202,34 @@ body{
 }
 
 /* Larger mobile screens (601px to 767px) */
-@media (min-width: 481px) and (max-width: 767px) {
-    body {
-        font-size: 16px;
-    }
+@media (min-width: 601px) and (max-width: 719px) {
 }
 
-/* Tablets in portrait mode (768px to 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-    body {
-        font-size: 18px;
+/* Tablets in portrait mode (720px to 1023px) */
+@media (min-width: 720px) and (max-width: 1023px) {
+    .product_view {
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+    }
+
+    .product_display {
+        width: 500px;
+        padding: 0px 10px;
     }
 }
 
 /* Tablets in landscape and small laptops (1024px to 1279px) */
 @media (min-width: 1024px) and (max-width: 1279px) {
-    body {
-        font-size: 20px;
-    }
+  
 }
 
 /* Laptops and small desktops (1280px to 1599px) */
 @media (min-width: 1280px) and (max-width: 1599px) {
-    body {
-        font-size: 22px;
-    }
+ 
 }
 
 /* Large desktop screens (1600px and above) */
 @media (min-width: 1600px) {
-    body {
-        font-size: 24px;
-    }
+   
 }
