@@ -249,11 +249,13 @@
     <div class="product_view">
         <div class="image-display">
             {% for product in product_details %}
+            <div class="product-box">
                 {% if product.created_by %}
                     <img class="product_display" src="{{ product.image.url }}">
                 {% else %}
                     <img class="product_display"  src="{{ product.image }}">
                 {% endif %}
+            </div>
         </div>
         <div class="product-info">
             <p id="product_name" data-id="{{product.id}}">{{ product.name }}</p>
@@ -262,22 +264,22 @@
             <p id="product_size" class="bold">SIZE:</p>
             <div class="size-picker">
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-2 col-sm-4 col-md-4">
                         <button type="button" onclick="sizeSelect('XS', event)" class="size-button" id="sizes">XS</button>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 col-sm-4 col-md-4">
                         <button type="button" onclick="sizeSelect('S', event)" class="size-button" id="sizes">S</button>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 col-sm-4 col-md-4">
                         <button type="button" onclick="sizeSelect('M', event)" class="size-button" id="sizes">M</button>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 col-sm-4 col-md-4">
                         <button type="button" onclick="sizeSelect('L', event)" class="size-button" id="sizes">L</button>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 col-sm-4 col-md-4">
                         <button type="button" onclick="sizeSelect('XL', event)" class="size-button" id="sizes">XL</button>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 col-sm-4 col-md-4">
                         <button type="button" onclick="sizeSelect('XXL', event)" class="size-button" id="sizes">XXL</button>
                     </div>
                 </div>
