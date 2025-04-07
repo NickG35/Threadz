@@ -11,6 +11,7 @@
         <li>{{ message }}</li>
     {% endfor %}
 {% endif %}
+<h2 class="header">Create Product</h2>
 <div class="creation-form">
     <form class="create-form" method="post" action="{% url 'create' %}" enctype="multipart/form-data">
         {% csrf_token %}
