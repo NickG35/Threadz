@@ -32,8 +32,8 @@
         });    
     });
 </script>
-<div class="container-fluid">
-    <h1 class="welcome">{{ user }}'s Watchlist</h1>
+<div id="product-container" class="container-fluid">
+    <h2 class="header">Watchlist</h2>
     <div class="row">
         {% for item in watchlist_items %}
             <div data-id="{{item.product.id}}" class="col-6 col-sm-4 col-md-3">
