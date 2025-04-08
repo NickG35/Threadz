@@ -14,6 +14,10 @@ body{
     object-fit: cover;
 }
 
+.product-info {
+    padding: 15px 0px;
+}
+
 .image-container {
     position: relative;
     display: inline-block;
@@ -135,8 +139,16 @@ body{
     margin: 0;
 }
 
+.image-display {
+    background-color: white;
+    border: 1px solid lightgray;
+    max-height: 570px;
+}
+
 .product_display {
     width: 100%;
+    padding: 40px;
+    max-height: 570px;
 }
 
 
@@ -153,7 +165,7 @@ body{
 }
 .size-button {
     background-color: white;
-    color: gray;
+    color: black;
     border: 1px solid lightgray;
     text-align: center;
     font-size: 10px;
@@ -217,6 +229,22 @@ body{
     }  
 
     .image-display {
+        padding: 0px 10px;
+        height: 570px;
+    }  
+
+
+    .product_display {
+        background-color: white;
+        padding: 60px;
+        height: 570px;
+    }
+
+    .size-picker{
+        width: 440px;
+    }
+
+    .product_view {
         padding: 10px;
     }
 }
@@ -231,7 +259,9 @@ body{
     }
 
     .product_display {
+        padding: 10px;
         width: 70%;
+        height: auto;
     }
 
     .image-display {
@@ -252,15 +282,16 @@ body{
         padding: 10px;
         border: 1px solid lightgray;
         overflow: hidden;
-        height: 500px;
+        height: 570px;
     }
 
     .product-info {
         max-width: 300px;
+        padding: 15px 20px;
     }
 
     .size-button {
-        width: 80px;
+        width: 65px;
         text-align: center;
     }
 
@@ -283,7 +314,9 @@ body{
     }
 
     .product_display {
+        padding: 10px;
         width: 70%;
+        height: auto;
     }
 
     .image-display {
@@ -304,15 +337,16 @@ body{
         padding: 10px;
         border: 1px solid lightgray;
         overflow: hidden;
-        height: 500px;
+        height: 570px;
     }
 
     .product-info {
         max-width: 300px;
+        padding: 15px 20px;
     }
 
     .size-button {
-        width: 80px;
+        width: 65px;
         text-align: center;
     }
 
@@ -336,7 +370,9 @@ body{
     }
 
     .product_display {
+        padding: 10px;
         width: 70%;
+        height: auto;
     }
 
     .image-display {
@@ -357,15 +393,16 @@ body{
         padding: 10px;
         border: 1px solid lightgray;
         overflow: hidden;
-        height: 500px;
+        height: 570px;
     }
 
     .product-info {
         max-width: 300px;
+        padding: 15px 20px;
     }
 
     .size-button {
-        width: 80px;
+        width: 65px;
         text-align: center;
     }
 
@@ -389,7 +426,9 @@ body{
     }
 
     .product_display {
+        padding: 10px;
         width: 70%;
+        height: auto;
     }
 
     .image-display {
@@ -410,15 +449,16 @@ body{
         padding: 10px;
         border: 1px solid lightgray;
         overflow: hidden;
-        height: 500px;
+        height: 570px;
     }
 
     .product-info {
         max-width: 300px;
+        padding: 15px 20px;
     }
 
     .size-button {
-        width: 80px;
+        width: 65px;
         text-align: center;
     }
 
