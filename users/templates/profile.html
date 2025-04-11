@@ -1,4 +1,14 @@
 {% extends 'profile_base.html' %}
 
 {% block settings_content %}
+<div class="profile-design">
+    <div class="welcome-page">
+        <div id="profileGreeting">
+            <p>Welcome to Your Profile</p>
+        </div>
+        <div id="profilePic" class="pfp">
+            <p id="profileInitial" class="profile-initial">{{ request.user.username|first }}</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
