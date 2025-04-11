@@ -1,7 +1,6 @@
 {% extends 'profile_base.html' %}
 
 {% block settings_content %}
-<h3 class="tab-header">My Details</h3>
     {% for info in profile_info %}
         {% if messages %}
             {% for message in messages %}
@@ -13,6 +12,7 @@
             {% endfor %}
         {% endif %}
         <div class="form-container">
+            <h3 class="tab-header">My Details</h3>
             <form class="profileForm" action="{% url 'update_user' profile_id=info.user.id %}" method="post">
                 {% csrf_token %}
                 {% if errors.userName %}
