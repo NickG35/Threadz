@@ -9,22 +9,21 @@
 {% block scripts %}
     <script>
        document.addEventListener("DOMContentLoaded", function () {
-            const mediaQuery = window.matchMedia("(max-width: 600px)");
+            const mediaQuery = window.matchMedia("(max-width: 719px)");
             const sidebar = document.querySelector('.sidebar');
             const navLinks = document.querySelectorAll('.list-group-item a');
+            const profileLinks = document.querySelectorAll('.profile-group');
 
-            const isProfile = window.location.pathname.includes('/dashboard/');
+            function isProfilePage() {
+                return window.location.pathname.includes('/dashboard/');
+            }
 
             function toggleSidebar() {
-                if (mediaQuery.matches && !isProfile) {
-                    sidebar.classList.add("hidden");
-                } else {
-                    sidebar.classList.remove("hidden");
-                }
+                sidebar.classList.toggle("hidden", mediaQuery.matches  && !isProfilePage());
             }
 
             function hideSidebar() {
-                if (mediaQuery.matches && !isProfile) {
+                if (mediaQuery.matches &&  !isProfilePage()) {
                     sidebar.classList.add("hidden");
                 }
             }
@@ -33,48 +32,87 @@
                 link.addEventListener('click', hideSidebar);
             });
 
+            mediaQuery.addEventListener("change", toggleSidebar);
             toggleSidebar();
 
-            mediaQuery.addEventListener("change", toggleSidebar);
+            profileLinks.forEach(link => {
+                link.addEventListener('click', function(e){
+                    e.preventDefault();
+                    loadContent(link.href);
+                })
+            })
+
+            function setActiveLink(url) {
+                // Remove 'active' from all list items
+                document.querySelectorAll('.list-group-item').forEach(item => {
+                    const link = item.querySelector('a');
+                    item.classList.toggle('active', link && link.href === url);
+                });
+            }
+
+            function loadContent(url, shouldPush = true) {
+                fetch(url)
+                    .then (response => response.text())
+                    .then(data => {
+                        // Use a DOM parser to extract only the relevant part (content inside settings-content)
+                        const parser = new DOMParser();
+                        const htmlDoc = parser.parseFromString(data, 'text/html');
+                        // Extract the dynamic content (settings-content)
+                        const newContent = htmlDoc.querySelector('.settings-content').innerHTML;
+
+                        // Replace only the content inside settings-content without affecting the navbar and sidebar
+                        document.querySelector('.settings-content').innerHTML = newContent;
+
+                        // Update the browser's URL without reloading the page
+                        if(shouldPush){
+                            history.pushState({ url }, '', url);
+                        }
+
+                        setActiveLink(url);
+                        toggleSidebar();
+                    })
+                    .catch(err => console.error('Error loading content:', err));
+            }
+            window.addEventListener('popstate', function(event) {
+                const url = event.state?.url || window.location.pathname;
+                loadContent(url, false);
+            });
         });
     </script>
 {% endblock %}
 {% block content %}
-    <div class="container-fluid">
-        <div class="profile-links">
-            <div class="profileNav">
-                <a class="nav-link" href="{% url 'index' %}">Threadz</a>
-            </div>
-            <div class="profileNav">
-                <a class="nav-link {% if dashboard %} disabled {% endif %}" href="{% url 'profile' profile_id=request.user.profile.id %}">My Profile</a>
-            </div>
-            <div  class="profileNav">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    <div class="profile-links">
+        <div class="profileNav left-filler"></div>
+        <div class="profileNav center-link">
+            <a class="nav-link" href="{% url 'index' %}">Threadz</a>
+        </div>
+        <div class="profileNav right-links">
+            <a class="nav-link {% if dashboard %} disabled {% endif %}" href="{% url 'profile' profile_id=request.user.profile.id %}">My Profile</a>
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+    <div class="settings-container">
+        <div class="sidebar">
+            <div class="profile-nav">
+                <div class="profile-display">
+                    <div class="pfp">
+                        <p class="profile-initial">{{ request.user.username|first }}</p>
+                    </div>
+                    <div class="profile-greeting">
+                        <p>{{ request.user.profile }}</p>
+                    </div>
+                </div>
+                <ul id="profile-list" class="list-group">
+                    <li class="list-group-item {% if request.resolver_match.url_name == 'update_user' %}active{% endif %}"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card"></i><span>My Details</span></a></li>
+                    <li class="list-group-item {% if request.resolver_match.url_name == 'update_password' %}active{% endif %}"><a class="profile-group" href="{% url 'update_password' profile_id=request.user.profile.id %}"><i class="fa-solid fa-lock"></i><span>Change Password</span></a></li>
+                    <li class="list-group-item {% if request.resolver_match.url_name == 'my_clothes' %}active{% endif %}"><a class="profile-group" href="{% url 'my_clothes' profile_id=request.user.profile.id %}"><i class="fa-solid fa-shirt"></i><span>My Clothes</span></a></li>
+                    <li class="list-group-item {% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}"><a class="profile-group" href="{% url 'my_orders' profile_id=request.user.profile.id %}"><i class="fa-solid fa-box"></i><span>My Orders</span></a></li>
+                </ul>
             </div>
         </div>
-        <div class="settings-container">
-            <aside class="sidebar">
-                <nav class="profile-nav">
-                    <div class="profile-display">
-                        <div class="pfp">
-                            <p class="profile-initial">{{ request.user.username|first }}</p>
-                        </div>
-                        <div class="profile-greeting">
-                            <p>Hi, {{ request.user.profile }}.</p>
-                        </div>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item"><a class="profile-group" href="{% url 'update_user' profile_id=request.user.profile.id %}"><i class="fa-solid fa-id-card" style="color: #000000;"></i><span>My Details</span></a></li>
-                        <li class="list-group-item"><a class="profile-group" href="{% url 'update_password' profile_id=request.user.profile.id %}"><i class="fa-solid fa-lock" style="color: #000000;"></i><span>Change Password</span></a></li>
-                        <li class="list-group-item"><a class="profile-group" href="{% url 'my_clothes' profile_id=request.user.profile.id %}"><i class="fa-solid fa-shirt" style="color: #000000;"></i><span>My Clothes</span></a></li>
-                        <li class="list-group-item"><a class="profile-group" href="{% url 'my_orders' profile_id=request.user.profile.id %}"><i class="fa-solid fa-box" style="color: #000000;"></i><span>My Orders</span></a></li>
-                    </ul>
-                </nav>
-            </aside>
 
-            <section class="settings-content">
-                {% block settings_content %}{% endblock %}
-            </section>
+        <div class="settings-content">
+            {% block settings_content %}{% endblock %}
         </div>
     </div>
 {% endblock %}
