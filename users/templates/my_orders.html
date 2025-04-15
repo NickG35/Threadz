@@ -1,42 +1,29 @@
 {% extends 'profile_base.html' %}
 
 {% block settings_content %}
-    <h3 class="tab-header">My Orders</h3>
-    <div class="products-div">
+    <div class="contentContainer">
+        <h3 class="tab-header">My Orders</h3>
         {% for order in orders %}
-        <div id="individual-order" class="row justify-content-center">
-                {% for cart_item in order.cart_item.all %}
-                    <div id="image-holder" class="col-6 col-sm-4 col-md-3">
-                        <div id="preview-container" class="image-container">
-                            <div id="preview-box" class="image-box">
-                                {% if cart_item.product.created_by %}
-                                    <img class="product_image" src="{{ cart_item.product.image.url }}">
-                                {% else %}
-                                    <img class="product_image" src="{{ cart_item.product.image }}">
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            <div class="my-order">
-                <div class="order-details">
-                    <div class="order-info">
-                        <i id="previewIcon" class="fa-solid fa-box" style="color: #e6e6e6;"></i>
-                        <small class="graytext">Order number: {{ order.id }}</small>
-                    </div>
-                    <div class="order-info">
-                        <i id="previewIcon" class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
-                        <small class="graytext">Order date: {{ order.purchase_date }}</small>
-                    </div>
+            {% for cart_item in order.cart_item.all %}
+            <div class="product-image-row">
+                <div class="image-box">
+                    {% if cart_item.product.created_by %}
+                        <img class="product_image" src="{{ cart_item.product.image.url }}">
+                    {% else %}
+                        <img class="product_image" src="{{ cart_item.product.image }}">
+                    {% endif %}
                 </div>
-                <form action="{% url 'order_details' order_id=order.id %}" method="post">
-                    {% csrf_token %}
-                    <div class="right-align">
-                        <button class="form-button" type="submit">View Order</button>
-                    </div>
-                </form>
+                <!--Format order page and style product row and make responsive-->
             </div>
-        </div>
+            {% endfor %}
+            <i class="fa-solid fa-box" style="color: #e6e6e6;"></i>
+            <small class="graytext">Order number: {{ order.id }}</small>
+            <i class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
+            <small class="graytext">Order date: {{ order.purchase_date }}</small>
+            <form action="{% url 'order_details' order_id=order.id %}" method="post">
+                {% csrf_token %}
+                <button class="form-button" type="submit">View Order</button>
+            </form>
         {% endfor %}
     </div>
 {% endblock %}

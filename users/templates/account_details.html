@@ -11,30 +11,32 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        <div class="form-container">
-            <h3 class="tab-header">My Details</h3>
-            <form class="profileForm" action="{% url 'update_user' profile_id=info.user.id %}" method="post">
-                {% csrf_token %}
-                {% if errors.userName %}
-                    <p class="error">{{ errors.userName }}</p>
-                {% endif %}
-                <span class="graytext">Username</span>
-                <div class="input-container">
-                    <i class="fa-solid fa-user" id="form-icon" style="color: #e6e6e6;"></i>
-                    <input class="form-control" name="username" type="text" value="{{ request.POST.username|default:info.user.username }}" data-id="{{ info.user.id }}">
-                </div>
-                {% if errors.email %}
-                    <p class="error">{{ errors.email }}</p>
-                {% endif %}
-                <span class="graytext">Email</span>
-                <div class="input-container">
-                    <i class="fa-solid fa-envelope" id="form-icon" style="color: #e6e6e6;"></i>
-                    <input class="form-control" name="email" type="email" value="{{ request.POST.email|default:info.user.email }}">
-                </div>
-                <div class="right-align">
-                    <button class="form-button" type="submit">Submit</button>
-                </div>
-            </form>
+        <div class="contentContainer">
+            <div class="form-container">
+                <h3 class="tab-header">My Details</h3>
+                <form class="profileForm" action="{% url 'update_user' profile_id=info.user.id %}" method="post">
+                    {% csrf_token %}
+                    {% if errors.userName %}
+                        <p class="error">{{ errors.userName }}</p>
+                    {% endif %}
+                    <span class="graytext">Username</span>
+                    <div class="input-container">
+                        <i class="fa-solid fa-user" id="form-icon" style="color: #e6e6e6;"></i>
+                        <input class="form-control" name="username" type="text" value="{{ request.POST.username|default:info.user.username }}" data-id="{{ info.user.id }}">
+                    </div>
+                    {% if errors.email %}
+                        <p class="error">{{ errors.email }}</p>
+                    {% endif %}
+                    <span class="graytext">Email</span>
+                    <div class="input-container">
+                        <i class="fa-solid fa-envelope" id="form-icon" style="color: #e6e6e6;"></i>
+                        <input class="form-control" name="email" type="email" value="{{ request.POST.email|default:info.user.email }}">
+                    </div>
+                    <div class="right-align">
+                        <button class="form-button" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     {% endfor %}
 {% endblock %}

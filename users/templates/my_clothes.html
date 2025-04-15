@@ -1,9 +1,8 @@
 {% extends 'profile_base.html' %}
 {% block settings_content %}
 {% load static %}
-
-    <h3 class="tab-header">My Clothes</h3>
-    <div class="container-fluid">
+    <div class="contentContainer">
+        <h3 class="tab-header">My Clothes</h3>
         <div class="row justify-content-center">
             {% for product in profile_products %}
                 <div class="col-6 col-sm-4 col-md-3">
