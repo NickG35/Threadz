@@ -1,29 +1,44 @@
 {% extends 'profile_base.html' %}
 
 {% block settings_content %}
-    <div class="contentContainer">
-        <h3 class="tab-header">My Orders</h3>
-        {% for order in orders %}
-            {% for cart_item in order.cart_item.all %}
-            <div class="product-image-row">
-                <div class="image-box">
-                    {% if cart_item.product.created_by %}
-                        <img class="product_image" src="{{ cart_item.product.image.url }}">
-                    {% else %}
-                        <img class="product_image" src="{{ cart_item.product.image }}">
-                    {% endif %}
-                </div>
-                <!--Format order page and style product row and make responsive-->
+    <div class="order-container">
+        <div class="order-detail">
+            <i class="fa-solid fa-box" style="font-size: 40px;"></i>
+            <h3 class="tab-header">My Orders</h3>
+        </div>
+    </div>
+    <div id="product-container" class="order-container">
+        <div class="orderSection">
+            <div id="top-details" class="orderDetails">
+                <span class="graytext">Order Status:</span>
+                <span><b>WE'VE SENT IT!</b></span>
+                <small>Estimated delivery 3-5 business days</small>
             </div>
+            {% for order in orders %}
+                <div class="product_row">
+                    {% for cart_item in order.cart_item.all %}
+                    <div class="col-4">
+                        <div class="image-box">
+                            {% if cart_item.product.created_by %}
+                                <img class="product_image" src="{{ cart_item.product.image.url }}">
+                            {% else %}
+                                <img class="product_image" src="{{ cart_item.product.image }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="detail-section">
+                    <div class="orderDetails">
+                        <small id="order-info" class="graytext"><b>Order number:</b> {{ order.id }}</small>
+                        <small id="order-info" class="graytext"><b>Order date:</b> {{ order.purchase_date }}</small>
+                    </div>
+                    <form action="{% url 'order_details' order_id=order.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="order-button" type="submit">View Order</button>
+                    </form>
+                </div>
             {% endfor %}
-            <i class="fa-solid fa-box" style="color: #e6e6e6;"></i>
-            <small class="graytext">Order number: {{ order.id }}</small>
-            <i class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
-            <small class="graytext">Order date: {{ order.purchase_date }}</small>
-            <form action="{% url 'order_details' order_id=order.id %}" method="post">
-                {% csrf_token %}
-                <button class="form-button" type="submit">View Order</button>
-            </form>
-        {% endfor %}
+        </div>
     </div>
 {% endblock %}
