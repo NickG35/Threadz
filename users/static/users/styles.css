@@ -4,7 +4,14 @@ body{
     font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 } 
 
-.settings-container {
+.settings-content {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#profileContainer {
     width: 100%;
 }
 
@@ -42,11 +49,6 @@ body{
     
 }
 
-
-#individual-order {
-    border-bottom: 1px solid lightgray;
-}
-
 .order-row {
     display: flex;
     max-width: 100%;
@@ -72,39 +74,6 @@ body{
     padding: 10px;
 }
 
-.product_image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.image-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 200px;
-}
-
-.image-box {
-    width: 100%;
-    height: 200px; 
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px; 
-    padding: 10px;
-    border: 1px solid lightgray;
-}
-
-#preview-container, #preview-box {
-    height: 130px;
-}
-
-#image-holder {
-    padding: 40px 5px;
-}
-
 .name_box {
     max-width: 100%;
     padding: 10px 0px;
@@ -115,6 +84,21 @@ body{
     color: black;
     font-size: 14px;
     display: block;
+}
+
+.image-box {
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.product_image {
+    width: 80px;
+    max-height: 80px;
+}
+
+.product-image-row {
+    display: flex;
 }
 
 .product_name {
@@ -141,6 +125,14 @@ body{
     align-items: center;
     text-align: center;
 }
+
+.contentContainer {
+    background: white;
+    border-radius: 8px;
+    height: 100vh;
+    border: 1px solid lightgray;
+}
+
 .form-container {
     min-width: 320px;
     max-width: 700px;
@@ -168,12 +160,10 @@ body{
     font-size: 18px;
 }
 .form-control {
-    background: #f8f8f8;
     border: none;
 }
 
 .form-control:focus {
-    background: #f8f8f8;
     box-shadow: none;
 }
 
@@ -189,71 +179,25 @@ body{
     text-decoration: none;
 }
 
-#order-section {
-    padding: 20px 0px;
-}
-
-.order-details, .delivery-details {
-    display: flex;
-    flex-direction: column;
-}
-.my-order {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.order-info {
-    display: flex;
-    align-content: center;
-}
-
-.order-content {
-    padding: 5px;
-    height: 100%;
-    align-content: center;
-}
-
-#orderIcon {
-    font-size: 26px;
-}
-
-#previewIcon {
-    font-size: 22px;
-    margin-right: 10px;
-}
-
 #profile-layout {
     padding: 10px 0px;
 }
-.profileNav {
-    font-size: 18px;
-}
+
 .profile-links {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    position: relative;
-    padding: 20px 0px;
-    background: black;
-    color: white;
+    width: 100%;
+    font-size: 18px;
+    padding: 20px;
 }
 
-.center-link {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+.right-links {
+    display: flex;
 }
 
 .tab-header {
     text-align: center;
     padding: 15px;
-}
-
-.right-links {
-    margin-left: auto;
-    display: flex;
-    gap: 15px;
 }
 
 .profile-nav {
@@ -340,6 +284,7 @@ body{
     }
 
     .sidebar {
+        padding: 20px;
         min-width: 250px;
     }
 
@@ -348,13 +293,13 @@ body{
         flex-direction: row;
     }
 
-    .profile-group {
-        padding: 5px;
+    #profileContainer {
+        max-width: 1000px;
+        justify-self: center;
     }
 
-    .settings-content {
-        justify-content: center;
-        width: 100%;
+    .profile-group {
+        padding: 5px;
     }
 
     .welcome-page {
@@ -389,12 +334,5 @@ body{
         background: white; 
         border-radius: 8px;
     }
-}
 
-/* Large desktop screens (1600px and above) */
-@media (min-width: 1320px) {
-    .settings-content {
-        width: 100%;
-    }
-   
 }
