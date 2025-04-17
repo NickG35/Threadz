@@ -1,25 +1,21 @@
 {% extends 'profile_base.html' %}
 {% block settings_content %}
-{% load static %}
     <div class="contentContainer">
-        <h3 class="tab-header">My Clothes</h3>
-        <div class="row justify-content-center">
+        <div id="detail-container" class="tab-container">
+            <div class="tab-detail">
+                <i id="tab-icon" class="fa-solid fa-shirt" style="font-size: 40px;"></i>
+                <h3 class="tab-header">My Clothes</h3>
+            </div>
+        </div>
+        <div id="paddedRow" class="row justify-content-center">
             {% for product in profile_products %}
-                <div class="col-6 col-sm-4 col-md-3">
-                    <div class="image-container">
-                        <div class="image-box">
-                            {% if product.created_by %}
-                                <img class="product_image" src="{{product.image.url}}">
-                            {% else %}
-                                <img class="product_image" src="{{product.image }}">
-                            {% endif %}
-                            {% if product.created_by != user.profile %}
-                                <form action="{% url 'toggle_watch' product_id=product.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button class="watchlist-btn"><i class="fa-solid fa-eye"></i></button>
-                                </form>
-                            {% endif %}
-                        </div>
+                <div class="col-4">
+                    <div class="image-box">
+                        {% if product.created_by %}
+                            <img class="product_image" src="{{product.image.url}}">
+                        {% else %}
+                            <img class="product_image" src="{{product.image }}">
+                        {% endif %}
                     </div>
                     <div class="name_box">
                         <p><a class="product_name" href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
