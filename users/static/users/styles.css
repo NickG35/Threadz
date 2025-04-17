@@ -14,12 +14,21 @@ body{
     width: 100%;
 }
 
-.order-container {
+.tab-container {
     background: white;
-    padding: 35px;
-    text-align: left;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 5px;
     margin-bottom: 20px;
+    text-align: center;
+    justify-self: center;
     width: 100%;
+}
+
+#detail-container {
+    border: none;
+    margin-bottom: 0px;
+    justify-self: center;
 }
 
 #product-container {
@@ -87,7 +96,7 @@ body{
 
 .name_box {
     max-width: 100%;
-    padding: 10px 0px;
+    padding: 10px;
 }
 
 .product_name, #product_price {
@@ -98,22 +107,29 @@ body{
 }
 
 .image-box {
-    padding: 10px;
-    margin: 5px;
     width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    padding: 15px;
+    box-sizing: border-box;
     border: 1px solid lightgray;
 }
 
 .product_image {
     width: 100%;
-    height: 60px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .product_row {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
     border-bottom: 1px solid lightgray;
     border-top: 1px solid lightgray;
-    padding: 10px 0px;
+    padding: 10px;
+    justify-content: center;
 }
 
 .orderSection {
@@ -156,7 +172,11 @@ body{
     min-width: 320px;
     max-width: 700px;
     justify-self: center;
-    padding: 20px;
+    padding: 0px 35px;
+}
+
+.tab-info, #tab-icon {
+    display: none;
 }
 
 .error {
@@ -223,12 +243,21 @@ body{
     padding: 20px;
 }
 
-.right-links, .order-detail, .detail-section {
+.right-links, .detail-section {
     display: flex;
 }
 
-.order-detail {
+.tab-detail {
+    justify-content: center;
+    justify-self: center;
     align-items: center;
+}
+
+.tabDetail {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .detail-section {
@@ -251,8 +280,13 @@ body{
     font-size: 14px;
 }
 
+#paddedRow {
+    padding: 5px;
+}
+
 .tab-header {
     text-align: center;
+    justify-self: center;
     padding: 15px;
 }
 
@@ -404,4 +438,33 @@ body{
         width: 150px;
     }
 
+    .tab-container{
+        padding: 35px;
+        text-align: left;
+    }
+
+    .tab-detail {
+        justify-content: left;
+        justify-self: left;
+        text-align: left;
+        display: flex;
+    }
+
+    #tab-icon {
+        display: block;
+    }
+
+    .tab-info {
+        display: block;
+        font-size: 14px
+    }
+
+    .form-container {
+        justify-self: left;
+        width: 90%;
+    }
+
+    #clothes_row {
+        padding:  5px 35px;
+    }
 }
