@@ -1,13 +1,13 @@
 {% extends 'profile_base.html' %}
 
 {% block settings_content %}
-    <div class="order-container">
-        <div class="order-detail">
-            <i class="fa-solid fa-box" style="font-size: 40px;"></i>
+    <div class="tab-container">
+        <div class="tab-detail">
+            <i id="tab-icon" class="fa-solid fa-box" style="font-size: 40px;"></i>
             <h3 class="tab-header">My Orders</h3>
         </div>
     </div>
-    <div id="product-container" class="order-container">
+    <div id="product-container" class="tab-container">
         <div class="orderSection">
             <div id="top-details" class="orderDetails">
                 <span class="graytext">Order Status:</span>
@@ -17,7 +17,6 @@
             {% for order in orders %}
                 <div class="product_row">
                     {% for cart_item in order.cart_item.all %}
-                    <div class="col-4">
                         <div class="image-box">
                             {% if cart_item.product.created_by %}
                                 <img class="product_image" src="{{ cart_item.product.image.url }}">
@@ -25,7 +24,6 @@
                                 <img class="product_image" src="{{ cart_item.product.image }}">
                             {% endif %}
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
                 <div class="detail-section">
