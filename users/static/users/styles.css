@@ -39,6 +39,10 @@ body{
     padding: 10px 5px;
 }
 
+.right-align {
+    text-align: right;
+}
+
 .sub-price {
     text-align: right;
 }
@@ -154,10 +158,6 @@ body{
     padding: 15px;
 }
 
-#order-icon {
-    margin: 0px 5px;
-}
-
 .product_name {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -271,6 +271,18 @@ body{
 
 .orderDetail {
     align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.left-detail {
+    font-weight: bold;
+}
+
+.orderDetail span {
+    margin: 0;
+    line-height: 1;
 }
 
 .tab-detail {
@@ -278,6 +290,13 @@ body{
     justify-self: center;
     align-items: center;
 }
+
+#column-detail {
+    justify-content: center;
+    justify-self: center;
+    padding: 5px;
+}
+
 
 .tabDetail {
     display: flex;
@@ -304,7 +323,6 @@ body{
     border-top: 1px solid lightgray;
     text-align: left;
     padding: 20px 0px;
-    font-size: 14px;
 }
 
 #padDetail {
@@ -330,6 +348,10 @@ body{
 
 #order-info {
     font-size: 14px;
+}
+
+#order-icon {
+    margin-right: 5px;
 }
 
 #paddedRow {
@@ -500,6 +522,14 @@ body{
         justify-self: left;
         text-align: left;
         display: flex;
+    }
+
+    #column-detail {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        justify-content: left;
+        justify-self: left;
     }
 
     #tab-icon {
