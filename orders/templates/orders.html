@@ -3,28 +3,30 @@
 
 {% block settings_content %}
 
-<div class="tab-container">
-    <div class="tab-detail">
-        <h5 class="tab-header">Order Details</h5>
+<div id="tabContainer" class="tab-container">
+    <div id="column-detail">
+        <h5>Order Details</h5>
         <span class="tab-info">Thank you for your order! Check out the details below.</span>
     </div>
 </div>
 
-<div class="tab-container">
+<div id="tabContainer" class="tab-container">
     <div class="orderDetail">
-        <div class="order-object">
-            <i id="order-icon" class="fa-solid fa-box" style="color: #e6e6e6;"></i>
+        <div class="left-detail">
+            <i id="order-icon" class="fa-solid fa-box" style="color: gray;"></i>
+            <span class="graytext">Order number:</span>
         </div>
-        <div class="order-text">
-            <p class="graytext">Order number: {{ order_details.id }}</p>
+        <div class="right-detail">
+            <span class="graytext">{{ order_details.id }}</span>
         </div>
     </div>
     <div class="orderDetail">
-        <div class="order-object">
-            <i id="order-icon" class="fa-solid fa-calendar" style="color: #e6e6e6;"></i>
+        <div class="left-detail">
+            <i id="order-icon" class="fa-solid fa-calendar" style="color: gray;"></i>
+            <span class="graytext">Order date:</span> 
         </div>
-        <div class="order-text">
-            <p class="graytext">Order date: {{ order_details.purchase_date }}</p>
+        <div class="right-detail">
+            <span class="graytext">{{ order_details.purchase_date }}</span>
         </div>
     </div>
 </div>
