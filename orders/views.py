@@ -94,5 +94,6 @@ def receipt(request, purchase_id):
 def order_details(request, order_id):
     order_details = Order.objects.get(id=order_id)
     return render(request, 'orders.html', {
-        'order_details': order_details
+        'order_details': order_details,
+         "hidden": True
     })
