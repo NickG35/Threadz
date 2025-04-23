@@ -69,51 +69,72 @@
         }
     });
 </script>
-<h1 class="order-header">Cart</h1>
-<div class="container-fluid">
-    <div class="row">
-        {% if cart_items %}
+{% if cart_items %}
+<div class="header-container">
+    <h1>Cart</h1>
+</div>
+<div class="whole-container">
+        <div class="cartColumn">
             {% for items in cart_items %}
-                <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
-                    <div class="col-5">
-                            {% if items.product.created_by %}
-                                <img class="cart-image" src="{{ items.product.image.url }}">
-                            {% else %}
-                                <img class="cart-image" src="{{ items.product.image }}">
-                            {% endif %}
-                    </div>
-                    <div class="col-7">
-                            <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
-                            <p class="product-name" data-id="{{items.product.id}}">{{ items.product.name }}</p>
-                            <div class="cart-info">
-                                <div class="left-side">
-                                    <p class="size">{{ items.size }}</p>
-                                    <p>QTY: {{ items.quantity }}</p>
+                <div class="cart-container">
+                    <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
+                        <div class="col-5">
+                                {% if items.product.created_by %}
+                                    <img class="cart-image" src="{{ items.product.image.url }}">
+                                {% else %}
+                                    <img class="cart-image" src="{{ items.product.image }}">
+                                {% endif %}
+                        </div>
+                        <div class="col-7">
+                                <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
+                                <p class="product-name" data-id="{{items.product.id}}">{{ items.product.name }}</p>
+                                <div class="cart-info">
+                                    <div class="left-side">
+                                        <p class="size">{{ items.size }}</p>
+                                        <p>QTY: {{ items.quantity }}</p>
+                                    </div>
+                                    <div class="right-side">
+                                        <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="right-side">
-                                    <form class="delete-form" action="{% url 'delete_item' product_id=items.product.id %}" method="post">
-                                        {% csrf_token %}
-                                        <button class="deleteButton"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></button>
-                                    </form>
-                                </div>
-                            </div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
-            <div class="row">
-                <div class="cart-total">
-                    <p id="cart-price" class="bold">Total: ${{ cart_total }}</p>
-                    <form action="{% url 'cart'%}" method="post">
-                        {% csrf_token %}
-                        <button class="submit_button" type="submit">Checkout</button>
-                    </form>
+        </div>
+    <div class="total-container">
+        <div class="inner-container">
+            <div class="spaceBetween">
+                <p id="cart-header" class="bold">Total</p>
+                <p class="bold">${{ cart_total }}</p>
+
+            </div>
+        </div>
+        <div id="totalContainer" class="inner-container">
+            <div class="spaceBetween">
+                <div><b>Sub-total</b></div>
+                <div>${{ cart_total }}</div>
+            </div>
+            <div class="spaceBetween">
+                <div><b>Delivery</b></div>
+                <div>Standard (Free)</div>
+            </div>
+            <form action="{% url 'cart'%}" method="post">
+                {% csrf_token %}
+                <div class="button-container">
+                    <button class="submit_button" type="submit">Checkout</button>
                 </div>
-            </div>
-        {% else %}  
-            <div class="no-cart">
-                <p class="no-items">There are no items in your cart.</p>
-            </div>
-        {% endif %}
+            </form>
+        </div>
     </div>
 </div>
+{% else %}  
+    <div class="no-cart">
+        <p class="no-items">There are no items in your cart.</p>
+    </div>
+{% endif %}
+
 {% endblock %}
