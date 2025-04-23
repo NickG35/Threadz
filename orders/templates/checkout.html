@@ -5,46 +5,52 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
 {% endblock %}
-<div class="container-fluid">
-    <h2 class="order-header">Shipping and Billing Info</h2>
-    <form action="{% url 'checkout' %}" method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group">
-                <span class="graytext">{{ field.label }}</span>
-                <div class="orderField">
-                    {{ field }}
-                </div>
-                {% if field.errors %}
-                    <span class="error">{{ field.errors }}</span>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <h2 class="order-header">Order Summary</h2>
-        <div class="row">
-            {% for items in cart_items %}
-                <div id="cart-row" class="row align-items-center mb-3">
-                    <div class="col-5">
-                            {% if items.product.created_by %}
-                                <img class="cart-image" src="{{ items.product.image.url }}">
-                            {% else %}
-                                <img class="cart-image" src="{{ items.product.image }}">
-                            {% endif %}
+
+<div class="checkout-container">
+        <div clcass="form-container">
+            <form action="{% url 'checkout' %}" method="post">
+                <h2 class="order-header">Shipping and Billing Info</h2>
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <span class="graytext">{{ field.label }}</span>
+                        <div class="orderField">
+                            {{ field }}
+                        </div>
+                        {% if field.errors %}
+                            <span class="error">{{ field.errors }}</span>
+                        {% endif %}
                     </div>
-                    <div class="col-7">
-                            <p class="bold">${{  items.product.price }}</p>
-                            <p>{{ items.product.name }}</p>
-                            <span class="size">{{ items.size }}</span>
-                            <span>QTY: {{ items.quantity }}</span>
-                </div>
-                </div>
-            {% endfor %}
-            <div class="cart-total">
-                <p class="bold">Total: ${{ cart_total }}</p>
-            </div>
+                {% endfor %}
         </div>
-        <div class="checkout-button">
-            <button class="submit_button" type="submit">Place order</button>
+        <div class="summary-container">
+            <h2 class="order-header">Order Summary</h2>
+                {% for items in cart_items %}
+                <div class="cart-container">
+                    <div id="cart-row" class="row align-items-center mb-3">
+                        <div class="col-5">
+                                {% if items.product.created_by %}
+                                    <img class="cart-image" src="{{ items.product.image.url }}">
+                                {% else %}
+                                    <img class="cart-image" src="{{ items.product.image }}">
+                                {% endif %}
+                        </div>
+                        <div class="col-7">
+                                <p class="bold">${{  items.product.price }}</p>
+                                <p>{{ items.product.name }}</p>
+                                <span class="size">{{ items.size }}</span>
+                                <span>QTY: {{ items.quantity }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="cart-total">
+                    <p class="bold">Total: ${{ cart_total }}</p>
+                </div>
+            </div>
+            <div class="checkout-button">
+                <button class="checkout_button" type="submit">Place order</button>
+            </div>
         </div>
     </form>
 </div>
