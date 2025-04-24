@@ -12,6 +12,9 @@ body {
 
 #bottom-total {
     display: block;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    background: #f8f8f8;
 }
 
 #middle-total {
@@ -39,7 +42,7 @@ body {
     white-space: nowrap;
 }
 
-.cart-container, .total-container {
+.cart-container, .total-container, #checkout-cart {
     background: white;
     margin: 5px 0px;
     padding: 5px;
@@ -68,7 +71,13 @@ body {
 .form-container, .summary-container {
     width: 100%;
     padding: 5px;
+    background-color: white;
 }
+
+.summary-container {
+    margin-bottom: 20px;
+}
+
 
 .checkout-container {
     width: 100%;
@@ -150,6 +159,10 @@ body {
     margin: 15px 0;
 }
 
+.card {
+    border: none;
+}
+
 .receipt-total {
     text-align: right;
 }
@@ -197,18 +210,17 @@ body {
         flex-direction: row;
         justify-content: center;
         width: 100%;
-        padding: 10px;
     }
 
     .cart-container {
-        min-width: 350px;
-        max-width: 450px;
+        min-width: 400px;
+        max-width: 430px;
     }
 
     .total-container {
-        min-width: 300px;
-        max-width: 400px;
-        height: 40vh;
+        min-width: 250px;
+        max-width: 270px;
+        height: 35vh;
     }
 
     .cart-container, .total-container {
@@ -223,13 +235,18 @@ body {
     }
 
     .form-group {
-        max-width: 400px;
+        max-width: 500px;
+        padding: 10px;
     }
 
     .checkout-container {
         display: flex;
         flex-direction: row;
         justify-content: center;
+        justify-self: center;
+        min-width: 720px;
+        max-width: 900px;
+        padding: 20px 0px;
     }
 
     .summary-container {
@@ -237,10 +254,20 @@ body {
         flex-direction: column;
         background: white;
         order: 2;
+        max-width: 370px;
+        min-width: 360px;
+        height: 80vh;
     }
 
     .form-container {
         order: 1;
+        max-width: 530px;
+        min-width: 340px;
+        background: white;
+    }
+
+    .form-container, .summary-container {
+        margin: 0px 10px;
     }
 
     #checkout-image {
@@ -257,5 +284,9 @@ body {
 
     .cart-data {
         display: none;
+    }
+
+    #cart-row {
+        width: 100%;
     }
 }
