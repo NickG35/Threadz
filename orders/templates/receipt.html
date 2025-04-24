@@ -6,26 +6,28 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'orders/styles.css' %}">
 {% endblock %}
-<div class="container-fluid">
+
     <div class="receipt_message">
         <i class="fa-solid fa-circle-check" style="color: #000000;"></i>
         <p class="placed-message">Your Order has been placed</p>
     </div>
-    <div class="row">
+    <div class="summary-container">
         {% for items in purchase.cart_item.all %}
-            <div id="cart-row" class="row align-items-center mb-3">
-                <div class="col-5">
-                        {% if items.product.created_by %}
-                            <img class="cart-image" src="{{ items.product.image.url }}">
-                        {% else %}
-                            <img class="cart-image" src="{{ items.product.image }}">
-                        {% endif %}
-                </div>
-                <div class="col-7">
-                        <p class="bold">${{  items.product.price }}</p>
-                        <p>{{ items.product.name }}</p>
-                        <span class="size">{{ items.size }}</span>
-                        <span>QTY: {{ items.quantity }}</span>
+            <div id="checkout-cart">
+                <div id="cart-row" class="row align-items-center mb-3">
+                    <div class="col-5">
+                            {% if items.product.created_by %}
+                                <img class="cart-image" src="{{ items.product.image.url }}">
+                            {% else %}
+                                <img class="cart-image" src="{{ items.product.image }}">
+                            {% endif %}
+                    </div>
+                    <div class="col-7">
+                            <p class="bold">${{  items.product.price }}</p>
+                            <p>{{ items.product.name }}</p>
+                            <span class="size">{{ items.size }}</span>
+                            <span>QTY: {{ items.quantity }}</span>
+                    </div>
                 </div>
             </div>
         {% endfor %}
@@ -55,5 +57,4 @@
             Continue Shopping 
         </button>
     </div>
-</p>
 {% endblock %}
