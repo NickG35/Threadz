@@ -49,8 +49,26 @@
           <p class="card-text">Card ending in {{ purchase.card_number }}</p>
         </div>
     </div>
-    <div class="receipt-total">
-        <p class="bold">Total: ${{ purchase.total_price }}</p>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Total</h5>
+            <div class="spaceBetween">
+                <span>Subtotal</span>
+                <span>${{ purchase.total_price }}</span>
+            </div>
+            <div class="spaceBetween">
+                <span>Shipping</span>
+                <span>Free</span>
+            </div>
+            <div class="spaceBetween">
+                <span>Sales tax</span>
+                <span>$0</span>
+            </div>
+            <div class="spaceBetween">
+                <span class="bold">Total:</span>
+                <span class="bold">${{ purchase.total_price }}</span>
+            </div>
+        </div>
     </div>
     <div class="continue_button">
         <button type="button" onclick="window.location.href='{% url 'index' %}'" class="continue">
