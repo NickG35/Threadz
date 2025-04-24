@@ -7,7 +7,54 @@
 {% endblock %}
 
 <div class="checkout-container">
-        <div clcass="form-container">
+        <div class="summary-container">
+            <h2 class="order-header">Order Summary</h2>
+                {% for items in cart_items %}
+                <div id="checkout-cart" class="cart-container">
+                    <div id="cart-row" class="row align-items-center mb-3">
+                        <div class="col-5">
+                                {% if items.product.created_by %}
+                                    <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
+                                {% else %}
+                                    <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
+                                {% endif %}
+                        </div>
+                        <div class="col-7">
+                                <p class="bold">${{  items.product.price }}</p>
+                                <p>{{ items.product.name }}</p>
+                                <span class="size">{{ items.size }}</span>
+                                <span>QTY: {{ items.quantity }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="cart-data">
+                    <div class="spaceBetween">
+                        <span>{{ cart_items|length }} items</span>
+                        <span>${{ cart_total }}</span>
+                    </div>
+                </div>
+                <div id="middle-total" class="cart-total">
+                    <div class="spaceBetween">
+                        <span>Subtotal</span>
+                        <span>${{ cart_total }}</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span>Sales tax</span>
+                        <span>$0</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span class="bold">Total:</span>
+                        <span class="bold">${{ cart_total }}</span>
+                    </div>
+                </div>
+            <!--tomorrow work on making two divs and summary div as a column to match the cart page, then if enough time work on receipt page-->
+        </div>
+        <div class="form-container">
             <form action="{% url 'checkout' %}" method="post">
                 <h2 class="order-header">Shipping and Billing Info</h2>
                 {% csrf_token %}
@@ -22,36 +69,28 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-        </div>
-        <div class="summary-container">
-            <h2 class="order-header">Order Summary</h2>
-                {% for items in cart_items %}
-                <div class="cart-container">
-                    <div id="cart-row" class="row align-items-center mb-3">
-                        <div class="col-5">
-                                {% if items.product.created_by %}
-                                    <img class="cart-image" src="{{ items.product.image.url }}">
-                                {% else %}
-                                    <img class="cart-image" src="{{ items.product.image }}">
-                                {% endif %}
-                        </div>
-                        <div class="col-7">
-                                <p class="bold">${{  items.product.price }}</p>
-                                <p>{{ items.product.name }}</p>
-                                <span class="size">{{ items.size }}</span>
-                                <span>QTY: {{ items.quantity }}</span>
-                        </div>
+                <div id="bottom-total" class="cart-total">
+                    <div class="spaceBetween">
+                        <span>Subtotal</span>
+                        <span>${{ cart_total }}</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span>Sales tax</span>
+                        <span>$0</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span class="bold">Total:</span>
+                        <span class="bold">${{ cart_total }}</span>
                     </div>
                 </div>
-                {% endfor %}
-                <div class="cart-total">
-                    <p class="bold">Total: ${{ cart_total }}</p>
+                <div class="checkout-button">
+                    <button class="checkout_button" type="submit">Place order</button>
                 </div>
-            </div>
-            <div class="checkout-button">
-                <button class="checkout_button" type="submit">Place order</button>
-            </div>
+            </form>
         </div>
-    </form>
 </div>
 {% endblock %}
