@@ -76,7 +76,7 @@
 <div class="whole-container">
         <div class="cartColumn">
             {% for items in cart_items %}
-                <div class="cart-container">
+                <div class="cart_container">
                     <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
                         <div class="col-5">
                                 {% if items.product.created_by %}
@@ -107,6 +107,7 @@
         </div>
     <div class="total-container">
         <div class="inner-container">
+            <p>{{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %}</p>
             <div class="spaceBetween">
                 <p id="cart-header" class="bold">Total</p>
                 <p class="bold">${{ cart_total }}</p>
