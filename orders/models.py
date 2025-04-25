@@ -9,7 +9,7 @@ class Order(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)
-    purchase_date = models.DateTimeField(auto_now_add=True)
+    purchase_date = models.DateField(auto_now_add=True)
     total_price = models.IntegerField()
     address = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=50, null=True)
