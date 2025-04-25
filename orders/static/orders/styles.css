@@ -42,12 +42,18 @@ body {
     white-space: nowrap;
 }
 
-.cart-container, .total-container, #checkout-cart {
+.cart-container, .total-container, #checkout-cart, .cart_container {
     background: white;
-    margin: 5px 0px;
-    padding: 5px;
     width: 100%;
 }
+
+.cart-container, .total-container, #checkout-cart{
+    width: 100%;
+    margin: 5px 0px;
+    padding: 5px;
+}
+
+
 
 .cart-data {
     display: block;
@@ -212,18 +218,15 @@ body {
         width: 100%;
     }
 
-    .cart-container {
-        min-width: 400px;
-        max-width: 430px;
+    .cart_container {
+        min-width: 450px;
+        max-width: 500px;
     }
 
     .total-container {
         min-width: 250px;
-        max-width: 270px;
-        height: 35vh;
-    }
-
-    .cart-container, .total-container {
+        max-width: 250px;
+        height: 40vh;
         margin: 0px 10px;
     }
 
@@ -232,6 +235,9 @@ body {
         flex-direction: column;
         gap: 15px;
         background:#f8f8f8;
+        max-height: 410px;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .form-group {
