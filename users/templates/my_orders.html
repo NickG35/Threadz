@@ -7,36 +7,36 @@
             <h3 class="tab-header">My Orders</h3>
         </div>
     </div>
-    <div id="product-container" class="tab-container">
-        <div class="orderSection">
-            <div id="top-details" class="orderDetails">
-                <span class="graytext">Order Status:</span>
-                <span><b>WE'VE SENT IT!</b></span>
-                <small>Estimated delivery 3-5 business days</small>
-            </div>
-            {% for order in orders %}
-                <div class="product_row">
-                    {% for cart_item in order.cart_item.all %}
-                        <div class="image-box">
-                            {% if cart_item.product.created_by %}
-                                <img class="product_image" src="{{ cart_item.product.image.url }}">
-                            {% else %}
-                                <img class="product_image" src="{{ cart_item.product.image }}">
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="detail-section">
-                    <div class="orderDetails">
-                        <small id="order-info" class="graytext"><b>Order number:</b> {{ order.id }}</small>
-                        <small id="order-info" class="graytext"><b>Order date:</b> {{ order.purchase_date }}</small>
+    {% for order in orders %}
+        <div id="product-container" class="tab-container">
+            <div class="orderSection">
+                    <div id="top-details" class="orderDetails">
+                        <span class="graytext">Order Status:</span>
+                        <span><b>WE'VE SENT IT!</b></span>
+                        <small>Estimated delivery 3-5 business days</small>
                     </div>
-                    <form action="{% url 'order_details' order_id=order.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="order-button" type="submit">View Order</button>
-                    </form>
-                </div>
-            {% endfor %}
+                    <div class="product_row">
+                        {% for cart_item in order.cart_item.all %}
+                            <div class="image-box">
+                                {% if cart_item.product.created_by %}
+                                    <img class="product_image" src="{{ cart_item.product.image.url }}">
+                                {% else %}
+                                    <img class="product_image" src="{{ cart_item.product.image }}">
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="detail-section">
+                        <div class="orderDetails">
+                            <small id="order-info" class="graytext"><b>Order number:</b> {{ order.id }}</small>
+                            <small id="order-info" class="graytext"><b>Order date:</b> {{ order.purchase_date }}</small>
+                        </div>
+                        <form action="{% url 'order_details' order_id=order.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="order-button" type="submit">View Order</button>
+                        </form>
+                    </div>
+            </div>
         </div>
-    </div>
+    {% endfor %}
 {% endblock %}
