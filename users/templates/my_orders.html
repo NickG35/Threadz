@@ -38,5 +38,9 @@
                     </div>
             </div>
         </div>
+    {% empty %}
+        <div class="empty-message">
+            <p>You have no orders yet to display</p>
+        </div>
     {% endfor %}
 {% endblock %}

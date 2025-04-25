@@ -22,6 +22,10 @@
                         <p id="product_price">$ {{  product.price }}</p>
                     </div>
                 </div>
+            {% empty %}
+                <div class="empty-message">
+                    <p>You have no clothes yet to display</p>
+                </div>
             {% endfor %}
         </div>
     </div>
