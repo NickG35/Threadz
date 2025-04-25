@@ -269,6 +269,14 @@ body{
     display: flex;
 }
 
+.empty-message {
+    display: flex;               
+    justify-content: center;     
+    align-items: center;         
+    height: 40vh;               
+    text-align: center;
+}
+
 .orderDetail {
     align-items: center;
     display: flex;
