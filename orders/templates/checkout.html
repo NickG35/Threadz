@@ -8,26 +8,31 @@
 
 <div class="checkout-container">
         <div class="summary-container">
-            <h2 class="order-header">Order Summary</h2>
+            <div class="orderHeader">
+                <h2 class="order-header">Order Summary</h2>
+                <span class="header-count">({{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %})</span>
+            </div>
+            <div class="checkout-holder">
                 {% for items in cart_items %}
-                <div id="checkout-cart">
-                    <div id="cart-row" class="row align-items-center mb-3">
-                        <div class="col-5">
-                                {% if items.product.created_by %}
-                                    <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
-                                {% else %}
-                                    <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
-                                {% endif %}
+                        <div id="checkout-cart">
+                            <div id="cart-row" class="row align-items-center mb-3">
+                                <div class="col-5">
+                                        {% if items.product.created_by %}
+                                            <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
+                                        {% else %}
+                                            <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
+                                        {% endif %}
+                                </div>
+                                <div class="col-7">
+                                        <p class="bold">${{  items.product.price }}</p>
+                                        <p>{{ items.product.name }}</p>
+                                        <span class="size">{{ items.size }}</span>
+                                        <span>QTY: {{ items.quantity }}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-7">
-                                <p class="bold">${{  items.product.price }}</p>
-                                <p>{{ items.product.name }}</p>
-                                <span class="size">{{ items.size }}</span>
-                                <span>QTY: {{ items.quantity }}</span>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+            </div>
                 <div class="cart-data">
                     <div class="spaceBetween">
                         <span>{{ cart_items|length }} items</span>
@@ -52,7 +57,6 @@
                         <span class="bold">${{ cart_total }}</span>
                     </div>
                 </div>
-            <!--tomorrow work on making two divs and summary div as a column to match the cart page, then if enough time work on receipt page-->
         </div>
         <div class="form-container">
             <form action="{% url 'checkout' %}" method="post">
