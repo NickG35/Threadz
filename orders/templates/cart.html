@@ -123,13 +123,13 @@
                 <div><b>Delivery</b></div>
                 <div>Standard (Free)</div>
             </div>
-            <form action="{% url 'cart'%}" method="post">
-                {% csrf_token %}
-                <div class="button-container">
-                    <button class="submit_button" type="submit">Checkout</button>
-                </div>
-            </form>
         </div>
+        <form action="{% url 'cart'%}" method="post">
+            {% csrf_token %}
+            <div id="cartButton" class="checkout-button">
+                <button class="checkout_button" type="submit">Checkout</button>
+            </div>
+        </form>
     </div>
 </div>
 {% else %}  
