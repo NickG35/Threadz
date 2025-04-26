@@ -11,68 +11,78 @@
         <i class="fa-solid fa-circle-check" style="color: #000000;"></i>
         <p class="placed-message">Your Order has been placed</p>
     </div>
-    <div class="summary-container">
-        {% for items in purchase.cart_item.all %}
-            <div id="checkout-cart">
-                <div id="cart-row" class="row align-items-center mb-3">
-                    <div class="col-5">
-                            {% if items.product.created_by %}
-                                <img class="cart-image" src="{{ items.product.image.url }}">
-                            {% else %}
-                                <img class="cart-image" src="{{ items.product.image }}">
-                            {% endif %}
+    <div class="receiptContainer">
+        <div class="summary-container">
+            <div class="orderHeader">
+                <h2 class="order-header">Order Summary</h2>
+                <span class="header-count">({{purchase.cart_item.all|length}} item{% if purchase.cart_item.all|length > 1 %}s{% endif %})</span>
+            </div>
+            <div class="checkout-holder">
+                {% for items in purchase.cart_item.all %}
+                    <div id="checkout-cart">
+                        <div id="cart-row" class="row align-items-center mb-3">
+                            <div class="col-5">
+                                    {% if items.product.created_by %}
+                                        <img class="cart-image" src="{{ items.product.image.url }}">
+                                    {% else %}
+                                        <img class="cart-image" src="{{ items.product.image }}">
+                                    {% endif %}
+                            </div>
+                            <div class="col-7">
+                                    <p class="bold">${{  items.product.price }}</p>
+                                    <p>{{ items.product.name }}</p>
+                                    <span class="size">{{ items.size }}</span>
+                                    <span>QTY: {{ items.quantity }}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-7">
-                            <p class="bold">${{  items.product.price }}</p>
-                            <p>{{ items.product.name }}</p>
-                            <span class="size">{{ items.size }}</span>
-                            <span>QTY: {{ items.quantity }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-columns">
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">Shipping</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
+                <div class="shipping-information">
+                    <span>{{ purchase.first_name }} {{ purchase.last_name }}</span>
+                    <span>{{ purchase.address }} {{ purchase.city }}, {{ purchase.state }} {{ purchase.zip_code }}</span>
+                </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">Payment</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Payment Method</h6>
+                <p class="card-text">Card ending in {{ purchase.card_number }}</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total</h5>
+                    <div class="spaceBetween">
+                        <span>Subtotal</span>
+                        <span>${{ purchase.total_price }}</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span>Sales tax</span>
+                        <span>$0</span>
+                    </div>
+                    <div class="spaceBetween">
+                        <span class="bold">Total:</span>
+                        <span class="bold">${{ purchase.total_price }}</span>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    </div>
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Shipping</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Shipping Information</h6>
-          <div class="shipping-information">
-            <span>{{ purchase.first_name }} {{ purchase.last_name }}</span>
-            <span>{{ purchase.address }} {{ purchase.city }}, {{ purchase.state }} {{ purchase.zip_code }}</span>
-          </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Payment</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Payment Method</h6>
-          <p class="card-text">Card ending in {{ purchase.card_number }}</p>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Total</h5>
-            <div class="spaceBetween">
-                <span>Subtotal</span>
-                <span>${{ purchase.total_price }}</span>
-            </div>
-            <div class="spaceBetween">
-                <span>Shipping</span>
-                <span>Free</span>
-            </div>
-            <div class="spaceBetween">
-                <span>Sales tax</span>
-                <span>$0</span>
-            </div>
-            <div class="spaceBetween">
-                <span class="bold">Total:</span>
-                <span class="bold">${{ purchase.total_price }}</span>
+            <div class="continue_button">
+                <button type="button" onclick="window.location.href='{% url 'index' %}'" class="continue">
+                    Continue Shopping 
+                </button>
             </div>
         </div>
-    </div>
-    <div class="continue_button">
-        <button type="button" onclick="window.location.href='{% url 'index' %}'" class="continue">
-            Continue Shopping 
-        </button>
     </div>
 {% endblock %}
