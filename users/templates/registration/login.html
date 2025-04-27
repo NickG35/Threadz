@@ -6,10 +6,12 @@
 {% endblock %}
 {% block navbar %}{% endblock %}
 {% block content %}
-<button class="home-button"><a href="{% url 'index' %}"><i class="fa-solid fa-house" style="color: #000000;"></i></a></button>
-    <div class="form-container">
-        <h1 class="header">Login</h1>
-        <form action="{% url 'user_login' %}" method="post">
+<div class="homeButton">
+    <button class="home-button"><a href="{% url 'index' %}"><i class="fa-solid fa-house" style="color: #000000;"></i></a></button>
+</div>
+    <div class="formContainer">
+        <h1 class="tab-header">Login</h1>
+        <form class="user-form" action="{% url 'user_login' %}" method="post">
             {% csrf_token %}
             {% if errors.invalid_credentials %}
                 <p class="error">{{ errors.invalid_credentials }}</p>
