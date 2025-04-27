@@ -176,6 +176,15 @@ body{
     border: 1px solid lightgray;
 }
 
+.detail-success {
+    color:green; 
+    size: 12px;
+}
+
+.homeButton {
+    padding: 15px;
+}
+
 .alert {
     max-width: 800px;
     height: 60px;
@@ -195,6 +204,15 @@ body{
     max-width: 700px;
     justify-self: center;
     padding: 0px 35px;
+}
+
+.formContainer {
+    background-color: white;
+    min-width: 320px;
+    justify-content: center;
+    justify-self: center;
+    border: 1px solid lightgray;
+    border-radius: 5px;
 }
 
 .tab-info, #tab-icon {
@@ -219,6 +237,10 @@ body{
 
 .fa-user {
     font-size: 18px;
+}
+
+.user-form {
+    padding: 20px;
 }
 .form-control {
     border: none;
@@ -249,8 +271,9 @@ body{
     background: #f8f8f8;
 }
 .redirect-link {
-    color: blue;
+    color: black;
     text-decoration: none;
+    font-weight: bold;
 }
 
 #profile-layout {
