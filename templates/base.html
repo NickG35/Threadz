@@ -15,9 +15,14 @@
 {% block navbar %}
     {% if not hidden %}
         <nav class="navbar">
+            <div class="left-spacer"></div>
+            
             <div class="logo-div">
-                <div class="navbar-brand"><a class="nav-link" href="{% url 'index' %}">Threadz</a></div>
+                <div class="navbar-brand">
+                    <a id="middle-nav" class="nav-link" href="{% url 'index' %}">Threadz</a>
+                </div>
             </div>
+            
             <div class="nav-link-div">
                 {% if user.is_authenticated %}
                     <div class="dropdown">
