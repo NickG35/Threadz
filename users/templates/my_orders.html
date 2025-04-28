@@ -16,12 +16,15 @@
                         <small>Estimated delivery 3-5 business days</small>
                     </div>
                     <div class="product_row">
-                        {% for cart_item in order.cart_item.all %}
-                            <div class="image-box">
+                        {% for cart_item in order.cart_item.all|slice:3 %}
+                            <div class="image-box {% if forloop.counter == 3 and order.cart_item.all|length > 3 %} faded {% endif %}">
                                 {% if cart_item.product.created_by %}
                                     <img class="product_image" src="{{ cart_item.product.image.url }}">
                                 {% else %}
                                     <img class="product_image" src="{{ cart_item.product.image }}">
+                                {% endif %}
+                                {% if forloop.counter == 3 and order.cart_item.all|length > 3 %}
+                                    <div class="overlay">+{{ order.cart_item.all|length|add:"-3" }}</div>
                                 {% endif %}
                             </div>
                         {% endfor %}
