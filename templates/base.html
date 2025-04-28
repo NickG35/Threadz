@@ -22,7 +22,7 @@
                     <a id="middle-nav" class="nav-link" href="{% url 'index' %}">Threadz</a>
                 </div>
             </div>
-            
+
             <div class="nav-link-div">
                 {% if user.is_authenticated %}
                     <div class="dropdown">
@@ -114,7 +114,9 @@
                     </div>
                     <a class="nav-link" href="{% url 'watchlist' profile_id=user.id %}"><i class="fa-solid fa-bag-shopping" style="color: #ffffff;"></i></a>
                 {% else %}
-                    <a class="nav-link" href="{% url 'user_login' %}"><i class="fa-solid fa-right-to-bracket" style="color: #ffffff;"></i></a>
+                    <div class="nav-link-div">
+                        <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+                    </div>
                 {% endif %}
             </div>
         </nav>
