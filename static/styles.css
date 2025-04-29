@@ -11,8 +11,8 @@ body {
     background: black;
 }
 
-.left-spacer, .nav-link-div {
-    width: 100px;
+.left-spacer {
+    width: 145px;
 }
 
 .logo-div {
@@ -63,10 +63,12 @@ body {
 .nav-link-div {
     display: flex;
     margin-right: 5px;
+    width: 100px;
 }
 
 #middle-nav {
     margin: 0px;
+    font-weight: bold;
 }
 
 .nav-link {
@@ -193,4 +195,16 @@ body {
 .graytext {
     font-size: 16px;
     color: gray;
+}
+
+.filter {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#women-filter {
+    border-right: 1px solid white;
 }
