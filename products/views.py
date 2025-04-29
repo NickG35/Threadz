@@ -63,8 +63,16 @@ def index(request):
     #pass fetched products to index page
     return render(request, 'index.html', {
         'products': products,
-        'user_watchlist': user_watchlist
+        'user_watchlist': user_watchlist,
+        'filters': True
     })
+
+def filter_products(request, category):
+    filtered_products = Product.objects.filter(category=category).all()
+    return render(request, 'index.html', {
+        'products': filtered_products,
+        'filters': True
+    } )
 
 def product_view(request, product_id):
     user_watchlist = []
