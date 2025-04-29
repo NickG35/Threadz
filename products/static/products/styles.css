@@ -77,7 +77,6 @@ body{
     font-size: 20px;
 }
 
-
 #watched_button, #watch_button {
     font-size: 20px;
 }
@@ -92,7 +91,6 @@ body{
     font-size: 18px;
     display: block;
 }
-
 
 .product_name {
     overflow: hidden;
@@ -151,7 +149,6 @@ body{
     max-height: 570px;
 }
 
-
 #product_size {
     font-size: 12px;
 }
@@ -159,10 +156,12 @@ body{
 .bold {
     font-weight: bold;
 }
+
 .size-picker {
     margin-bottom: 15px;
     width: 100%;
 }
+
 .size-button {
     background-color: white;
     color: black;
@@ -177,7 +176,6 @@ body{
     color: white;
     border: solid 1px white;
 }
-
 
 .product_buttons {
     width: 100%;
@@ -201,7 +199,7 @@ body{
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-  }
+}
 
 #cart_button {
     background-color: #018849;
@@ -221,7 +219,63 @@ body{
     min-width: 40px;
 }
 
-/* Larger mobile screens (601px to 767px) */
+/* Combined styles for screens 720px and wider */
+@media (min-width: 720px) {
+    #product-container {
+        max-width: 70%;
+    }
+
+    .product_view {
+        display: flex;
+        flex-direction: row;
+        padding: 15px;
+        justify-content: center;
+    }
+
+    .product_display {
+        padding: 10px;
+        width: 70%;
+        height: auto;
+    }
+
+    .image-display {
+        padding: 0px 10px;
+        max-width: 550px;
+        position: relative;
+        display: inline-block;
+        height: 0;
+        border: none;
+    }  
+
+    .product-box {
+        width: 100%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px; 
+        padding: 10px;
+        border: 1px solid lightgray;
+        overflow: hidden;
+        height: 570px;
+    }
+
+    .product-info {
+        max-width: 300px;
+        padding: 15px 20px;
+    }
+
+    .size-button {
+        width: 65px;
+        text-align: center;
+    }
+
+    .fade-box {
+        left: 35%;
+    }
+}
+
+/* Optional: adjust styles specifically for slightly smaller screens like 540px-719px */
 @media (min-width: 540px) and (max-width: 719px) {
     .image-display, .product-info {
         width: 550px;
@@ -231,8 +285,7 @@ body{
     .image-display {
         padding: 0px 10px;
         height: 570px;
-    }  
-
+    }
 
     .product_display {
         background-color: white;
@@ -240,230 +293,11 @@ body{
         height: 570px;
     }
 
-    .size-picker{
+    .size-picker {
         width: 440px;
     }
 
     .product_view {
         padding: 10px;
     }
-}
-
-/* Tablets in portrait mode (720px to 1023px) */
-@media (min-width: 720px) and (max-width: 959px) {
-    .product_view {
-        display: flex;
-        flex-direction: row;
-        padding: 15px;
-        justify-content: center;
-    }
-
-    .product_display {
-        padding: 10px;
-        width: 70%;
-        height: auto;
-    }
-
-    .image-display {
-        padding: 0px 10px;
-        max-width: 550px;
-        position: relative;
-        display: inline-block;
-        height: 0;
-    }  
-
-    .product-box {
-        width: 100%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px; 
-        padding: 10px;
-        border: 1px solid lightgray;
-        overflow: hidden;
-        height: 570px;
-    }
-
-    .product-info {
-        max-width: 300px;
-        padding: 15px 20px;
-    }
-
-    .size-button {
-        width: 65px;
-        text-align: center;
-    }
-
-    .fade-box {
-        left: 40%;
-    }
-}
-
-/* Tablets in landscape and small laptops (1024px to 1279px) */
-@media (min-width: 960px) and (max-width: 1139px) {
-    #product-container {
-        max-width: 70%;
-    }
-
-    .product_view {
-        display: flex;
-        flex-direction: row;
-        padding: 15px;
-        justify-content: center;
-    }
-
-    .product_display {
-        padding: 10px;
-        width: 70%;
-        height: auto;
-    }
-
-    .image-display {
-        padding: 0px 10px;
-        max-width: 550px;
-        position: relative;
-        display: inline-block;
-        height: 0;
-    }  
-
-    .product-box {
-        width: 100%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px; 
-        padding: 10px;
-        border: 1px solid lightgray;
-        overflow: hidden;
-        height: 570px;
-    }
-
-    .product-info {
-        max-width: 300px;
-        padding: 15px 20px;
-    }
-
-    .size-button {
-        width: 65px;
-        text-align: center;
-    }
-
-    .fade-box {
-        left: 35%;
-    }
-  
-}
-
-/* Laptops and small desktops (1280px to 1599px) */
-@media (min-width: 1140px) and (max-width: 1319px) {
-    #product-container {
-        max-width: 70%;
-    }
-
-    .product_view {
-        display: flex;
-        flex-direction: row;
-        padding: 15px;
-        justify-content: center;
-    }
-
-    .product_display {
-        padding: 10px;
-        width: 70%;
-        height: auto;
-    }
-
-    .image-display {
-        padding: 0px 10px;
-        max-width: 550px;
-        position: relative;
-        display: inline-block;
-        height: 0;
-    }  
-
-    .product-box {
-        width: 100%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px; 
-        padding: 10px;
-        border: 1px solid lightgray;
-        overflow: hidden;
-        height: 570px;
-    }
-
-    .product-info {
-        max-width: 300px;
-        padding: 15px 20px;
-    }
-
-    .size-button {
-        width: 65px;
-        text-align: center;
-    }
-
-    .fade-box {
-        left: 35%;
-    }
- 
-}
-
-/* Large desktop screens (1600px and above) */
-@media (min-width: 1320px) {
-    #product-container {
-        max-width: 70%;
-    }
-
-    .product_view {
-        display: flex;
-        flex-direction: row;
-        padding: 15px;
-        justify-content: center;
-    }
-
-    .product_display {
-        padding: 10px;
-        width: 70%;
-        height: auto;
-    }
-
-    .image-display {
-        padding: 0px 10px;
-        max-width: 550px;
-        position: relative;
-        display: inline-block;
-        height: 0;
-    }  
-
-    .product-box {
-        width: 100%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px; 
-        padding: 10px;
-        border: 1px solid lightgray;
-        overflow: hidden;
-        height: 570px;
-    }
-
-    .product-info {
-        max-width: 300px;
-        padding: 15px 20px;
-    }
-
-    .size-button {
-        width: 65px;
-        text-align: center;
-    }
-
-    .fade-box {
-        left: 35%;
-    }
-   
 }
