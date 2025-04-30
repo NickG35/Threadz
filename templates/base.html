@@ -18,8 +18,13 @@
             <div class="left-spacer">
                 {% if filters %}
                     <div class="filter-button">
-                        <span><a id="women-filter" class="filter" href="{% url 'filter' category='women\'s clothing' %}">Women</a></span>
-                        <span><a class="filter" href="{% url 'filter' category='men\'s clothing' %}">Men</a></span>
+                        <span>
+                            <a id="women-filter" class="filter {% if '/filter/women\'s clothing' == request.path %}active{% endif %}" href="{% url 'filter' category='women\'s clothing' %}">Women</a>
+                        </span>
+                        <span>
+                            <a class="filter {% if '/filter/men\'s clothing' == request.path %}active{% endif %}" href="{% url 'filter' category='men\'s clothing' %}">Men</a>
+                        </span>
+                          
                     </div>
                 {% endif %}
             </div>
@@ -131,6 +136,14 @@
 {% endblock %}
 {% block scripts%}
 <script>
+    const filters = document.querySelectorAll('.filter');
+    filters.forEach(filter => {
+        filter.addEventListener('click', function(){
+            filters.forEach(f => f.classList.remove('active'));
+            this.classList.add('active');;
+        });
+    });
+
     document.addEventListener('submit', function (event) {
         if (event.target.classList.contains('delete-form')) {
             event.preventDefault();
