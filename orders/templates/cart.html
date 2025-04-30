@@ -16,6 +16,7 @@
                     
                     const productName = form.closest('.col-7').querySelector('.product-name');
                     const productID = productName.getAttribute('data-id');
+                    const productSize = productName.getAttribute('data-size');
                     const productPriceElement = document.getElementById(`product-price${productID}`);
                     const cartPriceElement = document.getElementById(`cart-price`);
 
@@ -53,7 +54,10 @@
                         headers: {
                             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                             'Content-Type': 'application/json' 
-                        }
+                        },
+                        body: JSON.stringify ({
+                            size: productSize
+                        })
                     })
                     .then (response => response.json())
                     .then(data => {
@@ -87,7 +91,7 @@
                         </div>
                         <div class="col-7">
                                 <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
-                                <p class="product-name" data-id="{{items.product.id}}">{{ items.product.name }}</p>
+                                <p class="product-name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
                                 <div class="cart-info">
                                     <div class="left-side">
                                         <p class="size">{{ items.size }}</p>
