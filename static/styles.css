@@ -11,8 +11,8 @@ body {
     background: black;
 }
 
-.left-spacer {
-    width: 145px;
+.left-spacer, .nav-link-div {
+    width: 100px;
 }
 
 .logo-div {
@@ -200,11 +200,13 @@ body {
 .filter {
     text-decoration: none;
     color: white;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
-    padding: 10px;
+    padding: 5px;
 }
 
-#women-filter {
-    border-right: 1px solid white;
+.filter.active {
+    font-weight: bold;
+    background-color: white;
+    color: black;
 }
