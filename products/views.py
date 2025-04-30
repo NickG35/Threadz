@@ -69,9 +69,13 @@ def index(request):
 
 def filter_products(request, category):
     filtered_products = Product.objects.filter(category=category).all()
+    user_watchlist  = []
+    if request.user.is_authenticated:
+        user_watchlist = request.user.profile.watchlist.values_list('product_id', flat=True)
     return render(request, 'index.html', {
         'products': filtered_products,
-        'filters': True
+        'filters': True,
+        'user_watchlist': user_watchlist
     } )
 
 def product_view(request, product_id):
