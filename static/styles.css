@@ -11,8 +11,8 @@ body {
     background: black;
 }
 
-.left-spacer, .nav-link-div {
-    width: 100px;
+.left-spacer {
+    width: 145px;
 }
 
 .logo-div {
@@ -74,6 +74,10 @@ body {
 .nav-link {
     margin: 0px 10px;
     height: 100%;
+}
+
+#login-link {
+    margin: 0;
 }
 
 .cartBanner {
@@ -200,13 +204,37 @@ body {
 .filter {
     text-decoration: none;
     color: white;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
     padding: 5px;
+    margin-left: 5px;
 }
 
 .filter.active {
     font-weight: bold;
     background-color: white;
     color: black;
+}
+
+.login-div {
+    width: 100px;
+    text-align: right;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+@media (min-width: 0px) and (max-width: 720px) {
+    .filter {
+        font-size: 12px;
+        margin-left: 0px;
+    }
+
+    .left-spacer {
+        width: 100px;
+    }
+
+    .login-div {
+        font-size: 12px;
+        margin-right: 0px;
+    }
 }
