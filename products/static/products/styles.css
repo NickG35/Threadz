@@ -15,7 +15,7 @@ body{
 }
 
 .product-info {
-    padding: 15px 0px;
+    padding: 15px 10px;
 }
 
 .image-container {
@@ -159,7 +159,7 @@ body{
 
 .size-picker {
     margin-bottom: 15px;
-    width: 100%;
+    max-width: 300px;
 }
 
 .size-button {
@@ -168,7 +168,7 @@ body{
     border: 1px solid lightgray;
     text-align: center;
     font-size: 10px;
-    width: 100%;
+    max-width: 100%;
 }
 
 .size-button.active {
@@ -191,7 +191,7 @@ body{
     position: fixed;
     display: none;
     top: 50%;
-    left: 25%;
+    left: 35%;
     background-color: black;
     color: white;
     padding: 15px;
@@ -205,6 +205,7 @@ body{
     background-color: #018849;
     color: white;
     border: none;
+    max-width: 90%;
 }
 
 #watch-btn {
@@ -261,8 +262,12 @@ body{
     }
 
     .product-info {
-        max-width: 300px;
-        padding: 15px 20px;
+        width: 300px;
+    }
+
+    .left-space {
+        width: 300px;
+        display: block;
     }
 
     .size-button {
@@ -271,7 +276,7 @@ body{
     }
 
     .fade-box {
-        left: 35%;
+        left: 45%;
     }
 }
 
@@ -281,6 +286,10 @@ body{
         width: 550px;
         justify-self: center;
     }  
+
+    .left-space {
+        display: none;
+    }
 
     .image-display {
         padding: 0px 10px;
@@ -295,6 +304,10 @@ body{
 
     .size-picker {
         width: 440px;
+    }
+
+    .size-button{
+        width: 100%;
     }
 
     .product_view {
