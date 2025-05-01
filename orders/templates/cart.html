@@ -15,44 +15,42 @@
                     event.preventDefault();
                     
                     const productName = form.closest('.col-7').querySelector('.product-name');
+
+                    if (!productName) {
+                        console.error('product name element not found');
+                        return;
+                    }
+
                     const productID = productName.getAttribute('data-id');
                     const productSize = productName.getAttribute('data-size');
                     const productPriceElement = document.getElementById(`product-price${productID}`);
-                    const cartPriceElement = document.getElementById(`cart-price`);
+                    const cartPriceElement = document.getElementById('cartPrice');
+                    const subTotalElement = document.getElementById('subTotal');
+                    const cart_count = document.querySelector('.cartCount');
+                    const top_count = document.querySelector('.cart-count');
+                    const cartBadge = document.querySelector('#cartBadge');
 
                     const productPrice = parseFloat(productPriceElement.textContent.replace(/[^0-9.]/g, ''));
                     const cartPrice = parseFloat(cartPriceElement.textContent.replace(/[^0-9.]/g, ''));
-
+                    const subTotal = parseFloat(subTotalElement.textContent.replace(/[^0-9.]/g, ''));
+                    const indexUrl = "{% url 'index' %}";
 
                     let result = cartPrice - productPrice;
-                    cartPriceElement.textContent = `Total: $${result}`;
+                    cartPriceElement.textContent = `$${result}`;
+                    subTotalElement.textContent = `$${result}`;
 
                     const cartItem = document.getElementById(`cart-row${productID}`);
-                    if (cartItem) {
-                        cartItem.remove();
-                        
-                        if (document.querySelectorAll('.row.align-items-center').length === 0) {
-                            let noCart = document.querySelector('.no-cart');
-                            let cartTotal = document.querySelector('.cart-total');
 
-                            if (!noCart) {
-                                noCart = document.createElement('div');
-                                noCart.className = 'no-cart';
-                                noCart.innerHTML = '<p class="no-items">There are no items in your cart.</p>';
-                                document.querySelector('.container-fluid').appendChild(noCart);
-                            } else {
-                                noCart.style.display = 'block';
-                            }
-
-                            if (cartTotal) cartTotal.style.display = 'none';
-
-                        }
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+                    if (!csrfToken) {
+                        console.error('CSRF token not found');
+                        return;
                     }
 
                     fetch(`delete_item/${productID}`, {
                         method: 'POST',
                         headers: {
-                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                            'X-CSRFToken': csrfToken.value,
                             'Content-Type': 'application/json' 
                         },
                         body: JSON.stringify ({
@@ -63,6 +61,55 @@
                     .then(data => {
                         if (data.status === "success"){
                             console.log(data.message);
+
+                            if (cartItem) {
+                                cartItem.remove();
+                            }
+
+                            if (cart_count) {
+                                cart_count.innerHTML = `<p class='cartCount'>${data.cart_count} item${data.cart_count !== 1 ? 's': ''}</p>`;
+                            }
+
+                            if (top_count) {
+                                top_count.textContent = `${data.cart_count}`;
+                            }
+
+                            let cartRow = document.querySelectorAll('.whole-container .row.align-items-center');
+                            if (cartRow.length === 0) {
+                                top_count.style.display = 'none';
+                                cart_count.style.display = 'none';
+                                cartBadge.style.display = 'none';
+                                document.querySelector('.whole-container').style.display = 'none';
+
+                                let noCart = document.querySelector('.noCart');
+                                let continueButton = document.querySelector('.continue');
+                                if (!noCart) {
+                                    noCart = document.createElement('div');
+                                    noCart.className = 'noCart';
+                                    noCart.innerHTML = '<p class="no-items">There are no items in your cart.</p>';
+                                    continueButton = document.createElement('button');
+                                    continueButton.className = 'continue';
+                                    continueButton.id = 'continueButton';
+                                    continueButton.innerHTML = 'Continue Shopping';
+                                    continueButton.onclick = function() {
+                                        window.location.href = indexUrl;
+                                    };
+                                    noCart.appendChild(continueButton);
+
+                                    document.body.appendChild(noCart);
+
+                                } else {
+                                    noCart.style.display = 'block';
+                                    if (continueButton) {
+                                        continueButton.style.display = 'block';
+                                    }
+                                }
+                            }
+
+                            if (cartRow.length === 1) {
+                                document.querySelector('.cart_container').style.display = 'flex';
+                            }
+                            
                         } else {
                             console.error('Failed to delete item')
                         }
@@ -73,14 +120,14 @@
         }
     });
 </script>
-{% if cart_items %}
 <div class="header-container">
-    <h1>Cart</h1>
+    <h1>My Cart</h1>
 </div>
+{% if cart_items %}
 <div class="whole-container">
         <div class="cartColumn">
             {% for items in cart_items %}
-                <div class="cart_container">
+                <div class="cart_container" {% if cart_items|length == 1 %} style="display: flex;" {% endif%}>
                     <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
                         <div class="col-5">
                                 {% if items.product.created_by %}
@@ -111,17 +158,17 @@
         </div>
     <div class="total-container">
         <div class="inner-container">
-            <p>{{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %}</p>
+            <p class="cartCount">{{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %}</p>
             <div class="spaceBetween">
                 <p id="cart-header" class="bold">Total</p>
-                <p class="bold">${{ cart_total }}</p>
+                <p id="cartPrice" class="bold">${{ cart_total }}</p>
 
             </div>
         </div>
         <div id="totalContainer" class="inner-container">
             <div class="spaceBetween">
                 <div><b>Sub-total</b></div>
-                <div>${{ cart_total }}</div>
+                <div id="subTotal">${{ cart_total }}</div>
             </div>
             <div class="spaceBetween">
                 <div><b>Delivery</b></div>
@@ -137,8 +184,9 @@
     </div>
 </div>
 {% else %}  
-    <div class="no-cart">
+    <div class="noCart">
         <p class="no-items">There are no items in your cart.</p>
+        <button type="button" onclick="window.location.href='{% url 'index' %}'" id="continueButton" class="continue">Continue Shopping</button>
     </div>
 {% endif %}
 
