@@ -18,6 +18,15 @@ body{
     padding: 15px 10px;
 }
 
+
+.empty-message {
+    display: flex;               
+    justify-content: center;     
+    align-items: center;         
+    height: 40vh;               
+    text-align: center;
+}
+
 .image-container {
     position: relative;
     display: inline-block;
@@ -50,7 +59,6 @@ body{
 #productRow {
     padding: 10px;
 }
-
 .watchlist-btn, .remove-btn {
     position: absolute;
     border: none;
@@ -177,9 +185,20 @@ body{
     border: solid 1px white;
 }
 
-.product_buttons {
-    width: 100%;
+.product-button-row {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.dropdown-size {
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40px;
+    border: black 1px solid;
+    padding: 0px 5px;
 }
 
 .product-btn {
@@ -205,7 +224,7 @@ body{
     background-color: #018849;
     color: white;
     border: none;
-    max-width: 90%;
+    max-width: 100%;
 }
 
 #watch-btn {
@@ -292,7 +311,6 @@ body{
     }
 
     .image-display {
-        padding: 0px 10px;
         height: 570px;
     }
 
@@ -312,5 +330,15 @@ body{
 
     .product_view {
         padding: 10px;
+    }
+}
+
+@media (min-width: 721px) and (max-width: 1000px) {
+    .product-btn {
+        width: 90%;
+    }
+
+    .dropdown-size {
+        height: 30px;
     }
 }
