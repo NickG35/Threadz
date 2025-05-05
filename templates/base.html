@@ -133,6 +133,7 @@
         </nav>
     {% endif %}
 {% endblock %}
+{% if not cart %}
 {% block scripts%}
 <script>
     const filters = document.querySelectorAll('.filter');
@@ -219,6 +220,7 @@
     });
 </script>
 {% endblock %}
+{% endif %}
 <body>
     {% block content %}
 
