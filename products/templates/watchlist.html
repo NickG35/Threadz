@@ -55,6 +55,10 @@
                     <p id="product_price" class="bold">$ {{  item.product.price }}</p>
                 </div>
             </div>
+        {% empty %}
+            <div class="empty-message">
+                <p>No items in watchlist yet</p>
+            </div>
         {% endfor %}
     </div>
 </div>
