@@ -29,15 +29,7 @@
                     const cart_count = document.querySelector('.cartCount');
                     const top_count = document.querySelector('.cart-count');
                     const cartBadge = document.querySelector('#cartBadge');
-
-                    const productPrice = parseFloat(productPriceElement.textContent.replace(/[^0-9.]/g, ''));
-                    const cartPrice = parseFloat(cartPriceElement.textContent.replace(/[^0-9.]/g, ''));
-                    const subTotal = parseFloat(subTotalElement.textContent.replace(/[^0-9.]/g, ''));
                     const indexUrl = "{% url 'index' %}";
-
-                    let result = cartPrice - productPrice;
-                    cartPriceElement.textContent = `$${result}`;
-                    subTotalElement.textContent = `$${result}`;
 
                     const cartItem = document.getElementById(`cart-row${productID}`);
 
@@ -61,6 +53,9 @@
                     .then(data => {
                         if (data.status === "success"){
                             console.log(data.message);
+
+                            cartPriceElement.textContent = `$${data.cart_total}`;
+                            subTotalElement.textContent = `$${data.cart_total}`;
 
                             if (cartItem) {
                                 cartItem.remove();
@@ -107,7 +102,9 @@
                             }
 
                             if (cartRow.length === 1) {
-                                document.querySelector('.cart_container').style.display = 'flex';
+                                const container = cartRow[0].closest('.cart_container');
+                                container.classList.add('centered');
+                                console.log('1 row left');
                             }
                             
                         } else {
@@ -127,13 +124,13 @@
 <div class="whole-container">
         <div class="cartColumn">
             {% for items in cart_items %}
-                <div class="cart_container" {% if cart_items|length == 1 %} style="display: flex;" {% endif%}>
-                    <div id="cart-row{{items.product.id}}" class="row align-items-center mb-3">
+                <div class="cart_container {% if cart_count == 1 %}centered{% endif%}">
+                    <div id="cart-row{{items.product.id}}" class="row align-items-center">
                         <div class="col-5">
                                 {% if items.product.created_by %}
-                                    <img class="cart-image" src="{{ items.product.image.url }}">
+                                    <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
                                 {% else %}
-                                    <img class="cart-image" src="{{ items.product.image }}">
+                                    <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
                                 {% endif %}
                         </div>
                         <div class="col-7">
@@ -158,28 +155,28 @@
         </div>
     <div class="total-container">
         <div class="inner-container">
-            <p class="cartCount">{{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %}</p>
+            <p class="cartCount">{{cart_count}} item{% if cart_count > 1 %}s{% endif %}</p>
             <div class="spaceBetween">
                 <p id="cart-header" class="bold">Total</p>
                 <p id="cartPrice" class="bold">${{ cart_total }}</p>
 
             </div>
         </div>
-        <div id="totalContainer" class="inner-container">
-            <div class="spaceBetween">
-                <div><b>Sub-total</b></div>
-                <div id="subTotal">${{ cart_total }}</div>
-            </div>
-            <div class="spaceBetween">
-                <div><b>Delivery</b></div>
-                <div>Standard (Free)</div>
+        <div id="totalContainer">
+            <div class="inner-container" id="bottom-inner">
+                <div class="spaceBetween">
+                    <div><b>Sub-total</b></div>
+                    <div id="subTotal">${{ cart_total }}</div>
+                </div>
+                <div class="spaceBetween">
+                    <div><b>Delivery</b></div>
+                    <div>Standard (Free)</div>
+                </div>
             </div>
         </div>
         <form action="{% url 'cart'%}" method="post">
             {% csrf_token %}
-            <div id="cartButton" class="checkout-button">
-                <button class="checkout_button" type="submit">Checkout</button>
-            </div>
+            <button class="checkout_button" type="submit">Checkout</button>
         </form>
     </div>
 </div>
