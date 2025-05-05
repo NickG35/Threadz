@@ -10,7 +10,7 @@
         <div class="summary-container">
             <div class="orderHeader">
                 <h2 class="order-header">Order Summary</h2>
-                <span class="header-count">({{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %})</span>
+                <span class="header-count">{{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %}</span>
             </div>
             <div class="checkout-holder">
                 {% for items in cart_items %}
@@ -35,7 +35,7 @@
             </div>
                 <div class="cart-data">
                     <div class="spaceBetween">
-                        <span>{{ cart_items|length }} items</span>
+                        <span>{{cart_items|length}} item{% if cart_items|length > 1 %}s{% endif %}</span>
                         <span>${{ cart_total }}</span>
                     </div>
                 </div>
