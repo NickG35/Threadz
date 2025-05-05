@@ -32,11 +32,6 @@
             .then(data => {
                 const sizeInput = document.querySelector('#size');
                 sizeInput.value = '';
-                const button = document.querySelectorAll('.size-button');
-                button.forEach(btn => {
-                    btn.classList.remove('active');
-                });
-
                 let message = document.getElementById('cart-message');
                 let error = document.getElementById('cart-error');
                 if(data.status === "success"){
@@ -234,16 +229,9 @@
             });
         };
     });    
-    
-    function sizeSelect(size){
-            const sizeInput = document.querySelector('#size');
-            sizeInput.value = size;
-
-            const button = document.querySelectorAll('.size-button');
-            button.forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+    function sizeSelect(event, size) {
+        const sizeInput = document.querySelector('#size');
+        sizeInput.value = size;
     }
 </script>
     <div class="product_view">
@@ -263,43 +251,31 @@
             <p id="product_price" class="bold">${{  product.price }}</p>
             {% if request.user.is_authenticated %}
             <p id="product_size" class="bold">SIZE:</p>
-            <div class="size-picker">
-                <div class="row">
-                    <div class="col-2 col-sm-4 col-md-4">
-                        <button type="button" onclick="sizeSelect('XS', event)" class="size-button" id="sizes">XS</button>
-                    </div>
-                    <div class="col-2 col-sm-4 col-md-4">
-                        <button type="button" onclick="sizeSelect('S', event)" class="size-button" id="sizes">S</button>
-                    </div>
-                    <div class="col-2 col-sm-4 col-md-4">
-                        <button type="button" onclick="sizeSelect('M', event)" class="size-button" id="sizes">M</button>
-                    </div>
-                    <div class="col-2 col-sm-4 col-md-4">
-                        <button type="button" onclick="sizeSelect('L', event)" class="size-button" id="sizes">L</button>
-                    </div>
-                    <div class="col-2 col-sm-4 col-md-4">
-                        <button type="button" onclick="sizeSelect('XL', event)" class="size-button" id="sizes">XL</button>
-                    </div>
-                    <div class="col-2 col-sm-4 col-md-4">
-                        <button type="button" onclick="sizeSelect('XXL', event)" class="size-button" id="sizes">XXL</button>
-                    </div>
-                </div>
-            </div>
             <div id="cart-message" class="fade-box"></div>
             <p id="cart-error" style="display: none;"></p>
             <div class="product_buttons">
-                <div class="col-10">
-                    <form id="size-form" method="post">
-                        {% csrf_token %}
-                        <input name="size" id="size" type="hidden">
-                        {% if product.created_by == request.user.profile %}
-                            <small>Users can't purchase their own products</small>
-                        {% else %}
-                            <button id="cart_button" class="product-btn" type="submit">Add to Cart</button>
-                        {% endif %}
-                    </form>
+                <div clas="row mb-2">
+                    <div class="col-12 mb-2">
+                        <form id="size-form" method="post">
+                            {% csrf_token %}
+                            <select name="category" class="dropdown-size" id="size" onclick="sizeSelect(event, this.value)">
+                                <option value="" disabled selected>Please select</option>
+                                <option name="size"  value="XS">XS</option>
+                                <option name="size"  value="S">S</option>
+                                <option name="size"  value="M">M</option>
+                                <option name="size"  value="L">L</option>
+                                <option name="size"  value="XL">XL</option>
+                                <option name="size"  value="XXL">XXL</option>
+                            </select>
+                        </form>
+                    </div>
                 </div>
-                <div id="watch-btn" class="col-2">
+                <div class="product-button-row">
+                    {% if product.created_by == request.user.profile %}
+                        <small>Users can't purchase their own products</small>
+                    {% else %}
+                        <button id="cart_button" class="product-btn" type="submit" form="size-form">Add to Cart</button>
+                    {% endif %}
                     {% if product.created_by != user.profile %}
                         <form class="watchlist-form" action="{% url 'toggle_watch' product_id=product.id %}" method="post" data-watch="{% if product.id in user_watchlist %}watched{% else %}watch{% endif %}">
                             {% csrf_token %}
