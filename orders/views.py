@@ -19,6 +19,7 @@ def cart(request):
             'disabled':True,
             'cart_items': cart_items,
             'cart_total': cart_total,
+            'cart': True,
         })
 
 def delete_item(request, product_id):
