@@ -43,6 +43,8 @@ body {
 .cart_container.centered {
     display: flex;
     justify-content: center;
+    align-items: center;
+    align-self: center;
 }
 
 
@@ -272,7 +274,7 @@ body {
     }
 
     .cart_container {
-        width: 100%;
+        width: 450px;
         height: 100%;
     }
 
