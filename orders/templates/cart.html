@@ -8,13 +8,12 @@
 {% endblock %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let deleteForms = document.querySelectorAll('.delete-form');
-        if (deleteForms){
-            deleteForms.forEach(form => {
-                form.addEventListener('submit', function(event){
+        document.addEventListener('submit', function(event){
+            if (event.target.classList.contains('delete-form')) {
                     event.preventDefault();
                     
-                    const productName = form.closest('.col-7').querySelector('.product-name');
+                    const form = event.target;
+                    const productName = form.closest('#cartRight').querySelector('.product-name');
 
                     if (!productName) {
                         console.error('product name element not found');
@@ -29,17 +28,18 @@
                     const cart_count = document.querySelector('.cartCount');
                     const top_count = document.querySelector('.cart-count');
                     const cartBadge = document.querySelector('#cartBadge');
+                    const cartItem = document.querySelector(`#cartRow${productID}-${productSize}`);
+
                     const indexUrl = "{% url 'index' %}";
 
-                    const cartItem = document.getElementById(`cart-row${productID}`);
-
+                    const deleteUrl = "{% url 'delete_item' product_id=0 %}".replace('0', productID);
                     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
                     if (!csrfToken) {
                         console.error('CSRF token not found');
                         return;
                     }
 
-                    fetch(`delete_item/${productID}`, {
+                    fetch(deleteUrl, {
                         method: 'POST',
                         headers: {
                             'X-CSRFToken': csrfToken.value,
@@ -53,12 +53,17 @@
                     .then(data => {
                         if (data.status === "success"){
                             console.log(data.message);
+                            console.log(cartItem);
+                            console.log(productID, productSize);
 
                             cartPriceElement.textContent = `$${data.cart_total}`;
                             subTotalElement.textContent = `$${data.cart_total}`;
 
                             if (cartItem) {
-                                cartItem.remove();
+                                const cartContainer = form.closest('.cart_container')
+                                if (cartContainer) {
+                                    cartContainer.remove();
+                                }
                             }
 
                             if (cart_count) {
@@ -69,8 +74,8 @@
                                 top_count.textContent = `${data.cart_count}`;
                             }
 
-                            let cartRow = document.querySelectorAll('.whole-container .row.align-items-center');
-                            if (cartRow.length === 0) {
+                            let remainingContainer = document.querySelectorAll('.cart_container');
+                            if (remainingContainer.length === 0) {
                                 top_count.style.display = 'none';
                                 cart_count.style.display = 'none';
                                 cartBadge.style.display = 'none';
@@ -101,10 +106,12 @@
                                 }
                             }
 
-                            if (cartRow.length === 1) {
-                                const container = cartRow[0].closest('.cart_container');
-                                container.classList.add('centered');
-                                console.log('1 row left');
+                            if (remainingContainer.length === 1) {
+                                const last_container = remainingContainer[0];
+                                if (last_container){
+                                    last_container.classList.add('centered');
+                                    console.log('1 row left');
+                                }
                             }
                             
                         } else {
@@ -112,10 +119,9 @@
                         }
                     })
                     .catch(error => console.error('Error:', error));
-                });
-            })
-        }
-    });
+            }
+        });
+    })
 </script>
 <div class="header-container">
     <h1>My Cart</h1>
@@ -124,8 +130,8 @@
 <div class="whole-container">
         <div class="cartColumn">
             {% for items in cart_items %}
-                <div class="cart_container {% if cart_count == 1 %}centered{% endif%}">
-                    <div id="cart-row{{items.product.id}}" class="row align-items-center">
+                <div class="cart_container"{% if cart_count == 1 %}style="display: flex;"{% endif%}>
+                    <div id="cartRow{{items.product.id}}-{{items.size}}" class="row align-items-center">
                         <div class="col-5">
                                 {% if items.product.created_by %}
                                     <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
@@ -133,7 +139,7 @@
                                     <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
                                 {% endif %}
                         </div>
-                        <div class="col-7">
+                        <div id="cartRight" class="col-7">
                                 <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
                                 <p class="product-name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
                                 <div class="cart-info">
