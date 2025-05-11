@@ -10,13 +10,15 @@
         <div id="paddedRow" class="row justify-content-center">
             {% for product in profile_products %}
                 <div class="col-4">
-                    <div class="image-box">
-                        {% if product.created_by %}
-                            <img class="product_image" src="{{product.image.url}}">
-                        {% else %}
-                            <img class="product_image" src="{{product.image }}">
-                        {% endif %}
-                    </div>
+                    <a href="{% url 'product' product_id=product.id %}">
+                        <div class="image-box">
+                            {% if product.created_by %}
+                                <img class="product_image" src="{{product.image.url}}">
+                            {% else %}
+                                <img class="product_image" src="{{product.image }}">
+                            {% endif %}
+                        </div>
+                    </a>
                     <div class="name_box">
                         <p><a class="product_name" href="{% url 'product' product_id=product.id %}">{{ product.name }}</a></p>
                         <p id="product_price">$ {{  product.price }}</p>
