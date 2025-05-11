@@ -164,7 +164,7 @@ def update_user(request, profile_id):
     })
 
 def my_clothes(request, profile_id):
-    profile_products = Product.objects.filter(created_by=profile_id).all()
+    profile_products = Product.objects.filter(created_by=profile_id).order_by('-creation_time').all()
     return render(request, 'my_clothes.html', {
         'profile_products': profile_products,
         "hidden": True
