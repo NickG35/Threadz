@@ -38,13 +38,15 @@
         {% for item in watchlist_items %}
             <div data-id="{{item.product.id}}" class="col-6 col-sm-4 col-md-3">
                 <div class="image-container">
-                    <div class="image-box">
-                        {% if item.product.created_by %}
-                            <img class="product_image" src="{{item.product.image.url}}">
-                        {% else %}
-                            <img class="product_image" src="{{item.product.image }}">
-                        {% endif %}
-                    </div>
+                    <a href="{% url 'product' product_id=item.product.id %}">
+                        <div class="image-box">
+                            {% if item.product.created_by %}
+                                <img class="product_image" src="{{item.product.image.url}}">
+                            {% else %}
+                                <img class="product_image" src="{{item.product.image }}">
+                            {% endif %}
+                        </div>
+                    </a>
                     <form class="remove-form" action="{% url 'remove_item' product_id=item.product.id %}" method="post">
                         {% csrf_token %}
                             <button class="remove-btn" id="remove-button"><i class="fa-solid fa-circle-minus" style="color: black;"></i></button>
