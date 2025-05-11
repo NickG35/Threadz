@@ -17,15 +17,19 @@
                         <div id="checkout-cart">
                             <div id="cart-row" class="row align-items-center mb-3">
                                 <div class="col-5">
+                                    <a href="{% url 'product' product_id=items.product.id %}">
                                         {% if items.product.created_by %}
                                             <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
                                         {% else %}
                                             <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
                                         {% endif %}
+                                    </a>
                                 </div>
                                 <div class="col-7">
                                         <p class="bold">${{  items.product.price }}</p>
-                                        <p>{{ items.product.name }}</p>
+                                        <a style="text-decoration: none; color: black;" href="{% url 'product' product_id=items.product.id %}">
+                                            <p>{{ items.product.name }}</p>
+                                        </a>
                                         <span class="size">{{ items.size }}</span>
                                         <span>QTY: {{ items.quantity }}</span>
                                 </div>
@@ -65,12 +69,12 @@
                 {% for field in form %}
                     <div class="form-group">
                         <span class="graytext">{{ field.label }}</span>
+                        {% if field.errors %}
+                            <div>{{ field.errors }}</div>
+                        {% endif %}
                         <div class="orderField">
                             {{ field }}
                         </div>
-                        {% if field.errors %}
-                            <span class="error">{{ field.errors }}</span>
-                        {% endif %}
                     </div>
                 {% endfor %}
                 <div id="bottom-total" class="cart-total">
