@@ -74,18 +74,22 @@
                                             <div id="cart-row{{items.product.id}}-{{items.size}}" class="row align-items-center mb-3">
                                                 <div class="col-6">
                                                     <div class="cart-container">
-                                                        <div class="cart-box">
-                                                            {% if items.product.created_by %}
-                                                                <img class="cart-image" src="{{ items.product.image.url }}">
-                                                            {% else %}
-                                                                <img class="cart-image" src="{{ items.product.image }}">
-                                                            {% endif %}
-                                                        </div>
+                                                        <a href="{% url 'product' product_id=items.product.id %}">
+                                                            <div class="cart-box">
+                                                                {% if items.product.created_by %}
+                                                                    <img class="cart-image" src="{{ items.product.image.url }}">
+                                                                {% else %}
+                                                                    <img class="cart-image" src="{{ items.product.image }}">
+                                                                {% endif %}
+                                                            </div>
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <div id="cart-right" class="col-6">
                                                         <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
-                                                        <p class="product_name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
+                                                        <a style="text-decoration: none;" href="{% url 'product' product_id=items.product.id %}">
+                                                            <p class="product_name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
+                                                        </a>
                                                         <div class="cart-info">
                                                             <div id="cartInfo">
                                                                 <p class="size">{{ items.size }}</p>
