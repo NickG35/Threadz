@@ -18,6 +18,15 @@ body{
     padding: 15px 10px;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#info-icon {
+    margin-right: 5px;
+}
 
 .empty-message {
     display: flex;               
@@ -25,6 +34,20 @@ body{
     align-items: center;         
     height: 40vh;               
     text-align: center;
+}
+
+.detail-success {
+    color:green; 
+    size: 12px;
+    padding: 0px 8px;
+}
+
+.errorlist {
+    list-style-type: none;
+    padding: 8px;
+    margin: 0;
+    font-size: 12px;
+    color: red;
 }
 
 .image-container {
