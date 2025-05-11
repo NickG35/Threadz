@@ -124,14 +124,18 @@
 
                         cartRow.innerHTML = `<div class="col-6">
                                                     <div class="cart-container">
-                                                        <div class="cart-box">
-                                                            <img class="cart-image" src=${imageUrl}>
-                                                        </div>
+                                                        <a href="/product/${data.cart_item.product.id}">
+                                                            <div class="cart-box">
+                                                                <img class="cart-image" src=${imageUrl}>
+                                                            </div>
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <div id="cart-right" class="col-6">
                                                         <p id="product-price${data.cart_item.product.id}" class="bold">$${data.cart_item.product.price}</p>
-                                                        <p class="product_name" data-id="${data.cart_item.product.id}" data-size="${data.cart_item.size}">${data.cart_item.product.name}</p>
+                                                        <a style="text-decoration: none;" href="/product/${data.cart_item.product.id}">
+                                                            <p class="product_name" data-id="${data.cart_item.product.id}" data-size="${data.cart_item.size}">${data.cart_item.product.name}</p>
+                                                        </a>
                                                         <div class="cart-info">
                                                             <div id="cartInfo">
                                                                 <p class="size">${data.cart_item.size}</p>
@@ -148,8 +152,6 @@
                     }
                     cartContent.prepend(cartRow);                   
                     
-                    
-                    // look at chat gpt for updating items on the backend 
                     let cartBottom = document.getElementById('cart-bottom');
                     if (!cartBottom) {
                         cartBottom = document.createElement('div');
@@ -272,7 +274,10 @@
                 </div>
                 <div class="product-button-row">
                     {% if product.created_by == request.user.profile %}
-                        <small>Users can't purchase their own products</small>
+                        <div class="flex">
+                            <i id="info-icon" class="fa-solid fa-circle-info" style="color: #000000;"></i>
+                            <small class="info-message">Users can't purchase their own products</small>
+                        </div>
                     {% else %}
                         <button id="cart_button" class="product-btn" type="submit" form="size-form">Add to Cart</button>
                     {% endif %}
