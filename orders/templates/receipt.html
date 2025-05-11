@@ -22,15 +22,19 @@
                     <div id="checkout-cart">
                         <div id="cart-row" class="row align-items-center mb-3">
                             <div class="col-5">
+                                <a href="{% url 'product' product_id=items.product.id %}">
                                     {% if items.product.created_by %}
                                         <img class="cart-image" src="{{ items.product.image.url }}">
                                     {% else %}
                                         <img class="cart-image" src="{{ items.product.image }}">
                                     {% endif %}
+                                </a>
                             </div>
                             <div class="col-7">
                                     <p class="bold">${{  items.product.price }}</p>
-                                    <p>{{ items.product.name }}</p>
+                                    <a style="text-decoration: none; color: black;" href="{% url 'product' product_id=items.product.id %}">
+                                        <p>{{ items.product.name }}</p>
+                                    </a>
                                     <span class="size">{{ items.size }}</span>
                                     <span>QTY: {{ items.quantity }}</span>
                             </div>
