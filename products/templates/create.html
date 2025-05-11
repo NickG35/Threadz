@@ -6,24 +6,24 @@
 {% block extra_styles %}
     <link rel="stylesheet" href="{% static 'products/styles.css' %}">
 {% endblock %}
-{% if messages %}
-    {% for message in messages %}
-        <li>{{ message }}</li>
-    {% endfor %}
-{% endif %}
 <h2 class="header">Create Product</h2>
 <div class="creation-form">
     <form class="create-form" method="post" action="{% url 'create' %}" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="detail-success">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
         {% for field in form %}
             <div class="form-group">
                 <span class="graytext">{{ field.label }}</span>
+                {% if field.errors %}
+                    <div>{{ field.errors }}</div>
+                {% endif %}
                 <div class="createField">
                     {{ field }}
                 </div>
-                {% if field.errors %}
-                    <div class="error">{{ field.errors }}</div>
-                {% endif %}
             </div>
         {% endfor %}
         <div class="submit_div">
