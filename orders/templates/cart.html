@@ -133,15 +133,19 @@
                 <div class="cart_container"{% if cart_count == 1 %}style="display: flex;"{% endif%}>
                     <div id="cartRow{{items.product.id}}-{{items.size}}" class="row align-items-center">
                         <div class="col-5">
+                            <a href="{% url 'product' product_id=items.product.id %}">
                                 {% if items.product.created_by %}
                                     <img id="checkout-image" class="cart-image" src="{{ items.product.image.url }}">
                                 {% else %}
                                     <img id="checkout-image" class="cart-image" src="{{ items.product.image }}">
                                 {% endif %}
+                            </a>
                         </div>
                         <div id="cartRight" class="col-7">
                                 <p id="product-price{{items.product.id}}" class="bold">${{  items.product.price }}</p>
-                                <p class="product-name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
+                                <a style="text-decoration: none; color: black;" href="{% url 'product' product_id=items.product.id %}">
+                                    <p class="product-name" data-id="{{items.product.id}}" data-size="{{items.size}}">{{ items.product.name }}</p>
+                                </a>
                                 <div class="cart-info">
                                     <div class="left-side">
                                         <p class="size">{{ items.size }}</p>
