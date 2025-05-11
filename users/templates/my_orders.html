@@ -34,10 +34,7 @@
                             <small id="order-info" class="graytext"><b>Order number:</b> {{ order.id }}</small>
                             <small id="order-info" class="graytext"><b>Order date:</b> {{ order.purchase_date }}</small>
                         </div>
-                        <form action="{% url 'order_details' order_id=order.id %}" method="post">
-                            {% csrf_token %}
-                            <button class="order-button" type="submit">View Order</button>
-                        </form>
+                        <button class="order-button" type="submit" onclick="window.location.href='{% url 'order_details' order_id=order.id %}'">View Order</button>
                     </div>
             </div>
         </div>
