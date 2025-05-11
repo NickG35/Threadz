@@ -51,17 +51,21 @@
         <div class="row">
             {% for cart_item in order_details.cart_item.all %}
             <div class="col-6 col-sm-4">
-                <div class="image-box">
-                    {% if cart_item.product.created_by %}
-                        <img class="product_image" src="{{cart_item.product.image.url}}">
-                    {% else %}
-                        <img class="product_image" src="{{cart_item.product.image }}">
-                    {% endif %}
-                </div>
-                <div class="product_info">
-                    <div class="product_name">
-                        <span>{{ cart_item.product.name}}</span>
+                <a href="{% url 'product' product_id=cart_item.product.id %}">
+                    <div class="image-box">
+                        {% if cart_item.product.created_by %}
+                            <img class="product_image" src="{{cart_item.product.image.url}}">
+                        {% else %}
+                            <img class="product_image" src="{{cart_item.product.image }}">
+                        {% endif %}
                     </div>
+                </a>
+                <div class="product_info">
+                    <a style="text-decoration: none; color: black;" href="{% url 'product' product_id=cart_item.product.id %}">
+                        <div class="product_name">
+                            <span>{{ cart_item.product.name}}</span>
+                        </div>
+                    </a>
                     <div class="product-detail">
                         <span><b>${{ cart_item.product.price}}</b></span> 
                     </div>
